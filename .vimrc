@@ -1,9 +1,3 @@
-" .vimrc File
-" Maintained by: Jeffrey Way
-" jeffrey@jeffrey-way.com
-" http://net.tutsplus.com
-"
-
 "Forget compatibility with Vi. Who cares.
 set nocompatible
 
@@ -75,3 +69,6 @@ set hlsearch
 " case insensitive search
 set ignorecase
 set smartcase
+
+set directory=/tmp
+set backupdir=/tmp
