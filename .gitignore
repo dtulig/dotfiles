@@ -1,0 +1,7 @@
+# Ignore everything in emacs
+.emacs.d/*
+
+# Except the init file
+# so that the .emacs.d directory can be symlinked
+# into dotfiles.
+!.emacs.d/init.el
