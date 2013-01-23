@@ -72,3 +72,5 @@ set smartcase
 
 set directory=/tmp
 set backupdir=/tmp
+
+colorscheme darkblue
