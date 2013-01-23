@@ -16,7 +16,8 @@
                       clojure-mode
                       clojure-test-mode
                       clojurescript-mode
-                      ecb)
+                      ecb
+                      nrepl)
     "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -28,6 +29,18 @@
 (require 'yasnippet) ;; not yasnippet-bundle
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/elpa/yasnippet-0.6.1/snippets")
+
+;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
+(autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
+(add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
+(add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
+(add-to-list 'auto-mode-alist '("\.gradle$" . groovy-mode))
+
+;;; make Groovy mode electric by default.
+(add-hook 'groovy-mode-hook
+          '(lambda ()
+             (require 'groovy-electric)
+             (groovy-electric-mode)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
