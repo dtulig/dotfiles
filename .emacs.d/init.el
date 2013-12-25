@@ -17,7 +17,9 @@
                       clojure-test-mode
                       clojurescript-mode
                       ecb
-                      nrepl)
+                      cider
+                      auto-complete
+                      ac-nrepl)
     "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -26,9 +28,9 @@
 
 (setq stack-trace-on-error t)
 
-(require 'yasnippet) ;; not yasnippet-bundle
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/elpa/yasnippet-0.6.1/snippets")
+;;(require 'yasnippet) ;; not yasnippet-bundle
+;;(yas/initialize)
+;;(yas/load-directory "~/.emacs.d/elpa/yasnippet-0.6.1/snippets")
 
 ;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
 (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
@@ -86,3 +88,13 @@
             (ansi-term term-cmd))
         (ansi-term term-cmd)))))
 (global-set-key (kbd "<f2>") 'visit-ansi-term)
+
+(require 'auto-complete)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(require 'auto-complete-config)
+(ac-config-default)
+
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq nrepl-hide-special-buffers t)
+(add-hook 'cider-repl-mode-hook 'paredit-mode)
+(add-hook 'cider-repl-mode-hook 'auto-complete-mode)
