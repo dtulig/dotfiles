@@ -1,0 +1,66 @@
+use_xft yes
+xftfont DejaVu Sans Mono:pixelsize=14
+xftalpha 0.8
+text_buffer_size 2048
+update_interval 1.0
+total_run_times 0
+own_window yes
+own_window_transparent yes
+own_window_type desktop
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+minimum_size 210 0
+maximum_width 210
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+stippled_borders 0
+#border_margin 1
+border_width 1
+default_color D0D0D0
+#default_shade_color black
+#default_outline_color grey
+own_window_colour black
+alignment top_right
+gap_x 20
+gap_y 20
+no_buffers yes
+uppercase no
+cpu_avg_samples 1
+net_avg_samples 1
+override_utf8_locale yes
+use_spacer none
+
+TEXT
+${alignc}#! System
+$nodename
+$alignc$sysname $machine
+$alignc$kernel
+UpTime: ${alignr 4}$uptime_short
+Load: ${alignr}$loadavg
+${alignr}${loadgraph 10,210}
+
+#! Memory
+${alignc}Memory
+Ram: ${memperc}% ${alignr 4}${membar 8,65}
+${alignr}${mem}/${memmax}
+Swap: ${swapperc}% ${alignr 4}${swapbar 8,65}
+
+#! Disks
+${alignc}Disks
+Home: ${fs_used_perc /home}% ${alignr 4}${fs_bar 8,65 /home}
+I/O: ${alignr 4}$diskio
+${alignr}${diskiograph 10,210}
+
+${alignc}#! Net
+${if_existing /proc/net/route eth0}$alignc Wired Connection
+IP:${alignr 4}${addr eth0}
+Up:${alignr 4}${upspeed eth0}k/s
+${alignr}${upspeedgraph eth0 10,210}
+Down:${alignr 4}${downspeed eth0}k/s
+${alignr}${downspeedgraph eth0 10,210}
+${else}${alignc}Network
+${alignr}Disconnected
+${endif}
+
