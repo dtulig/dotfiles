@@ -60,7 +60,14 @@ Up:${alignr 4}${upspeed eth0}k/s
 ${alignr}${upspeedgraph eth0 10,210}
 Down:${alignr 4}${downspeed eth0}k/s
 ${alignr}${downspeedgraph eth0 10,210}
-${else}${alignc}Network
-${alignr}Disconnected
+${else}Eth0: Network Disconnected
+${endif}
+${if_existing /proc/net/route eth1}$alignc Wired Connection
+IP:${alignr 4}${addr eth1}
+Up:${alignr 4}${upspeed eth1}k/s
+${alignr}${upspeedgraph eth1 10,210}
+Down:${alignr 4}${downspeed eth1}k/s
+${alignr}${downspeedgraph eth1 10,210}
+${else}Eth0: Network Disconnected
 ${endif}
 
