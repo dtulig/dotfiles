@@ -1,0 +1,10 @@
+# Terminal
+export PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$ \[\033[00m\]"
+
+# Colors
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+
+# Better terminal defaults
+alias ls="ls -GFh"
+alias ll='ls -FGlAhp'
