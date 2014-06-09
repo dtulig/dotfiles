@@ -16,10 +16,11 @@
                       clojure-mode
                       clojure-test-mode
                       clojurescript-mode
-                      ecb
                       cider
                       auto-complete
-                      ac-nrepl)
+                      ac-nrepl
+                      go-mode
+                      exec-path-from-shell)
     "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -27,6 +28,12 @@
           (package-install p)))
 
 (setq stack-trace-on-error t)
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
+; Auto gofmt on save.
+(add-hook 'before-save-hook 'gofmt-before-save)
 
 ;;(require 'yasnippet) ;; not yasnippet-bundle
 ;;(yas/initialize)
