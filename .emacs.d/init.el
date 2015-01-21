@@ -51,22 +51,6 @@
              (require 'groovy-electric)
              (groovy-electric-mode)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ecb-layout-name "left7")
- '(ecb-layout-window-sizes (quote (("left7" (ecb-directories-buffer-name 0.15126050420168066 . 0.576271186440678) (ecb-history-buffer-name 0.15126050420168066 . 0.15254237288135594) (ecb-methods-buffer-name 0.15126050420168066 . 0.2542372881355932)))))
- '(ecb-options-version "2.40")
- '(ecb-source-path (quote (("~/.emacs.d" "emacs")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
 (require 'term)
 (defun visit-ansi-term ()
   "If the current buffer is:
@@ -105,3 +89,55 @@
 (setq nrepl-hide-special-buffers t)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'auto-complete-mode)
+
+(setq org-log-done 'time)
+(global-set-key "\C-cl" 'org-store-link)
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+datetree
+                                 (concat org-directory "/todo.org")) 
+         "* TODO %^{Description}  %^g
+%?
+Added: %U")
+        ("i" "Inbox" entry (file+datetree
+                                 (concat org-directory "/inbox.org")) 
+         "* TODO %^{Description}  %^g
+%?
+Added: %U")
+        ("n" "Notes" entry (file+datetree
+                            (concat org-directory "/todo.org")) 
+         "* %^{Description} %^g %? 
+Added: %U")
+        ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
+         "** %^{Heading}")
+        ("l" "Log Time" entry (file+datetree
+                               (concat org-directory "/timelog.org")) 
+         "** %U - %^{Activity}  :TIME:")))
+
+(setq org-refile-targets (quote ((nil :maxlevel . 9))))
+
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ecb-layout-name "left7")
+ '(ecb-layout-window-sizes (quote (("left7" (ecb-directories-buffer-name 0.15126050420168066 . 0.576271186440678) (ecb-history-buffer-name 0.15126050420168066 . 0.15254237288135594) (ecb-methods-buffer-name 0.15126050420168066 . 0.2542372881355932)))))
+ '(ecb-options-version "2.40")
+ '(ecb-source-path (quote (("~/.emacs.d" "emacs"))))
+ '(org-agenda-files (quote ("/home/dtulig/org/journal.org" "/home/dtulig/org/timelog.org" "/home/dtulig/org/todo.org"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
