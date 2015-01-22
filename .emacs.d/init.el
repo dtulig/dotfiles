@@ -99,6 +99,8 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
+(setq org-refile-use-outline-path 'file)
+
 (setq org-capture-templates
       '(("t" "Todo" entry (file+datetree
                            (concat org-directory "/todo.org")) 
@@ -121,7 +123,8 @@ Added: %U")
                                (concat org-directory "/timelog.org")) 
          "** %U - %^{Activity}  :TIME:")))
 
-(setq org-refile-targets (quote ((nil :maxlevel . 9))))
+(setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                 (org-agenda-files :maxlevel . 9))))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
