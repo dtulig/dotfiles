@@ -5,3 +5,6 @@
 # so that the .emacs.d directory can be symlinked
 # into dotfiles.
 !.emacs.d/init.el
+
+# And not the non-elpa directory.
+!.emacs.d/non-elpa

@@ -146,3 +146,11 @@ Added: %U")
  ;; If there is more than one, they won't work right.
  )
 
+(add-to-list 'load-path "~/.emacs.d/non-elpa")
+
+(autoload 'glsl-mode "glsl-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
+
