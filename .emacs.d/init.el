@@ -99,9 +99,16 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
+(setq org-refile-use-outline-path 'nil)
+
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+datetree
-                           (concat org-directory "/todo.org")) 
+      '(("t" "Personal Todo" entry (file+datetree
+                           (concat org-directory "/personal.org")) 
+         "* TODO %^{Description}  %^g
+%?
+Added: %U")
+        ("w" "Indeed Todo" entry (file+datetree
+                           (concat org-directory "/indeed.org")) 
          "* TODO %^{Description}  %^g
 %?
 Added: %U")
@@ -111,7 +118,7 @@ Added: %U")
 %?
 Added: %U")
         ("n" "Notes" entry (file+datetree
-                            (concat org-directory "/todo.org")) 
+                            (concat org-directory "/inbox.org")) 
          "* %^{Description} %^g %? 
 Added: %U")
         ("j" "Journal" entry (file+datetree
@@ -121,7 +128,8 @@ Added: %U")
                                (concat org-directory "/timelog.org")) 
          "** %U - %^{Activity}  :TIME:")))
 
-(setq org-refile-targets (quote ((nil :maxlevel . 9))))
+(setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                 (org-agenda-files :maxlevel . 9))))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
