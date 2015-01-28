@@ -99,11 +99,16 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
-(setq org-refile-use-outline-path 'file)
+(setq org-refile-use-outline-path 'nil)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+datetree
-                           (concat org-directory "/todo.org")) 
+      '(("t" "Personal Todo" entry (file+datetree
+                           (concat org-directory "/personal.org")) 
+         "* TODO %^{Description}  %^g
+%?
+Added: %U")
+        ("w" "Indeed Todo" entry (file+datetree
+                           (concat org-directory "/indeed.org")) 
          "* TODO %^{Description}  %^g
 %?
 Added: %U")
@@ -113,7 +118,7 @@ Added: %U")
 %?
 Added: %U")
         ("n" "Notes" entry (file+datetree
-                            (concat org-directory "/todo.org")) 
+                            (concat org-directory "/inbox.org")) 
          "* %^{Description} %^g %? 
 Added: %U")
         ("j" "Journal" entry (file+datetree
