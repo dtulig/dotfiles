@@ -101,32 +101,58 @@
 
 (setq org-refile-use-outline-path 'nil)
 
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("NEXT" :foreground "blue" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("WAITING" :foreground "orange" :weight bold)
+              ("HOLD" :foreground "magenta" :weight bold)
+              ("CANCELLED" :foreground "forest green" :weight bold)
+              ("MEETING" :foreground "forest green" :weight bold)
+              ("PHONE" :foreground "forest green" :weight bold))))
+
+(setq org-clock-in-resume t)
+(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
+(setq org-clock-into-drawer t)
+(setq org-clock-out-remove-zero-time-clocks t)
+(setq org-clock-out-when-done t)
+
 (setq org-capture-templates
-      '(("t" "Personal Todo" entry (file+datetree
-                           (concat org-directory "/personal.org")) 
-         "* TODO %^{Description}  %^g
-%?
-Added: %U")
-        ("w" "Indeed Todo" entry (file+datetree
-                           (concat org-directory "/indeed.org")) 
-         "* TODO %^{Description}  %^g
-%?
-Added: %U")
-        ("i" "Inbox" entry (file+datetree
+      '(("t" "Todo" entry (file+datetree
                             (concat org-directory "/inbox.org")) 
-         "* TODO %^{Description}  %^g
+         "* TODO %^{Description}
+%U
 %?
-Added: %U")
-        ("n" "Notes" entry (file+datetree
-                            (concat org-directory "/inbox.org")) 
-         "* %^{Description} %^g %? 
-Added: %U")
-        ("j" "Journal" entry (file+datetree
-                              (concat org-directory "/journal.org"))
-         "** %^{Heading}")
+" :clock-in t :clock-resume t)
+        ("r" "Respond" entry (file+datetree
+                              (concat org-directory "/inbox.org"))
+               "* NEXT Respond to %^{From} on %^{Subject}
+SCHEDULED: %t
+%U
+%?
+" :clock-in t :clock-resume t :immediate-finish t)
+        ("n" "Note" entry (file+datetree
+                           (concat org-directory "/inbox.org"))
+               "* %? :NOTE:
+%U
+" :clock-in t :clock-resume t)
+        ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
+               "* %^{Title}
+%U
+%?
+" :clock-in t :clock-resume t)
         ("l" "Log Time" entry (file+datetree
                                (concat org-directory "/timelog.org")) 
-         "** %U - %^{Activity}  :TIME:")))
+         "** %U - %^{Activity}  :TIME:")
+        ("m" "Meeting" entry (file+datetree
+                              (concat org-directory "/inbox.org"))
+               "* MEETING with %^{Description} :MEETING:
+%U
+%?" :clock-in t :clock-resume t)))
 
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
@@ -138,6 +164,8 @@ Added: %U")
 
 (setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
 
+(setq org-agenda-span 'day)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -146,7 +174,8 @@ Added: %U")
  '(ecb-layout-name "left7")
  '(ecb-layout-window-sizes (quote (("left7" (ecb-directories-buffer-name 0.15126050420168066 . 0.576271186440678) (ecb-history-buffer-name 0.15126050420168066 . 0.15254237288135594) (ecb-methods-buffer-name 0.15126050420168066 . 0.2542372881355932)))))
  '(ecb-options-version "2.40")
- '(ecb-source-path (quote (("~/.emacs.d" "emacs")))))
+ '(ecb-source-path (quote (("~/.emacs.d" "emacs"))))
+ '(safe-local-variable-values (quote ((auto-save-timeout . 10) (auto-save-interval . 20) (auto-save-visited-file-name . t) (whitespace-line-column . 80) (lexical-binding . t)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
