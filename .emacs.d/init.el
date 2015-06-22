@@ -225,3 +225,5 @@ SCHEDULED: %t
           (lambda ()
             (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
             (auto-save-mode)))
+
+(setq magit-last-seen-setup-instructions "1.4.0")
