@@ -1,12 +1,23 @@
+;; Initialize Emacs config. This is the starting point for running
+;; emacs.
+
+;; Require the package module and add marmalade and melpa-stable. This
+;; is used with package-list-packages to hook into the elpa
+;; repository.
 (require 'package)
 (add-to-list 'package-archives
 	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+
+;; Initialize the package manager.
 (package-initialize)
 
+;; If there isn't an archive of the contents, refresh.
 (when (not package-archive-contents)
     (package-refresh-contents))
 
-;; Add in your own as you wish:
+;; Make sure the following is installed in an emacs installation.
 (defvar my-packages '(starter-kit
                       starter-kit-bindings
                       starter-kit-js
@@ -25,153 +36,42 @@
                       ghc)
     "A list of packages to ensure are installed at launch.")
 
+;; Install them.
 (dolist (p my-packages)
     (when (not (package-installed-p p))
       (package-install p)))
 
+;; Setup the Solarized theme.
+;; Need to run git submodules update --init to pull down the solarized
+;; theme.
 (add-to-list 'custom-theme-load-path "~/.emacs.d/non-elpa/emacs-color-theme-solarized")
 (load-theme 'solarized t)
 
 (set-face-attribute 'default nil :height 110)
 
+;; Show better el stack traces.
 (setq stack-trace-on-error t)
 
+;; When on a mac, make sure to load exec-path-from-shell to get the
+;; PATH loaded into emacs.
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-; Auto gofmt on save.
-(add-hook 'before-save-hook 'gofmt-before-save)
+;; Put the non-elpa directory on the load path.
+(add-to-list 'load-path "~/.emacs.d/non-elpa")
+
+;; Tell Magit we're good for now.
+(setq magit-last-seen-setup-instructions "1.4.0")
+
+;; Load all el files from the src dir.
+(setq config-src-dir (concat user-emacs-directory "src"))
+(add-to-list 'load-path config-src-dir)
+(when (file-exists-p config-src-dir)
+    (mapc 'load (directory-files config-src-dir nil "^[^#].*el$")))
 
 ;;(require 'yasnippet) ;; not yasnippet-bundle
 ;;(yas/initialize)
 ;;(yas/load-directory "~/.emacs.d/elpa/yasnippet-0.6.1/snippets")
-
-;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
-(autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
-(add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
-(add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
-(add-to-list 'auto-mode-alist '("\.gradle$" . groovy-mode))
-
-;;; make Groovy mode electric by default.
-(add-hook 'groovy-mode-hook
-          '(lambda ()
-             (require 'groovy-electric)
-             (groovy-electric-mode)))
-
-(require 'term)
-(defun visit-ansi-term ()
-  "If the current buffer is:
-     1) a running ansi-term named *ansi-term*, rename it.
-     2) a stopped ansi-term, kill it and create a new one.
-     3) a non ansi-term, go to an already running ansi-term
-        or start a new one while killing a defunt one"
-  (interactive)
-  (let ((is-term (string= "term-mode" major-mode))
-        (is-running (term-check-proc (buffer-name)))
-        (term-cmd "/bin/bash")
-        (anon-term (get-buffer "*ansi-term*")))
-    (if is-term
-        (if is-running
-            (if (string= "*ansi-term*" (buffer-name))
-                (call-interactively 'rename-buffer)
-              (if anon-term
-                  (switch-to-buffer "*ansi-term*")
-                (ansi-term term-cmd)))
-          (kill-buffer (buffer-name))
-          (ansi-term term-cmd))
-      (if anon-term
-          (if (term-check-proc "*ansi-term*")
-              (switch-to-buffer "*ansi-term*")
-            (kill-buffer "*ansi-term*")
-            (ansi-term term-cmd))
-        (ansi-term term-cmd)))))
-(global-set-key (kbd "<f2>") 'visit-ansi-term)
-
-(require 'auto-complete)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(require 'auto-complete-config)
-(ac-config-default)
-
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(setq nrepl-hide-special-buffers t)
-(add-hook 'cider-repl-mode-hook 'paredit-mode)
-(add-hook 'cider-repl-mode-hook 'auto-complete-mode)
-
-(setq org-directory (expand-file-name "~/Dropbox/org"))
-
-(setq org-log-done 'time)
-(global-set-key "\C-cl" 'org-store-link)
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-
-(setq org-refile-use-outline-path 'nil)
-
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
-
-(setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
-              ("WAITING" :foreground "orange" :weight bold)
-              ("HOLD" :foreground "magenta" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold)
-              ("MEETING" :foreground "forest green" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold))))
-
-(setq org-clock-in-resume t)
-(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
-(setq org-clock-into-drawer t)
-(setq org-clock-out-remove-zero-time-clocks t)
-(setq org-clock-out-when-done t)
-
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+datetree
-                            (concat org-directory "/inbox.org")) 
-         "* TODO %^{Description}
-%U
-%?
-" :clock-in t :clock-resume t)
-        ("r" "Respond" entry (file+datetree
-                              (concat org-directory "/inbox.org"))
-               "* NEXT Respond to %^{From} on %^{Subject}
-SCHEDULED: %t
-%U
-%?
-" :clock-in t :clock-resume t :immediate-finish t)
-        ("n" "Note" entry (file+datetree
-                           (concat org-directory "/inbox.org"))
-               "* %? :NOTE:
-%U
-" :clock-in t :clock-resume t)
-        ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
-               "* %^{Title}
-%U
-%?
-" :clock-in t :clock-resume t)
-        ("l" "Log Time" entry (file+datetree
-                               (concat org-directory "/timelog.org")) 
-         "** %U - %^{Activity}  :TIME:")
-        ("m" "Meeting" entry (file+datetree
-                              (concat org-directory "/inbox.org"))
-               "* MEETING with %^{Description} :MEETING:
-%U
-%?" :clock-in t :clock-resume t)))
-
-(setq org-refile-targets (quote ((nil :maxlevel . 3)
-                                 (org-agenda-files :maxlevel . 3))))
-
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
-
-(setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
-
-(setq org-agenda-span 'day)
 
 (custom-set-variables
  '(haskell-process-suggest-remove-import-lines t)
@@ -196,42 +96,4 @@ SCHEDULED: %t
  ;; If there is more than one, they won't work right.
  )
 
-(add-to-list 'load-path "~/.emacs.d/non-elpa")
 
-(autoload 'glsl-mode "glsl-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
-
-(let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
-  (setenv "PATH" (concat my-cabal-path ":" (getenv "PATH")))
-  (add-to-list 'exec-path my-cabal-path))
-
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init) (flymake-mode)))
-
-(eval-after-load 'haskell-mode
-  '(progn
-     (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-     (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-     (define-key haskell-mode-map (kbd "C-c C-n C-t") 'haskell-process-do-type)
-     (define-key haskell-mode-map (kbd "C-c C-n C-i") 'haskell-process-do-info)
-     (define-key haskell-mode-map (kbd "C-c C-n C-c") 'haskell-process-cabal-build)
-     (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)
-     (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)))
-(eval-after-load 'haskell-cabal
-  '(progn
-     (define-key haskell-cabal-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-     (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-     (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-     (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
-
-(add-hook 'org-agenda-mode-hook
-          (lambda ()
-            (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
-            (auto-save-mode)))
-
-(setq magit-last-seen-setup-instructions "1.4.0")
