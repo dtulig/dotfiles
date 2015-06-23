@@ -42,7 +42,7 @@
       (package-install p)))
 
 ;; Setup the Solarized theme.
-;; Need to run git submodules update --init to pull down the solarized
+;; Need to run `git submodule update --init` to pull down the solarized
 ;; theme.
 (add-to-list 'custom-theme-load-path "~/.emacs.d/non-elpa/emacs-color-theme-solarized")
 (load-theme 'solarized t)
@@ -95,5 +95,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
