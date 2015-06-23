@@ -47,10 +47,14 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/non-elpa/emacs-color-theme-solarized")
 (load-theme 'solarized t)
 
-(set-face-attribute 'default nil :height 110)
-
 ;; Show better el stack traces.
 (setq stack-trace-on-error t)
+
+;; Run when not on a mac.
+(when (not (memq window-system '(mac ns)))
+  ;; On linux machines, the font size is a bit small, this bumps it up
+  ;; to something more readable. This makes it smaller on mac.
+  (set-face-attribute 'default nil :height 110))
 
 ;; When on a mac, make sure to load exec-path-from-shell to get the
 ;; PATH loaded into emacs.
