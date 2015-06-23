@@ -27,7 +27,12 @@
 
 (dolist (p my-packages)
     (when (not (package-installed-p p))
-          (package-install p)))
+      (package-install p)))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/non-elpa/emacs-color-theme-solarized")
+(load-theme 'solarized t)
+
+(set-face-attribute 'default nil :height 110)
 
 (setq stack-trace-on-error t)
 
@@ -180,6 +185,9 @@ SCHEDULED: %t
  '(ecb-layout-window-sizes (quote (("left7" (ecb-directories-buffer-name 0.15126050420168066 . 0.576271186440678) (ecb-history-buffer-name 0.15126050420168066 . 0.15254237288135594) (ecb-methods-buffer-name 0.15126050420168066 . 0.2542372881355932)))))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote (("~/.emacs.d" "emacs"))))
+ '(haskell-process-auto-import-loaded-modules t)
+ '(haskell-process-log t)
+ '(haskell-process-suggest-remove-import-lines t)
  '(safe-local-variable-values (quote ((auto-save-timeout . 10) (auto-save-interval . 20) (auto-save-visited-file-name . t) (whitespace-line-column . 80) (lexical-binding . t)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
