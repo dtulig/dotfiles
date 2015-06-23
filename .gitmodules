@@ -1,3 +1,6 @@
 [submodule ".emacs.d/non-elpa/emacs-color-theme-solarized"]
 	path = .emacs.d/non-elpa/emacs-color-theme-solarized
 	url = git@github.com:sellout/emacs-color-theme-solarized.git
+[submodule ".emacs.d/non-elpa/purescript-mode"]
+	path = .emacs.d/non-elpa/purescript-mode
+	url = git@github.com:dysinger/purescript-mode.git
