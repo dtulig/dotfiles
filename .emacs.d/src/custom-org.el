@@ -92,6 +92,11 @@ SCHEDULED: %t
 
 ;: This remaps "g" to close all org mode buffers and then call agenda
 ;; redo. "r" still calls redo normally.
-(org-defkey org-agenda-mode-map "g" (lambda () (interactive)
+(add-hook 'org-agenda-mode-hook
+          (lambda ()
+            (define-key org-agenda-mode-map "g" (lambda () (interactive)
                                       (org-close-all-org-buffers)
-                                      (org-agenda-redo t)))
+                                      (org-agenda-redo t)))))
+
+
+
