@@ -78,3 +78,20 @@ SCHEDULED: %t
           (lambda ()
             (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
             (auto-save-mode)))
+
+;; When refreshing the org mode window, occasionally a file will have
+;; shifted underneath the current instance of emacs. This function
+;; will close all org-mode buffers.
+(defun org-close-all-org-buffers ()
+  (interactive)
+  (mapcar #'kill-buffer
+          (remove-if-not #'buffer-major-mode-org-mode-p (buffer-list))))
+
+;; This is a global key to close all org mode buffers.
+(global-set-key "\C-c\C-g" 'org-close-all-org-buffers)
+
+;: This remaps "g" to close all org mode buffers and then call agenda
+;; redo. "r" still calls redo normally.
+(org-defkey org-agenda-mode-map "g" (lambda () (interactive)
+                                      (org-close-all-org-buffers)
+                                      (org-agenda-redo t)))
