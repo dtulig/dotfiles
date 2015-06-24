@@ -25,7 +25,6 @@
                       starter-kit-ruby
                       yasnippet
                       clojure-mode
-                      clojure-test-mode
                       clojurescript-mode
                       cider
                       auto-complete
