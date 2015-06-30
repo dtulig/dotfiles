@@ -148,8 +148,8 @@ Callers of this function already widen the buffer view."
       (cond
        ((bh/is-project-p)
         subtree-end)
-       ((org-is-habit-p)
-        subtree-end)
+       ;; ((org-is-habit-p)
+       ;;  subtree-end)
        (t
         nil)))))
 
@@ -204,8 +204,8 @@ Skip project and sub-project tasks, habits, and project related tasks."
       (cond
        ((bh/is-project-p)
         subtree-end)
-       ((org-is-habit-p)
-        subtree-end)
+       ;; ((org-is-habit-p)
+       ;;  subtree-end)
        ((bh/is-project-subtree-p)
         subtree-end)
        (t
@@ -221,8 +221,8 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
       (cond
        ((bh/is-project-p)
         next-headline)
-       ((org-is-habit-p)
-        subtree-end)
+       ;; ((org-is-habit-p)
+       ;;  subtree-end)
        ((and (bh/is-project-subtree-p)
              (member (org-get-todo-state) (list "NEXT")))
         subtree-end)
@@ -239,8 +239,8 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
       (cond
        ((bh/is-project-p)
         subtree-end)
-       ((org-is-habit-p)
-        subtree-end)
+       ;; ((org-is-habit-p)
+       ;;  subtree-end)
        (t
         nil)))))
 
