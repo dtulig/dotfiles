@@ -31,7 +31,7 @@
 
 (setq org-capture-templates
       '(("t" "Todo" entry (file+datetree
-                            (concat org-directory "/inbox.org")) 
+                            (concat org-directory "/inbox.org"))
          "* TODO %^{Description}
 %U
 %?
@@ -54,7 +54,7 @@ SCHEDULED: %t
 %?
 " :clock-in t :clock-resume t)
         ("l" "Log Time" entry (file+datetree
-                               (concat org-directory "/timelog.org")) 
+                               (concat org-directory "/timelog.org"))
          "** %U - %^{Activity}  :TIME:")
         ("m" "Meeting" entry (file+datetree
                               (concat org-directory "/inbox.org"))
