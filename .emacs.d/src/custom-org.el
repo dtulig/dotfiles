@@ -41,7 +41,7 @@
                "* NEXT Respond to %^{From} on %^{Subject}
 SCHEDULED: %t
 %U
-%?
+%^{Link}
 " :clock-in t :clock-resume t :immediate-finish t)
         ("n" "Note" entry (file+datetree
                            (concat org-directory "/inbox.org"))
