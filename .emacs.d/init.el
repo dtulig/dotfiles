@@ -109,3 +109,5 @@
        (fill-paragraph nil region)))
 
 (define-key global-map "\M-Q" 'unfill-paragraph)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
