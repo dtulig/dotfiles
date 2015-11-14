@@ -2,11 +2,26 @@
   (setenv "PATH" (concat my-cabal-path ":" (getenv "PATH")))
   (add-to-list 'exec-path my-cabal-path))
 
-(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init) (flymake-mode)))
+(add-hook 'haskell-mode-hook 'haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+
+;; TODO Figure out if this is a better set of haskell defaults.
+;(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+
+;(autoload 'ghc-init "ghc" nil t)
+;(autoload 'ghc-debug "ghc" nil t)
+;(add-hook 'haskell-mode-hook (lambda () (ghc-init) (flymake-mode)))
+
+;(require 'flycheck)
+;(require 'flycheck-haskell)
+;(add-hook 'haskell-mode-hook 'flycheck-mode)
+;(add-hook 'flycheck-mode-hook 'flycheck-haskell-configure)
+
+;(setq haskell-process-type 'stack-ghci)
+;(setq haskell-process-path-ghci "stack")
+;(setq haskell-process-args-ghci "ghci")
 
 (eval-after-load 'haskell-mode
   '(progn
@@ -23,3 +38,7 @@
      (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
      (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
      (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
+
+(setq haskell-process-wrapper-function
+      (lambda (argv) (append (list "nix-shell" "-I" "." "--command")
+                        (list (mapconcat 'identity argv " ")))))

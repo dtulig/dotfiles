@@ -32,7 +32,9 @@
                       go-mode
                       exec-path-from-shell
                       haskell-mode
-                      ghc)
+                      ghc
+                      flycheck
+                      flycheck-haskell)
     "A list of packages to ensure are installed at launch.")
 
 ;; Install them.
