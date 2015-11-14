@@ -93,7 +93,7 @@ SCHEDULED: %t
           (remove-if-not #'buffer-major-mode-org-mode-p (buffer-list))))
 
 ;; This is a global key to close all org mode buffers.
-(global-set-key "\C-c\C-g" 'org-close-all-org-buffers)
+;(global-set-key "\C-c\C-g" 'org-close-all-org-buffers)
 
 (defun org-agenda-redo-with-close-buffers ()
   (interactive)
