@@ -27,6 +27,11 @@
 #+END_SRC
 
 * Misc Settings
+ - Remove scrollbars.
+   #+BEGIN_SRC emacs-lisp
+     (scroll-bar-mode -1)
+   #+END_SRC
+
  - Load solarized theme.
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'custom-theme-load-path "~/.emacs.d/non-elpa/emacs-color-theme-solarized")
