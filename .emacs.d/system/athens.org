@@ -1,0 +1,5 @@
+#+BEGIN_SRC emacs-lisp
+  (setq
+     user-mail-address "david.tulig@gmail.com"
+     user-full-name  "David Tulig")
+#+END_SRC
