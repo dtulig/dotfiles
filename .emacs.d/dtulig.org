@@ -72,6 +72,44 @@
      (add-hook 'before-save-hook 'delete-trailing-whitespace)
    #+END_SRC
 
+* Email and mu4e
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "/nix/store/wp4pi6h7rhwwkncxqyi8r1s75r12jyd8-mu-0.9.13/share/emacs/site-lisp/mu4e")
+
+  (require 'mu4e)
+
+  (setq mu4e-drafts-folder "/[Gmail].Drafts")
+  (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
+  (setq mu4e-trash-folder  "/[Gmail].Trash")
+
+  (setq mu4e-sent-messages-behavior 'delete)
+
+  (setq mu4e-maildir-shortcuts
+      '( ("/INBOX"               . ?i)
+         ("/[Gmail].Sent Mail"   . ?s)
+         ("/[Gmail].Trash"       . ?t)
+         ("/[Gmail].All Mail"    . ?a)))
+
+  (setq mu4e-get-mail-command "offlineimap")
+
+  (setq
+     user-mail-address "david.tulig@gmail.com"
+     user-full-name  "David Tulig"
+     mu4e-compose-signature
+      (concat
+        "David Tulig\n"
+        "http://www.davidtulig.com\n"))
+
+  (require 'smtpmail)
+
+  (setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-stream-type 'starttls
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
+
+  (setq message-kill-buffer-on-exit t)
+#+END_SRC
 * Mode Customizations
 ** Clojure
  - Initialization.
