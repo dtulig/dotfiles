@@ -74,14 +74,19 @@
 
 * Email and mu4e
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "/nix/store/wp4pi6h7rhwwkncxqyi8r1s75r12jyd8-mu-0.9.13/share/emacs/site-lisp/mu4e")
+  (add-to-list 'load-path "/var/run/current-system/sw/share/emacs/site-lisp/mu4e")
 
   (require 'mu4e)
+  (require 'org-mu4e)
 
+  (setq mu4e-maildir "~/.mail/gmail")
   (setq mu4e-drafts-folder "/[Gmail].Drafts")
   (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
   (setq mu4e-trash-folder  "/[Gmail].Trash")
 
+  (require 'mu4e-contrib)
+  (setq mu4e-html2text-command 'mu4e-shr2text)
+  (setq mu4e-change-filenames-when-moving t)
   (setq mu4e-sent-messages-behavior 'delete)
 
   (setq mu4e-maildir-shortcuts
@@ -90,7 +95,7 @@
          ("/[Gmail].Trash"       . ?t)
          ("/[Gmail].All Mail"    . ?a)))
 
-  (setq mu4e-get-mail-command "offlineimap")
+  (setq mu4e-get-mail-command "mbsync gmail")
     (setq mu4e-bookmarks
           '(
             ("(flag:unread AND NOT (flag:trashed OR maildir:\"/[Gmail].Trash\") AND NOT ((maildir:\"/[Gmail].Spam\") OR (maildir:\"/[Gmail].All Mail\") OR (maildir:\"/[Gmail].Important\")) OR maildir:\"/[Gmail].Inbox\""
