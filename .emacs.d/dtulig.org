@@ -27,6 +27,11 @@
 #+END_SRC
 
 * Misc Settings
+ - If in a terminal, use the eww browser.
+   #+BEGIN_SRC emacs-lisp
+     (when (not (display-graphic-p))
+       (setq browse-url-browser-function 'eww-browse-url))
+   #+END_SRC
  - Remove scrollbars.
    #+BEGIN_SRC emacs-lisp
      (scroll-bar-mode -1)
