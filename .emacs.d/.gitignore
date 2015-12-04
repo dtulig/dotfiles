@@ -27,7 +27,6 @@ non-elpa/*
 url/*
 
 ## exported and encrypted files
-*gpg
 *el
 *elc
 *html

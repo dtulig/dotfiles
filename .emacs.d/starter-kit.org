@@ -423,6 +423,8 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
            (string-match "\\(.*?\\)\.\\(org\\(\\.el\\)?\\|el\\)\\(\\.gpg\\)?$" name)
            (match-string 1 name)))
     (let ((user-dir (expand-file-name user-login-name starter-kit-dir)))
+      ;; load encrypted config
+      (sk-load "config")
       ;; load system-specific config
       (sk-load (concat "system/" system-name))
       ;; load user-specific config

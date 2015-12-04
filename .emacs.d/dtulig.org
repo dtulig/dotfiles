@@ -166,8 +166,6 @@
       (insert-file-contents filePath)
           (buffer-string)))
 
-  (setq mu4e-compose-signature (get-string-from-file "~/.mu/signature"))
-
   (setq message-send-mail-function 'smtpmail-send-it
       smtpmail-stream-type 'starttls
       smtpmail-default-smtp-server "smtp.gmail.com"
