@@ -12,6 +12,7 @@ tramp
 .smex-items
 ac-comphist.dat
 ido.last
+recentf
 
 ## directories
 backups/*
