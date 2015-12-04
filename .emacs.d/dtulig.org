@@ -125,6 +125,7 @@
   (setq mu4e-drafts-folder "/[Gmail].Drafts")
   (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
   (setq mu4e-trash-folder  "/[Gmail].Trash")
+  (setq mu4e-refile-folder "/ImapArchive")
 
   (require 'mu4e-contrib)
   (setq mu4e-html2text-command 'mu4e-shr2text)
@@ -135,9 +136,17 @@
       '( ("/INBOX"               . ?i)
          ("/[Gmail].Sent Mail"   . ?s)
          ("/[Gmail].Trash"       . ?t)
-         ("/[Gmail].All Mail"    . ?a)))
+         ("/ImapArchive"    . ?a)))
 
-  (setq mu4e-get-mail-command "mbsync gmail")
+  (fset 'my-move-to-trash "mt")
+  (define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
+  (define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
+
+  (fset 'my-archive "D")
+  (define-key mu4e-headers-mode-map (kbd "e") 'my-archive)
+  (define-key mu4e-view-mode-map (kbd "e") 'my-archive)
+
+  (setq mu4e-get-mail-command "mbsync -a")
     (setq mu4e-bookmarks
           '(
             ("(flag:unread AND NOT (flag:trashed OR maildir:\"/[Gmail].Trash\") AND NOT ((maildir:\"/[Gmail].Spam\") OR (maildir:\"/[Gmail].All Mail\") OR (maildir:\"/[Gmail].Important\")) OR maildir:\"/[Gmail].Inbox\""
