@@ -78,6 +78,11 @@
      (add-hook 'before-save-hook 'delete-trailing-whitespace)
    #+END_SRC
 
+ - Enable midnight mode to clean old buffers.
+   #+BEGIN_SRC emacs-lisp
+     (require 'midnight)
+     (midnight-delay-set 'midnight-delay "4:30am")
+   #+END_SRC
 * Helm
 #+BEGIN_SRC emacs-lisp
   (require 'helm)
