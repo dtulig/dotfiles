@@ -366,6 +366,10 @@ interested in the actual code implementing the starter kit.
         (setq system-name (car (split-string system-name "\\."))))
   #+end_src
 
+  #+BEGIN_SRC emacs-lisp
+    (when (memq window-system '(mac ns))
+        (exec-path-from-shell-initialize))
+  #+END_SRC
 ** Starter kit core
    :PROPERTIES:
    :CUSTOM_ID: starter-kit-core
