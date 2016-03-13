@@ -29,7 +29,8 @@
    'helm-projectile
    'org-projectile
    'js2-mode
-   'web-mode)
+   'web-mode
+   'nix-mode)
 #+END_SRC
 
 * Misc Settings
