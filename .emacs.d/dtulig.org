@@ -24,7 +24,12 @@
    'ghc
    'flycheck
    'flycheck-haskell
-   'helm)
+   'helm
+   'projectile
+   'helm-projectile
+   'org-projectile
+   'js2-mode
+   'web-mode)
 #+END_SRC
 
 * Misc Settings
@@ -98,6 +103,11 @@
 
   (helm-mode 1)
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (projectile-global-mode)
+#+END_SRC
+
 ** Bindings
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-x") 'helm-M-x)
@@ -728,6 +738,26 @@
                              (list (mapconcat 'identity argv " ")))))
 
    #+END_SRC
+** Web
+#+BEGIN_SRC elisp
+  (require 'web-mode)
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-style-padding 2)
+  (setq web-mode-script-padding 2)
+#+END_SRC
+
 * General Defuns
  - I disliked the order that it used for where to put auto save
    buffers that do not map to a file. The new change will first try to
