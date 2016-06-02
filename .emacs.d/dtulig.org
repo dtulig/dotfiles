@@ -260,7 +260,7 @@
 #+END_SRC
 ** Org
 #+BEGIN_SRC emacs-lisp
-  (setq org-directory (expand-file-name "~/Dropbox/org"))
+  (setq org-directory (expand-file-name "~/Sync/org"))
 
   (setq org-log-done 'time)
   (global-set-key "\C-cl" 'org-store-link)
@@ -332,7 +332,7 @@
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
 
-  (setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
+  (setq org-agenda-files (list (expand-file-name "~/Sync/org")))
 
   (setq org-agenda-span 'day)
 
