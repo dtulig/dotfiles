@@ -880,17 +880,23 @@
 
  - Unfills a full paragraph.
    #+BEGIN_SRC emacs-lisp
-     (defun unfill-paragraph (&optional region)
-          "Takes a multi-line paragraph and makes it into a single line of text."
-          (interactive (progn (barf-if-buffer-read-only) '(t)))
-          (let ((fill-column (point-max))
-                (emacs-lisp-docstring-fill-column t))
-            (fill-paragraph nil region)))
+     ;; From http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-single-key.html
+     (defun dt/fill-or-unfill ()
+       "Like `fill-paragraph', but unfill if used twice."
+       (interactive)
+       (let ((fill-column
+              (if (eq last-command 'dt/fill-or-unfill)
+                  (progn (setq this-command nil)
+                         (point-max))
+                fill-column)))
+         (call-interactively #'fill-paragraph)))
+
    #+END_SRC
 
 * General Bindings
 #+BEGIN_SRC emacs-lisp
-  (define-key global-map "\M-Q" 'unfill-paragraph)
+  (global-set-key [remap fill-paragraph]
+                  #'dt/fill-or-unfill)
 #+END_SRC
 * Tmux Compatibility
 
