@@ -30,7 +30,8 @@
    'org-projectile
    'js2-mode
    'web-mode
-   'nix-mode)
+   'nix-mode
+   'rust-mode)
 #+END_SRC
 
 * Misc Settings
