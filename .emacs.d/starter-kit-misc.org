@@ -135,7 +135,7 @@ it's possible aspell isn't in your path
         ispell-dictionary-alist
         (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
                          ("-B" "-d" "english" "--dict-dir"
-                          "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
+                          "/usr/local/Cellar/aspell/0.60.6.1/lib/aspell-0.60")
                          nil iso-8859-1)))
           `((nil ,@default)
             ("english" ,@default))))
