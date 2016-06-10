@@ -1,6 +1,4 @@
 #!/run/current-system/sw/bin/sh
 
 xcompmgr -c &
-dropbox &
-feh --bg-scale ~/.fehbg &
 xscreensaver -no-splash &
