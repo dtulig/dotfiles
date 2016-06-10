@@ -10,14 +10,15 @@ import System.IO
 main :: IO ()
 main = do
   xmproc <- spawnPipe "xmobar"
-  xmonad $ defaultConfig
+  xmonad $ def
        { modMask = mod4Mask
        , terminal = "urxvt"
        , borderWidth = 2
        , normalBorderColor = "#073642"
        , focusedBorderColor = "#cb4b16"
        , startupHook = setWMName "LG3D"
-       , manageHook = manageDocks <+> manageHook defaultConfig
+       , handleEventHook = docksEventHook <+> handleEventHook def
+       , manageHook = manageDocks <+> manageHook def
        , layoutHook = avoidStruts $ myLayout
        , logHook = dynamicLogWithPP xmobarPP
             { ppOutput = hPutStrLn xmproc
