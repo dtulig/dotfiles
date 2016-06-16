@@ -11,6 +11,9 @@ function rotate_all_keys() {
             github.com )
                 continue
                 ;;
+            gitlab.com )
+                continue
+                ;;
         esac
         rotate_ssh_key "$username@$remote_host"
     done
