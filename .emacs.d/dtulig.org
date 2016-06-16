@@ -1032,3 +1032,9 @@ From: https://wiki.archlinux.org/index.php/Emacs#Shift_.2B_Arrow_keys_not_workin
 
             (setq x (+ x 1))))))
 #+END_SRC
+* Emacs Server
+Start the server for emacsclient -c usage.
+
+#+BEGIN_SRC emacs-lisp
+  (server-start)
+#+END_SRC
