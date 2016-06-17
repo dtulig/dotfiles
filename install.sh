@@ -87,3 +87,7 @@ for DIR in ${HOME_DIR_DIRS[@]}; do
 
     symlink $DOTFILES_DIR/${DIR} $RESOLVED_DIR
 done
+
+# Bin files
+delete_symlink_if_exists $HOME/bin/emc
+symlink $DOTFILES_DIR/bin/emc $HOME/bin/emc
