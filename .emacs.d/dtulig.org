@@ -93,6 +93,11 @@
      (midnight-delay-set 'midnight-delay "4:30am")
    #+END_SRC
 
+ - Use emacs terminfo.
+   #+BEGIN_SRC emacs-lisp
+     (setq system-uses-terminfo nil)
+   #+END_SRC
+
 * Helm
 #+BEGIN_SRC emacs-lisp
   (require 'helm)
