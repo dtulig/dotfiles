@@ -13,9 +13,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='emacsclient -c'
+  export EDITOR='emc'
 else
-  export EDITOR='emacsclient -c'
+  export EDITOR='emc'
 fi
 
 export USER_EMAIL="david.tulig@gmail.com"
