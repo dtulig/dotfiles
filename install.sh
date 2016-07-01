@@ -47,7 +47,7 @@ HOME_DIR_FILES=( tmux.conf vimrc xmobarrc zshrc )
 # Add X specific configs if on linux.
 if [[ "$OSTYPE" == "linux-gnu" ]];
 then
-    HOME_DIR_FILES+=( xprofile Xresources xsessionrc desktop-background )
+    HOME_DIR_FILES+=( xprofile Xresources xsessionrc background-image )
 fi
 
 for FILE in ${HOME_DIR_FILES[@]}; do
