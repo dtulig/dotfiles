@@ -20,6 +20,8 @@ fi
 
 export USER_EMAIL="david.tulig@gmail.com"
 
+alias sdr='systemd-run --scope --user'
+
 # Load machine specific configuration
 if [[ -f $HOME/.zshrc_local ]];
 then
