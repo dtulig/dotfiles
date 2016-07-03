@@ -389,8 +389,8 @@
   %U
   %?" :clock-in t :clock-resume t)))
 
-  (setq org-refile-targets (quote ((nil :maxlevel . 4)
-                                   (org-agenda-files :maxlevel . 4))))
+  (setq org-refile-targets (quote ((nil :maxlevel . 2)
+                                   (org-agenda-files :maxlevel . 2))))
 
   (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
