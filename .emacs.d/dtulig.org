@@ -32,7 +32,10 @@
    'web-mode
    'nix-mode
    'rust-mode
-   'company)
+   'company
+   'evil
+   'powerline
+   'powerline-evil)
 #+END_SRC
 
 * Misc Settings
@@ -1063,6 +1066,17 @@ From: https://wiki.archlinux.org/index.php/Emacs#Shift_.2B_Arrow_keys_not_workin
             (define-key key-translation-map (kbd (format "M-[ 34 ; %d ~" x)) (kbd (format "%s<f20>" tkey)))
 
             (setq x (+ x 1))))))
+#+END_SRC
+* Powerline Mode
+#+BEGIN_SRC emacs-lisp
+  (require 'powerline)
+  (powerline-center-evil-theme)
+#+END_SRC
+* Evil Mode
+#+BEGIN_SRC emacs-lisp
+  (require 'evil)
+  (evil-mode t)
+  (setq evil-esc-delay 0)
 #+END_SRC
 * Emacs Server
 Start the server for emacsclient -c usage.
