@@ -21,17 +21,18 @@ Java-script Helpers
 #+end_src
 
 #+begin_src emacs-lisp
-(require 'js2-mode)
-;(autoload js "espresso" "Start espresso-mode" t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-;(add-hook 'espresso-mode-hook 'moz-minor-mode)
-;(add-hook 'espresso-mode-hook 'turn-on-paredit)
-;(add-hook js2-mode-hook 'run-starter-kit-coding-hook)
-;; (add-hook 'espresso-mode-hook 'idle-highlight)
-(setq js2-basic-offset 2)
-(setq js2-bounce-indent-p t)
-(add-hook 'js2-mode-hook (lambda () (electric-indent-local-mode -1)))
+  (require 'js2-mode)
+  ;(autoload js "espresso" "Start espresso-mode" t)
+  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+  (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
+  ;(add-hook 'espresso-mode-hook 'moz-minor-mode)
+  ;(add-hook 'espresso-mode-hook 'turn-on-paredit)
+  ;(add-hook js2-mode-hook 'run-starter-kit-coding-hook)
+  ;; (add-hook 'espresso-mode-hook 'idle-highlight)
+  (setq js2-basic-offset 2)
+  (setq js2-bounce-indent-p t)
+  (setq js2-strict-trailing-comma-warning nil)
+  (add-hook 'js2-mode-hook (lambda () (electric-indent-local-mode -1)))
 #+end_src
 
 #+begin_src emacs-lisp
