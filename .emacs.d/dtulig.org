@@ -36,8 +36,7 @@
    'evil
    'evil-leader
    'evil-org
-   'powerline
-   'powerline-evil)
+   'smart-mode-line)
 #+END_SRC
 
 * Misc Settings
@@ -1069,10 +1068,10 @@ From: https://wiki.archlinux.org/index.php/Emacs#Shift_.2B_Arrow_keys_not_workin
 
             (setq x (+ x 1))))))
 #+END_SRC
-* Powerline Mode
+* Smart Mode Line
 #+BEGIN_SRC emacs-lisp
-  (require 'powerline)
-  (powerline-center-evil-theme)
+  (setq sml/no-confirm-load-theme t)
+  (sml/setup)
 #+END_SRC
 * Evil Mode
 #+BEGIN_SRC emacs-lisp
