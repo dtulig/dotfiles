@@ -102,6 +102,14 @@
      (setq system-uses-terminfo nil)
    #+END_SRC
 
+ - Fix a bug on El Capitan where a zoomed in box appears for the
+   visual bell.
+   #+BEGIN_SRC emacs-lisp
+     (setq visible-bell nil)
+     (setq ring-bell-function (lambda ()
+     (invert-face 'mode-line)
+     (run-with-timer 0.1 nil 'invert-face 'mode-line)))
+   #+END_SRC
 * Helm
 #+BEGIN_SRC emacs-lisp
   (require 'helm)
