@@ -95,6 +95,7 @@
    #+BEGIN_SRC emacs-lisp
      (require 'midnight)
      (midnight-delay-set 'midnight-delay "4:30am")
+     (add-hook 'midnight-hook 'dt/org-reload)
    #+END_SRC
 
  - Use emacs terminfo.
