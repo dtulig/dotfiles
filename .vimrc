@@ -108,8 +108,9 @@ inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
 
-set directory=/tmp
-set backupdir=/tmp
+set undodir=/tmp//
+set directory=/tmp//
+set backupdir=/tmp//
 
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 let g:ctrlp_map = '<c-p>'
