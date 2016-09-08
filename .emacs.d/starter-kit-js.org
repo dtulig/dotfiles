@@ -8,31 +8,27 @@ Java-script Helpers
 
 #+begin_src emacs-lisp
 ;(font-lock-add-keywords
-; 'espresso-mode `(("\\(function *\\)("
+; 'js-mode `(("\\(function *\\)("
 ;                   (0 (progn (compose-region (match-beginning 1) (match-end 1)
 ;                                             "ƒ")
 ;                             nil)))))
 #+end_src
 
 #+begin_src emacs-lisp
-(font-lock-add-keywords 'js2-mode
+(font-lock-add-keywords 'js-mode
                         '(("\\<\\(FIX\\|TODO\\|FIXME\\|HACK\\|REFACTOR\\):"
                            1 font-lock-warning-face t)))
 #+end_src
 
 #+begin_src emacs-lisp
-  (require 'js2-mode)
-  ;(autoload js "espresso" "Start espresso-mode" t)
-  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-  (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-  ;(add-hook 'espresso-mode-hook 'moz-minor-mode)
-  ;(add-hook 'espresso-mode-hook 'turn-on-paredit)
-  ;(add-hook js2-mode-hook 'run-starter-kit-coding-hook)
-  ;; (add-hook 'espresso-mode-hook 'idle-highlight)
-  (setq js2-basic-offset 2)
-  (setq js2-bounce-indent-p t)
-  (setq js2-strict-trailing-comma-warning nil)
-  (add-hook 'js2-mode-hook (lambda () (electric-indent-local-mode -1)))
+  (autoload 'js-mode "js" "Start js-mode" t)
+  (add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
+  (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
+  (add-hook 'js-mode-hook 'moz-minor-mode)
+  (add-hook 'js-mode-hook 'turn-on-paredit)
+  (add-hook 'js-mode-hook 'run-starter-kit-coding-hook)
+  (add-hook 'js-mode-hook 'idle-highlight)
+  (setq expresso-indent-level 2)
 #+end_src
 
 #+begin_src emacs-lisp

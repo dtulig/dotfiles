@@ -6,6 +6,7 @@
      (starter-kit-load "misc")
      (starter-kit-load "misc-recommended")
      (starter-kit-load "org")
+     (starter-kit-load "js")
      (starter-kit-load "yasnippet")
    #+END_SRC
 
