@@ -8,6 +8,8 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'flowtype/vim-flow'
+Plug 'rust-lang/rust.vim'
+Plug 'LnL7/vim-nix'
 call plug#end()
 
 let g:jsx_ext_required=0
