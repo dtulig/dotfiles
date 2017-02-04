@@ -358,10 +358,34 @@
   (setq org-clock-out-remove-zero-time-clocks t)
   (setq org-clock-out-when-done t)
 
+  (defvar org-projects-dir (expand-file-name  (concat org-directory "projects/")))
+
+  (defun gf/create-org-path (path)
+    "Create a name suitable for an org file from the last part of a file
+  path."
+    (let ((last (car (last (split-string (if (equal (substring path -1) "/")
+                                             (substring path 0 -1) path) "/")))))
+      (concat org-projects-dir "/"
+              (downcase
+               (replace-regexp-in-string
+                "\\." "-" (if (equal (substring last 0 1) ".")
+                              (substring last 1) last)))
+              ".org")))
+
+  (defun gf/project-org-file ()
+    "Get the path of the org file for the current project."
+    (gf/create-org-path (projectile-project-root)))
+
+  (defun gf/switch-to-project-org-file ()
+    "Switch to the org file for the current project."
+    (interactive)
+    (find-file (gf/project-org-file)))
+
   (defun dt/org-reload ()
     (interactive)
     (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "dates/*.org"))
                                    (file-expand-wildcards (concat org-directory "*.org"))
+                                   (file-expand-wildcards (concat org-directory "projects/*.org"))
                                    (file-expand-wildcards (concat org-directory "indeed/dates/*.org"))
                                    (file-expand-wildcards (concat org-directory "indeed/*.org"))))
     (setq org-default-personal-notes-file
@@ -406,6 +430,17 @@
                  "* %? :NOTE:
   %U
   " :clock-in t :clock-resume t)
+          ("P" "Todo (Project)" entry (file+headline
+                              gf/project-org-file "Tasks")
+           "* TODO %^{Description}
+  %U
+  %?
+  " :clock-in t :clock-resume t)
+          ("N" "Project Note" entry (file+headline
+                              gf/project-org-file "Notes")
+           "* %?
+  %U
+  ")
           ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
                  "* %^{Title}
   %U
