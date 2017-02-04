@@ -114,6 +114,18 @@
      (invert-face 'mode-line)
      (run-with-timer 0.1 nil 'invert-face 'mode-line)))
    #+END_SRC
+
+ - Compilation window should use ansi colors and autoscroll.
+   #+BEGIN_SRC elisp
+     (require 'ansi-color)
+     (defun colorize-compilation-buffer ()
+       (toggle-read-only)
+       (ansi-color-apply-on-region compilation-filter-start (point))
+       (toggle-read-only))
+     (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+     (set-variable compilation-scroll-output t)
+   #+END_SRC
 * Helm
 #+BEGIN_SRC emacs-lisp
   (require 'helm)
