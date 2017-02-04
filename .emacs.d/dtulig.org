@@ -1107,6 +1107,9 @@ From: https://wiki.archlinux.org/index.php/Emacs#Shift_.2B_Arrow_keys_not_workin
   (evil-mode t)
   (setq evil-esc-delay 0)
   (require 'evil-org)
+
+  (evil-set-initial-state 'haskell-interactive-mode 'emacs)
+  (evil-set-initial-state 'haskell-error-mode 'emacs)
 #+END_SRC
 * Emacs Server
 Start the server for emacsclient -c usage.
