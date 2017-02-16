@@ -352,6 +352,15 @@
                 ("MEETING" :foreground "forest green" :weight bold)
                 ("PHONE" :foreground "forest green" :weight bold))))
 
+  (setq org-todo-state-tags-triggers
+        (quote (("CANCELLED" ("CANCELLED" . t))
+                ("WAITING" ("WAITING" . t))
+                ("HOLD" ("WAITING") ("HOLD" . t))
+                (done ("WAITING") ("HOLD"))
+                ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+
   (setq org-clock-in-resume t)
   (setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
   (setq org-clock-into-drawer t)
@@ -407,6 +416,7 @@
 
           ("r" "Respond (Work)" entry (file+headline
                               org-default-work-notes-file "Tasks")
+
                  "* NEXT Respond to %:from on %:subject
   SCHEDULED: %t
   %U
@@ -514,7 +524,7 @@
                               (org-tags-match-list-sublevels 'indented)
                               (org-agenda-sorting-strategy
                                '(category-keep))))
-                  (tags-todo "-CANCELLED/!NEXT"
+                  (tags-todo "-HOLD-CANCELLED/!NEXT"
                              ((org-agenda-overriding-header (concat "Project Next Tasks"
                                                                     (if bh/hide-scheduled-and-waiting-next-tasks
                                                                         ""
