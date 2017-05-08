@@ -1,8 +1,18 @@
+! rofi
+rofi.color-enabled: true
+rofi.color-window: #002b37, #cb3b16, #008ed4
+rofi.color-normal: #002b37, #819396, #002b37, #003642, #819396
+rofi.color-active: #002b37, #008ed4, #002b37, #003642, #008ed4
+rofi.color-urgent: #002b37, #da4281, #002b37, #003642, #da4281
+rofi.font: Fira Mono Medium for Powerline 14
+rofi.hide-scrollbar: true
+rofi.padding: 50
+rofi.bw: 2
 ! urxvt
 URxvt*buffered: true
 URxvt*cursorBlink: true
 URxvt*underlineColor: yellow
-URxvt*font:  xft:inconsolata:size=11:antialias=true
+URxvt*font:  xft:monospace:pixelsize=15:antialias=true
 URxvt*depth: 32
 URxvt*borderless: 1
 URxvt*scrollBar: false
@@ -15,7 +25,7 @@ URxvt.url-launcher: /run/current-system/sw/bin/chromium
 URxvt.matcher.button: 1
 URxvt.background: rgba:0000/2b00/3600/cccc
 !URxvt.background: [95]#002b3
-URxvt*iso14755: False
+URxvt*iso14755: false
 
 #define S_base03        #002b36
 #define S_base02        #073642
