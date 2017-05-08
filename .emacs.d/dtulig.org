@@ -144,6 +144,15 @@
   (setq projectile-completion-system 'helm)
   (setq projectile-switch-project-action 'helm-projectile)
   (helm-projectile-on)
+
+  (add-to-list 'projectile-project-root-files "Setup.hs")
+  (setq projectile-test-suffix-function
+        (lambda (project-type)
+          (if (member project-type '(haskell-cabal haskell-stack))
+              "Spec"
+            ;; call the original implementation if it's not a haskell project
+            (projectile-test-suffix project-type))))
+
   (projectile-global-mode)
 #+END_SRC
 
@@ -858,28 +867,25 @@
      (add-hook 'haskell-mode-hook 'structured-haskell-mode)
      (add-hook 'haskell-mode-hook 'intero-mode)
 
+     (add-hook 'interactive-haskell-mode-hook
+               (lambda ()
+                 (local-set-key (kbd "C-c C-d") #'intero-goto-definition)
+                 (local-set-key (kbd "C-c C-y") #'intero-apply-suggestions)))
+
+     ;;(setq haskell-process-args-stack-ghci '("--ghci-options=-ferror-spans"))
      ;; TODO Figure out if this is a better set of haskell defaults.
      ;(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 
-     ;(setq haskell-process-type 'stack-ghci)
-     ;(setq haskell-process-path-ghci "stack")
-     ;(setq haskell-process-args-ghci "ghci")
+     ;; (setq haskell-process-type 'stack-ghci)
+     ;; (setq haskell-process-path-ghci "stack")
+     ;; (setq haskell-process-args-ghci "ghci")
 
      (setq haskell-stylish-on-save t)
      (setq haskell-process-wrapper-function
            (lambda (argv) (append (list "nix-shell" "-I" "." "--command")
                              (list (mapconcat 'identity argv " ")))))
 
-     (add-hook 'projectile-mode-hook
-               (lambda ()
-                 ;; Identify a Haskell project root by the location of its "Setup.hs" file
-                 (add-to-list 'projectile-project-root-files "Setup.hs")
-                 (setq projectile-test-suffix-function
-                       (lambda (project-type)
-                         (if (member project-type '(haskell-cabal haskell-stack))
-                             "Spec"
-                           ;; call the original implementation if it's not a haskell project
-                           (projectile-test-suffix project-type))))))
+
 
    #+END_SRC
 ** Web
