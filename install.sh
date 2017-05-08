@@ -94,3 +94,7 @@ symlink $DOTFILES_DIR/bin/emc $HOME/bin/emc
 
 delete_symlink_if_exists $HOME/bin/lock_screen.sh
 symlink $DOTFILES_DIR/bin/lock_screen.sh $HOME/bin/lock_screen.sh
+
+delete_symlink_if_exists $HOME/.config/dunst/dunstrc
+mkdir -p $HOME/.config/dunst
+symlink $DOTFILES_DIR/dunstrc $HOME/.config/dunst/dunstrc
