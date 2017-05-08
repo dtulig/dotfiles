@@ -1,4 +1,4 @@
 #!/run/current-system/sw/bin/sh
 
 xcompmgr -c &
-xscreensaver -no-splash &
+xautolock -time 15 -locker "$HOME/bin/lock_screen.sh" -notify 30 -notifier "notify-send -u critical -- 'LOCKING screen in 30 seconds'" &

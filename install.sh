@@ -91,3 +91,6 @@ done
 # Bin files
 delete_symlink_if_exists $HOME/bin/emc
 symlink $DOTFILES_DIR/bin/emc $HOME/bin/emc
+
+delete_symlink_if_exists $HOME/bin/lock_screen.sh
+symlink $DOTFILES_DIR/bin/lock_screen.sh $HOME/bin/lock_screen.sh
