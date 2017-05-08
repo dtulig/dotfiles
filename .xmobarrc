@@ -1,19 +1,20 @@
-Config { font = "xft:inconsolata:size=10:antialias=true"
+Config { font = "xft:Fira Mono Medium for Powerline:size=11:antialias=true,FontAwesome:pixelsize=13:antialias=true"
      , bgColor = "#002b36"
      , fgColor = "#93a1a1"
      , alpha = 125
-     , position = Top
+     , position = TopSize C 100 30
      , commands = [
-               Run Cpu [ "-L","3","-H","50","--normal","green","--high","red"] 10
-             , Run DynNetwork ["-L","0","-H","70","--normal","green","--high","red"] 10
-             , Run Memory ["-t","Mem: <usedratio>%"] 10
-             , Run CoreTemp ["-t", "Temp: <core0>|<core1>|<core2>|<core3>C",
+               Run Cpu [ "-t", "\xf0ae <total>%", "-L","3","-H","50","--normal","green","--high","red"] 10
+             , Run DynNetwork ["-t", "\xf0e7 <rx> KB <tx> KB", "-L","0","-H","70","--normal","green","--high","red"] 10
+             , Run Memory ["-t", "\xf2db <used> MB (<usedratio>%)"] 10
+             , Run CoreTemp ["-t", "\xf2c7 <core0>C <core1>C <core2>C <core3>C",
                              "-L", "40", "-H", "60",
                              "-h", "red"] 50
-             , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+             , Run Date "<fc=#cb4b16>\xf017 %a %b %d %Y %H:%M:%S</fc>" "date" 10
              , Run StdinReader
+             , Run Weather "KATT" ["-t", "\xf185 <skyCondition>, <tempF> \x00b0\x0046"] 3600
              ]
      , sepChar = "%"
      , alignSep = "}{"
-     , template = " %StdinReader%}{ %cpu% | %memory% | %dynnetwork% | %coretemp% | <fc=#cb4b16>%date%</fc> "
+     , template = " %StdinReader%}{ %cpu%    %memory%    %dynnetwork%    %coretemp%    %KATT%    %date%  "
      }
