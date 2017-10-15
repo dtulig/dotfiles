@@ -12,9 +12,9 @@ Config { font = "xft:Fira Mono for Powerline:size=11:style=Medium:antialias=true
                              "-h", "red"] 50
              , Run Date "<fc=#cb4b16>\xf017 %a %b %d %Y %H:%M:%S</fc>" "date" 10
              , Run StdinReader
-             , Run Weather "KATT" ["-t", "\xf185 <skyCondition>, <tempF> \x00b0\x0046"] 3600
+             , Run Weather "KBFI" ["-t", "\xf185 <skyCondition>, <tempF> \x00b0\x0046"] 3600
              ]
      , sepChar = "%"
      , alignSep = "}{"
-     , template = " %StdinReader%}{ %cpu%    %memory%    %dynnetwork%    %coretemp%    %KATT%    %date%  "
+     , template = " %StdinReader%}{ %cpu%    %memory%    %dynnetwork%    %coretemp%    %KBFI%    %date%  "
      }
