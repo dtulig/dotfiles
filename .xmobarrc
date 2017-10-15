@@ -1,4 +1,4 @@
-Config { font = "xft:Fira Mono Medium for Powerline:size=11:antialias=true,FontAwesome:pixelsize=13:antialias=true"
+Config { font = "xft:Fira Mono for Powerline:size=11:style=Medium:antialias=true,FontAwesome:pixelsize=13:antialias=true"
      , bgColor = "#002b36"
      , fgColor = "#93a1a1"
      , alpha = 125
