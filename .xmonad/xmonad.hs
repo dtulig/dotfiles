@@ -1,5 +1,6 @@
 import XMonad
 import XMonad.Layout.Spacing
+import XMonad.Layout.NoBorders (smartBorders, noBorders)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops (fullscreenEventHook)
 import XMonad.Hooks.ManageDocks
@@ -20,9 +21,9 @@ main = do
        , focusedBorderColor = "#cb4b16"
        , startupHook = setWMName "LG3D"
        , workspaces = myWorkspaces
-       , handleEventHook = docksEventHook <+> fullscreenEventHook <+> handleEventHook def
+       , handleEventHook = docksEventHook <+> handleEventHook def <+> fullscreenEventHook 
        , manageHook = manageDocks <+> (isFullscreen --> doFullFloat) <+> manageHook def
-       , layoutHook = avoidStruts $ myLayout
+       , layoutHook = smartBorders(avoidStruts $ myLayout)
        , logHook = dynamicLogWithPP xmobarPP
             { ppOutput = hPutStrLn xmproc
             , ppCurrent = xmobarColor "#cb3b16" "" 
