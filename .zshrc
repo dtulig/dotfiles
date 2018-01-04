@@ -22,6 +22,9 @@ export USER_EMAIL="david.tulig@gmail.com"
 
 alias sdr='systemd-run --scope --user'
 
+alias rhlint='fn () { nix-shell -p hlint haskellPackages.haskell-tools-refactor --pure --run "hlint $@" };fn'
+alias bbduplicity="duplicity --file-prefix-manifest manifest_ --file-prefix-archive archive_ --file-prefix-signature signature_"
+
 # Load machine specific configuration
 if [[ -f $HOME/.zshrc_local ]];
 then
