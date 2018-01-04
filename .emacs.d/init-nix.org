@@ -1,0 +1,4 @@
+#+BEGIN_SRC emacs-lisp
+  (starter-kit-install-if-needed 'nix-mode)
+  (require 'nix-mode)
+#+END_SRC

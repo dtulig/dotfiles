@@ -1,0 +1,5 @@
+* General Bindings
+#+BEGIN_SRC emacs-lisp
+  (global-set-key [remap fill-paragraph]
+                  #'dt/fill-or-unfill)
+#+END_SRC

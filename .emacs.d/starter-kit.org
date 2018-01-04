@@ -147,14 +147,14 @@ general starter-kit updates without conflict.
      that look useful into your personal config, or simply by loading
      the entire file directly with the following.
      #+begin_src emacs-lisp
-       (starter-kit-load "python")
+       ;(starter-kit-load "python")
      #+end_src
 
      Alternately you can load only one particular subsection of an
      included file, for example to load just the "pretty-summary"
      section of =starter-kit-gnus.org= run the following.
      #+begin_src emacs-lisp
-       (starter-kit-load "gnus" "pretty-summary")
+       ;(starter-kit-load "gnus" "pretty-summary")
      #+end_src
 
      Finally you can load just those subsections of a file which have
@@ -163,7 +163,7 @@ general starter-kit updates without conflict.
      the following to your personal initialization.  Note: header id's
      take priority over tags.
      #+begin_src emacs-lisp
-       (starter-kit-load "gnus" "visual")
+       ;(starter-kit-load "gnus" "visual")
      #+end_src
 
 - Installing more elisp libraries :: The easiest way to install new
@@ -250,6 +250,8 @@ interested in the actual code implementing the starter kit.
     (setq autoload-file (concat starter-kit-dir "loaddefs.el"))
     (setq package-user-dir (concat starter-kit-dir "elpa"))
     (setq custom-file (concat starter-kit-dir "custom.el"))
+
+    (add-to-list 'load-path "~/.emacs.d/non-elpa")
   #+end_src
 
 - Ubiquitous Packages which should be loaded on startup rather than
@@ -307,23 +309,15 @@ interested in the actual code implementing the starter kit.
 - Function for loading other parts of the starter kit
   #+name: starter-kit-load
   #+begin_src emacs-lisp
-    (defun starter-kit-load (file &optional header-or-tag)
-      "Load configuration from other starter-kit-*.org files.
+    (defun load-file-or-header-or-tag (prefix file &optional header-or-tag)
+      "Load configuration from other file-*.org files.
     If the optional argument is the id of a subtree then only
     configuration from within that subtree will be loaded.  If it is
     not an id then it will be interpreted as a tag, and only subtrees
-    marked with the given tag will be loaded.
-
-    For example, to load all of starter-kit-lisp.org simply
-    add (starter-kit-load \"lisp\") to your configuration.
-
-    To load only the 'window-system' config from
-    starter-kit-misc-recommended.org add
-     (starter-kit-load \"misc-recommended\" \"window-system\")
-    to your configuration."
-      (let ((file (expand-file-name (if (string-match "starter-kit-.+\.org" file)
+    marked with the given tag will be loaded."
+      (let ((file (expand-file-name (if (string-match (concat prefix "-.+\.org") file)
                                         file
-                                      (format "starter-kit-%s.org" file))
+                                      (format (concat prefix "-%s.org") file))
                                     starter-kit-dir)))
         (org-babel-load-file
          (if header-or-tag
@@ -355,6 +349,28 @@ interested in the actual code implementing the starter kit.
                              body))))))))
                partial-file)
            file))))
+
+    (defun starter-kit-load (file &optional header-or-tag)
+      "Load configuration from other starter-kit-*.org files.
+    If the optional argument is the id of a subtree then only
+    configuration from within that subtree will be loaded.  If it is
+    not an id then it will be interpreted as a tag, and only subtrees
+    marked with the given tag will be loaded.
+
+    For example, to load all of starter-kit-lisp.org simply
+    add (starter-kit-load \"lisp\") to your configuration.
+
+    To load only the 'window-system' config from
+    starter-kit-misc-recommended.org add
+     (starter-kit-load \"misc-recommended\" \"window-system\")
+    to your configuration."
+      (load-file-or-header-or-tag "starter-kit" file header-or-tag))
+  #+end_src
+
+- Function for loading other parts of the init.
+  #+begin_src emacs-lisp
+    (defun dt-init-load (file &optional header-or-tag)
+      (load-file-or-header-or-tag "init" file header-or-tag))
   #+end_src
 
 - Work around a bug on OS X where system-name is FQDN.

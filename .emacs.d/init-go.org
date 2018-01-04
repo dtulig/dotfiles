@@ -1,0 +1,9 @@
+ - Packages
+   #+BEGIN_SRC emacs-lisp
+     (starter-kit-install-if-needed 'go-mode)
+   #+END_SRC
+
+ - Auto gfmt on save.
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'before-save-hook 'gofmt-before-save)
+   #+END_SRC

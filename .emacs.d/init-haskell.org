@@ -1,0 +1,51 @@
+ - Packages
+   #+BEGIN_SRC emacs-lisp
+     (starter-kit-install-if-needed
+       'haskell-mode
+       'intero)
+   #+END_SRC
+
+
+ - Initialization
+   #+BEGIN_SRC emacs-lisp
+     (starter-kit-install-if-needed 'shm)
+
+     (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
+       (setenv "PATH" (concat my-cabal-path ":" (getenv "PATH")))
+       (add-to-list 'exec-path my-cabal-path))
+
+     ;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+     (add-hook 'haskell-mode-hook 'haskell-doc-mode)
+     (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+     (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+     (add-hook 'haskell-mode-hook 'structured-haskell-mode)
+     ;(add-hook 'haskell-mode-hook 'intero-mode)
+     ;(add-hook 'structured-haskell-mode-hook (lambda ()
+     ;                                          (set-face-background 'shm-current-face "#eee8d5")
+     ;                                          (set-face-background 'shm-quarantine-face "lemonchiffon")))
+
+     (require 'intero)
+
+     (intero-global-mode 1)
+
+     (add-hook 'interactive-haskell-mode-hook
+               (lambda ()
+                 (local-set-key (kbd "C-c C-d") #'intero-goto-definition)
+                 (local-set-key (kbd "C-c C-y") #'intero-apply-suggestions)))
+
+     ;;(setq haskell-process-args-stack-ghci '("--ghci-options=-ferror-spans"))
+     ;; TODO Figure out if this is a better set of haskell defaults.
+     ;(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+
+     (setq haskell-process-type 'stack-ghci)
+     (setq haskell-process-path-ghci "stack")
+     (setq haskell-process-args-ghci "ghci")
+
+     (setq haskell-stylish-on-save t)
+     (setq haskell-process-wrapper-function
+           (lambda (argv) (append (list "nix-shell" "-I" "." "--command")
+                             (list (mapconcat 'identity argv " ")))))
+
+
+
+   #+END_SRC

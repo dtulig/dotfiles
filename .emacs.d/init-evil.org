@@ -1,0 +1,23 @@
+
+* Evil Mode
+#+BEGIN_SRC emacs-lisp
+  (starter-kit-install-if-needed
+    'evil
+    'evil-org
+    'evil-leader
+    'evil-surround)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq evil-want-C-i-jump nil)
+  (require 'evil-leader)
+  (evil-leader/set-leader ",")
+  (global-evil-leader-mode)
+  (require 'evil)
+  (evil-mode t)
+  (setq evil-esc-delay 0)
+  (require 'evil-org)
+
+  (evil-set-initial-state 'haskell-interactive-mode 'emacs)
+  (evil-set-initial-state 'haskell-error-mode 'emacs)
+#+END_SRC

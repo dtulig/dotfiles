@@ -1,0 +1,75 @@
+* Init Misc
+Customizations that don't seem to fit anywhere else.
+** Implementation
+ - If in a terminal, use the eww browser.
+   #+BEGIN_SRC emacs-lisp
+     (when (not (display-graphic-p))
+       (setq browse-url-browser-function 'eww-browse-url))
+   #+END_SRC
+
+ - Remove scrollbars.
+   #+BEGIN_SRC emacs-lisp
+     (scroll-bar-mode -1)
+   #+END_SRC
+
+ - Show better el stack traces.
+   #+BEGIN_SRC emacs-lisp
+     (setq stack-trace-on-error t)
+   #+END_SRC
+
+ - On linux machines, the font size is small. This bumps it up to
+   something more readable while leaving it as the default for mac.
+   #+BEGIN_SRC emacs-lisp
+     (when (not (memq window-system '(mac ns)))
+       (set-face-attribute 'default nil :height 110))
+   #+END_SRC
+
+ - When on a mac, make sure to load exec-path-from-shell to get the
+   PATH loaded into emacs.
+   #+BEGIN_SRC emacs-lisp
+     (when (memq window-system '(mac ns))
+       (starter-kit-install-if-needed 'exec-path-from-shell)
+       (exec-path-from-shell-initialize))
+   #+END_SRC
+
+ - Set the last seen setup instructions for magit.
+   #+BEGIN_SRC emacs-lisp
+     (setq magit-last-seen-setup-instructions "1.4.0")
+   #+END_SRC
+
+ - Remove extra whitespace on save.
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'before-save-hook 'delete-trailing-whitespace)
+   #+END_SRC
+
+ - Enable midnight mode to clean old buffers.
+   #+BEGIN_SRC emacs-lisp
+     (require 'midnight)
+     (midnight-delay-set 'midnight-delay "4:30am")
+   #+END_SRC
+
+ - Use emacs terminfo.
+   #+BEGIN_SRC emacs-lisp
+     (setq system-uses-terminfo nil)
+   #+END_SRC
+
+ - Fix a bug on El Capitan where a zoomed in box appears for the
+   visual bell.
+   #+BEGIN_SRC emacs-lisp
+     (setq visible-bell nil)
+     (setq ring-bell-function (lambda ()
+     (invert-face 'mode-line)
+     (run-with-timer 0.1 nil 'invert-face 'mode-line)))
+   #+END_SRC
+
+ - Compilation window should use ansi colors and autoscroll.
+   #+BEGIN_SRC emacs-lisp
+     ;; (require 'ansi-color)
+     ;; (defun colorize-compilation-buffer ()
+     ;;   (toggle-read-only)
+     ;;   (ansi-color-apply-on-region compilation-filter-start (point))
+     ;;   (toggle-read-only))
+     ;; (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+     ;; (set-variable compilation-scroll-output t)
+   #+END_SRC

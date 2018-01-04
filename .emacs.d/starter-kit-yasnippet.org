@@ -14,7 +14,7 @@ inspired by TextMate's templating syntax.
    :CUSTOM_ID: install
    :END:
 #+begin_src emacs-lisp
-  (starter-kit-install-if-needed 'yasnippet)
+  (starter-kit-install-if-needed 'yasnippet 'yasnippet-snippets)
 
   ;; If `yasnippet-bundle' has previously been installed through ELPA,
   ;; delete it before installing the new `yasnippet'
@@ -31,9 +31,9 @@ inspired by TextMate's templating syntax.
    :END:
 #+begin_src emacs-lisp
   (add-to-list 'load-path
-               (expand-file-name  "yasnippet"
-                                  (expand-file-name "src"
-                                                    starter-kit-dir)))
+               (expand-file-name "yasnippet"
+                                 (expand-file-name "src"
+                                                   starter-kit-dir)))
 #+end_src
 
 ** Load Yasnippet
@@ -53,6 +53,14 @@ Load the snippets defined in the =./snippets/= directory.
 #+begin_src emacs-lisp
   (yas/load-directory (expand-file-name "snippets" starter-kit-dir))
 #+end_src
+
+** Delete/disable selected snippets modes
+These snippets cause more trouble than they are worth.
+#+BEGIN_SRC emacs-lisp
+  (let ((file (concat yasnippet-snippets-dir "/prog-mode" "/.yas-skip")))
+    (when (not (file-exists-p file))
+      (write-region "" nil file)))
+#+END_SRC
 
 ** Configure Yasnippets for Org Mode
    :PROPERTIES:
