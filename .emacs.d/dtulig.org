@@ -76,7 +76,8 @@
  - When on a mac, make sure to load exec-path-from-shell to get the
    PATH loaded into emacs.
    #+BEGIN_SRC emacs-lisp
-     (exec-path-from-shell-initialize)
+     (when (eq system-type 'darwin)
+       (exec-path-from-shell-initialize))
    #+END_SRC
 
  - Put the non-elpa directory on the load path.
