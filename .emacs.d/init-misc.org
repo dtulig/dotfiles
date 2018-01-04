@@ -64,12 +64,13 @@ Customizations that don't seem to fit anywhere else.
 
  - Compilation window should use ansi colors and autoscroll.
    #+BEGIN_SRC emacs-lisp
-     ;; (require 'ansi-color)
-     ;; (defun colorize-compilation-buffer ()
-     ;;   (toggle-read-only)
-     ;;   (ansi-color-apply-on-region compilation-filter-start (point))
-     ;;   (toggle-read-only))
-     ;; (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+     (require 'ansi-color)
+     (defun colorize-compilation-buffer ()
+       (toggle-read-only)
+       (ansi-color-apply-on-region compilation-filter-start (point))
+       (toggle-read-only))
+     (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
-     ;; (set-variable compilation-scroll-output t)
+     ;(set-variable compilation-scroll-output t)
+
    #+END_SRC
