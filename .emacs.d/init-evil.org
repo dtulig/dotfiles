@@ -17,6 +17,8 @@
   (evil-mode t)
   (setq evil-esc-delay 0)
   (require 'evil-org)
+  (require 'evil-surround)
+  (global-evil-surround-mode)
 
   (evil-set-initial-state 'haskell-interactive-mode 'emacs)
   (evil-set-initial-state 'haskell-error-mode 'emacs)
