@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: note
+# key: n
+# --
+`comment-start`NOTE(dtulig): $0`comment-end`
