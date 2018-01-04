@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: debug_assert!(predicate);
+# key: dass
+# --
+debug_assert!(${1:predicate});
