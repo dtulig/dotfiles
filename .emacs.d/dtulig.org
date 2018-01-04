@@ -870,9 +870,9 @@
      (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
      (add-hook 'haskell-mode-hook 'structured-haskell-mode)
      ;(add-hook 'haskell-mode-hook 'intero-mode)
-     (add-hook 'structured-haskell-mode-hook (lambda ()
-                                               (set-face-background 'shm-current-face "#eee8d5")
-                                               (set-face-background 'shm-quarantine-face "lemonchiffon")))
+     ;(add-hook 'structured-haskell-mode-hook (lambda ()
+     ;                                          (set-face-background 'shm-current-face "#eee8d5")
+     ;                                          (set-face-background 'shm-quarantine-face "lemonchiffon")))
 
      (require 'intero)
 
@@ -887,9 +887,9 @@
      ;; TODO Figure out if this is a better set of haskell defaults.
      ;(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 
-     ;; (setq haskell-process-type 'stack-ghci)
-     ;; (setq haskell-process-path-ghci "stack")
-     ;; (setq haskell-process-args-ghci "ghci")
+     (setq haskell-process-type 'stack-ghci)
+     (setq haskell-process-path-ghci "stack")
+     (setq haskell-process-args-ghci "ghci")
 
      (setq haskell-stylish-on-save t)
      (setq haskell-process-wrapper-function
