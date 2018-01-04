@@ -29,4 +29,24 @@
       (indent-according-to-mode)))
 
   (global-set-key "\t" 'indent-or-complete)
+
+  (setq company-idle-delay 0.1)
+
+  (global-set-key (kbd "C-<tab>") 'company-complete)
 #+END_SRC
+
+ - When company and yasnippet are used together, they compete for the
+   tab key for expansion. This checks to see if company has something
+   to complete before running the tab.
+   #+BEGIN_SRC emacs-lisp
+     (defun company-yasnippet-or-completion ()
+       (interactive)
+       (let ((yas-fallback-behavior nil))
+         (unless (yas-expand)
+           (call-interactively #'company-complete-common))))
+
+     (add-hook 'company-mode-hook (lambda ()
+       (substitute-key-definition 'company-complete-common
+                                  'company-yasnippet-or-completion
+                                  company-active-map)))
+   #+END_SRC
