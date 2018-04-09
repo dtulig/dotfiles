@@ -1,6 +1,11 @@
 * Org Mode
 #+BEGIN_SRC emacs-lisp
+  (starter-kit-install-if-needed
+     'org-plus-contrib)
+
   (setq org-directory (expand-file-name "~/Sync/org/"))
+
+  (require 'org-checklist)
 
   (setq org-log-done 'time)
   (global-set-key "\C-cl" 'org-store-link)
