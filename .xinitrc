@@ -1,4 +1,4 @@
-#!/bin/sh
+export LANG=en_US.UTF8
 
 if [ -e $HOME/.background-image ]; then
     feh --bg-scale $HOME/.background-image
