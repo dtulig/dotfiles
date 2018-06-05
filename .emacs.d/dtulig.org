@@ -49,7 +49,7 @@
      (dt-init-load "company")
    #+END_SRC
 
- - Email and Mu4e
+ - Flycheck
    #+BEGIN_SRC emacs-lisp
      (dt-init-load "flycheck")
    #+END_SRC
