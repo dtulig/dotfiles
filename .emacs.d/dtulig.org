@@ -59,6 +59,11 @@
      (dt-init-load "email")
    #+END_SRC
 
+ - GDB
+   #+BEGIN_SRC emacs-lisp
+     (dt-init-load "gdb")
+   #+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (dt-init-load "defuns")
   (dt-init-load "bindings")
