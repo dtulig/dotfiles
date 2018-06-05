@@ -13,4 +13,6 @@
   (add-hook 'rust-mode-hook 'electric-pair-mode)
   (add-hook 'rust-mode-hook 'cargo-minor-mode)
   (add-hook 'rust-mode-hook 'flycheck-mode)
+  (add-hook 'rust-mode-hook 'evil-surround-mode)
+  (add-hook 'rust-mode-hook 'auto-revert-mode)
 #+END_SRC
