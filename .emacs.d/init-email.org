@@ -1,9 +1,11 @@
 * Email and Mu4e
 #+BEGIN_SRC emacs-lisp
   (when (or (file-exists-p "/var/run/current-system/sw/share/emacs/site-lisp/mu4e")
-            (file-exists-p "/usr/local/share/emacs/site-lisp/mu4e"))
+            (file-exists-p "/usr/local/share/emacs/site-lisp/mu4e")
+            (file-exists-p "/usr/share/emacs/site-lisp/mu"))
     (add-to-list 'load-path "/var/run/current-system/sw/share/emacs/site-lisp/mu4e")
     (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+    (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu")
 
     (require 'mu4e)
     (require 'org-mu4e)
