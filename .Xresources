@@ -13,7 +13,7 @@ URxvt*buffered: true
 !URxvt*letterSpace: -2
 URxvt*cursorBlink: true
 URxvt*underlineColor: yellow
-URxvt*font:  xft:monospace:style=Medium:pixelsize=16:antialias=true,FontAwesome:pixelsize=16:antialias=true
+URxvt*font:  xft:monospace:style=Medium:pixelsize=14:antialias=true,FontAwesome:pixelsize=14:antialias=true
 URxvt*depth: 32
 URxvt*borderless: 1
 URxvt*scrollBar: false
