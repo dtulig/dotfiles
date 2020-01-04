@@ -18,6 +18,8 @@
 
   (setq org-refile-use-outline-path 'nil)
 
+  (setq org-agenda-clockreport-parameter-plist
+        (quote (:link t :fileskip0 t)))
 
   (setq org-todo-keywords
           (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
