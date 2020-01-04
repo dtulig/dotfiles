@@ -10,8 +10,8 @@
 
 #+BEGIN_SRC emacs-lisp
   (setq projectile-mode-line
-             '(:eval (format " Projectile[%s]"
-                             (projectile-project-name))))
+        '(:eval (format " Projectile[%s]"
+                        (projectile-project-name))))
 
   (setq projectile-completion-system 'helm)
   (setq projectile-switch-project-action 'helm-projectile)
@@ -25,5 +25,7 @@
             ;; call the original implementation if it's not a haskell project
             (projectile-test-suffix project-type))))
 
-  (projectile-global-mode)
+  (projectile-mode +1)
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+END_SRC
