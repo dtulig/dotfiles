@@ -33,4 +33,8 @@
     ;; load up the starter kit
     (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))))
 
+;; For mac os x, we need to set the pinentry mode for gpg.
+(when (eq system-type 'darwin)
+  (setq epa-pinentry-mode 'loopback))
+
 ;;; init.el ends here
