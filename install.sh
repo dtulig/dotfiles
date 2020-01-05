@@ -42,7 +42,7 @@ for FILE in ${SSH_BIN_FILES[@]}; do
 done
 
 # General config files.
-HOME_DIR_FILES=( tmux.conf vimrc xmobarrc zshrc )
+HOME_DIR_FILES=( tmux.conf vimrc zshrc )
 
 # Add X specific configs if on linux.
 if [[ "$OSTYPE" == "linux-gnu" ]];
@@ -65,10 +65,19 @@ done
 
 HOME_DIR_DIRS=( emacs.d )
 
-# Add Xmonad specific configs if on linux.
+# Linux specific configuration and bin files.
 if [[ "$OSTYPE" == "linux-gnu" ]];
 then
-    HOME_DIR_DIRS+=( xmonad )
+    # Add Xmonad specific configs if on linux.
+    HOME_DIR_DIRS+=( xmobarrc xmonad )
+
+    # Bin files
+    delete_symlink_if_exists $HOME/bin/lock_screen.sh
+    symlink $DOTFILES_DIR/bin/lock_screen.sh $HOME/bin/lock_screen.sh
+
+    delete_symlink_if_exists $HOME/.config/dunst/dunstrc
+    mkdir -p $HOME/.config/dunst
+    symlink $DOTFILES_DIR/dunstrc $HOME/.config/dunst/dunstrc
 fi
 
 for DIR in ${HOME_DIR_DIRS[@]}; do
@@ -91,10 +100,3 @@ done
 # Bin files
 delete_symlink_if_exists $HOME/bin/emc
 symlink $DOTFILES_DIR/bin/emc $HOME/bin/emc
-
-delete_symlink_if_exists $HOME/bin/lock_screen.sh
-symlink $DOTFILES_DIR/bin/lock_screen.sh $HOME/bin/lock_screen.sh
-
-delete_symlink_if_exists $HOME/.config/dunst/dunstrc
-mkdir -p $HOME/.config/dunst
-symlink $DOTFILES_DIR/dunstrc $HOME/.config/dunst/dunstrc
