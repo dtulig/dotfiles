@@ -191,7 +191,7 @@
   ;; taking some of that.
 
   (setq org-agenda-custom-commands
-        (quote ((" " "Agenda"
+        (quote (("A" "Agenda"
                  ((agenda "" nil)
                   (tags-todo "-SOMEDAY-CANCELLED/!"
                              ((org-agenda-overriding-header "Stuck Projects")
