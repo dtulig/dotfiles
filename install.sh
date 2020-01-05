@@ -97,6 +97,17 @@ for DIR in ${HOME_DIR_DIRS[@]}; do
     symlink $DOTFILES_DIR/${DIR} $RESOLVED_DIR
 done
 
+# Mac OS X specific customizations.
+if [[ "${OSTYPE:0:6}" == "darwin" ]];
+then
+    # Setup GPG agent config.
+    mkdir -p $HOME/.gnupg
+    move_file_to_tmp_if_exists $HOME/.gnupg/gpg-agent.conf
+
+    delete_symlink_if_exists $HOME/.gnupg/gpg-agent.conf
+    symlink $DOTFILES_DIR/mac_gpg_agent_conf $HOME/.gnupg/gpg-agent.conf
+fi
+
 # Bin files
 delete_symlink_if_exists $HOME/bin/emc
 symlink $DOTFILES_DIR/bin/emc $HOME/bin/emc
