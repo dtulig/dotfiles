@@ -1,4 +1,7 @@
 #!/bin/sh
 
-xcompmgr -c &
-xautolock -time 15 -locker "$HOME/bin/lock_screen.sh" -notify 30 -notifier "notify-send -u critical -- 'LOCKING screen in 30 seconds'" &
+if [[ -x "$(command -v xcompmgr)" && -x "$(command -v xautolock)" ]];
+then
+    xcompmgr -c &
+    xautolock -time 15 -locker "$HOME/bin/lock_screen.sh" -notify 30 -notifier "notify-send -u critical -- 'LOCKING screen in 30 seconds'" &
+fi
