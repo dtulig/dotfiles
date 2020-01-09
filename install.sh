@@ -78,6 +78,13 @@ then
     delete_symlink_if_exists $HOME/.config/dunst/dunstrc
     mkdir -p $HOME/.config/dunst
     symlink $DOTFILES_DIR/dunstrc $HOME/.config/dunst/dunstrc
+
+    # Setup GPG agent config.
+    mkdir -p $HOME/.gnupg
+    move_file_to_tmp_if_exists $HOME/.gnupg/gpg-agent.conf
+
+    delete_symlink_if_exists $HOME/.gnupg/gpg-agent.conf
+    symlink $DOTFILES_DIR/linux_gpg_agent_conf $HOME/.gnupg/gpg-agent.conf
 fi
 
 for DIR in ${HOME_DIR_DIRS[@]}; do
