@@ -136,14 +136,14 @@
            "* %?
   %U
   ")
-          ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
-                 "* %^{Title}
-  %U
-  %?
-  " :clock-in t :clock-resume t)
-          ("l" "Log Time" entry (file+datetree
-                                 (concat org-directory "/timelog.org"))
-           "** %U - %^{Activity}  :TIME:")
+          ;; ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
+  ;;                "* %^{Title}
+  ;; %U
+  ;; %?
+  ;; " :clock-in t :clock-resume t)
+  ;;         ("l" "Log Time" entry (file+datetree
+  ;;                                (concat org-directory "/timelog.org"))
+  ;;          "** %U - %^{Activity}  :TIME:")
           ("m" "Meeting" entry (file+headline
                                 org-default-work-notes-file "Meetings")
                  "* MEETING with %^{Description} :MEETING:

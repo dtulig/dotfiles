@@ -1,0 +1,4 @@
+* Global customizations
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-M-h") 'backward-kill-word)
+#+end_src

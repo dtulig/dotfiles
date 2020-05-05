@@ -64,7 +64,7 @@ Key Bindings.
 
 ** If you want to be able to M-x without meta
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-x C-m") 'helm-M-x)
+;(global-set-key (kbd "C-x C-m") 'helm-M-x)
 #+end_src
 
 ** Help should search more than just commands

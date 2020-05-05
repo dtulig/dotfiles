@@ -1,8 +1,12 @@
-/.emacs.d/%backup%~
-/.emacs.d/bookmarks
-/.emacs.d/projectile-bookmarks.eld
-/.emacs.d/custom.el~
-/.emacs.d/network-security.data
+/.emacs.d/*.el
+/.emacs.d/elpa/custom.el~
+!/.emacs.d/init.el
+/.emacs.d.old/%backup%~
+/.emacs.d.old/bookmarks
+/.emacs.d.old/projectile-bookmarks.eld
+/.emacs.d.old/custom.el~
+/.emacs.d.old/network-security.data
+/.emacs.d.old/.lsp-session-v1
 /.xmonad/xmonad-x86_64-linux
 /.xmonad/xmonad.errors
 /.xmonad/xmonad.hi

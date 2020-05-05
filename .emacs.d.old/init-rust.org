@@ -1,0 +1,36 @@
+#+BEGIN_SRC emacs-lisp
+    (starter-kit-install-if-needed
+     'rustic
+     ;'cargo
+     'flycheck-rust)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/non-elpa/eglot")
+  (require 'rustic)
+  ;;(require 'lsp)
+  ;;(add-to-list 'eglot-server-programs '(rustic-mode . ("rust-analyzer" "")))
+  (setq rustic-lsp-client 'eglot)
+  (setq rustic-lsp-server 'rust-analyzer)
+  (setq lsp-rust-rls-server-command '(rust-analyzer))
+  ;(setq eglot-events-buffer-size 0)
+
+  (setq lsp-keymap-prefix "C-;")
+  (require 'eglot)
+  ;; (setq eglot-keymap-prefix "C-;")
+  (define-key eglot-mode-map (kbd "C-; a") 'eglot-code-actions)
+  (define-key eglot-mode-map (kbd "C-; h") 'eglot-help-at-point)
+  (define-key eglot-mode-map (kbd "C-; r") 'eglot-rename)
+  (define-key eglot-mode-map (kbd "C-; f") 'eglot-format)
+  (define-key eglot-mode-map (kbd "C-; d") 'xref-find-definitions)
+
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'rustic-mode-hook 'electric-pair-mode)
+  (add-hook 'rustic-mode-hook 'cargo-minor-mode)
+  (add-hook 'rustic-mode-hook 'flycheck-mode)
+  (add-hook 'rustic-mode-hook 'evil-surround-mode)
+  (add-hook 'rustic-mode-hook 'auto-revert-mode)
+#+END_SRC

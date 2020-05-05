@@ -1,0 +1,128 @@
+* Email and Mu4e
+** Check if this machine is setup for mu4e
+#+begin_src emacs-lisp
+  (setq dt-mu4e-path (let ((possible-paths '("/var/run/current-system/sw/share/emacs/site-lisp/mu4e"
+					     "/usr/local/share/emacs/site-lisp/mu4e"
+					     "/usr/local/share/emacs/site-lisp/mu/mu4e"
+					     "/usr/share/emacs/site-lisp/mu")))
+		       (seq-find #'file-exists-p possible-paths)))
+
+#+end_src
+** Configure mu4e
+#+begin_src emacs-lisp
+  (when dt-mu4e-path
+    (use-package mu4e
+      :after org
+      :load-path dt-mu4e-path
+      :config
+      (require 'org-mu4e)
+
+      (setq mu4e-maildir "~/.mail/gmail")
+      (setq mu4e-drafts-folder "/[Gmail].Drafts")
+      (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
+      (setq mu4e-trash-folder  "/[Gmail].Trash")
+      (setq mu4e-refile-folder "/ImapArchive")
+
+      (setq mu4e-headers-sort-direction 'ascending)
+
+      (require 'mu4e-contrib)
+      (setq mu4e-html2text-command 'mu4e-shr2text)
+      (setq mu4e-change-filenames-when-moving t)
+      (setq mu4e-sent-messages-behavior 'delete)
+
+      (add-hook 'mu4e-compose-mode-hook 'turn-off-auto-fill)
+
+      (setq mu4e-maildir-shortcuts
+	    '( ("/INBOX"               . ?i)
+	       ("/[Gmail].Sent Mail"   . ?s)
+	       ("/[Gmail].Trash"       . ?t)
+	       ("/[Gmail].All Mail"    . ?a)))
+
+      (fset 'my-move-to-trash "mt")
+      (define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
+      (define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
+
+      (fset 'my-archive "D")
+      (define-key mu4e-headers-mode-map (kbd "e") 'my-archive)
+      (define-key mu4e-view-mode-map (kbd "e") 'my-archive)
+
+      (setq mu4e-get-mail-command "mbsync -a")
+      (setq mu4e-bookmarks
+	    '(
+	      ("(flag:unread AND NOT (flag:trashed OR maildir:\"/[Gmail].Trash\") AND NOT ((maildir:\"/[Gmail].Spam\") OR (maildir:\"/[Gmail].All Mail\") OR (maildir:\"/[Gmail].Important\")) OR maildir:\"/[Gmail].Inbox\""
+	       "Daily Review" ?d)
+	      ("flag:unread AND NOT (flag:trashed OR maildir:\"/[Gmail].Trash\") AND NOT list:* AND NOT maildir:\"/[Gmail].Spam\""
+	       "Unread messages, no lists" ?U)
+	      ("flag:unread AND NOT (flag:trashed OR maildir:\"/[Gmail].Trash\") AND NOT maildir:\"/[Gmail].Spam\""
+	       "All unread messages" ?u)
+	      ("flag:unread AND list:* AND NOT maildir:\"/[Gmail].Spam\" AND NOT maildir:\"/[Gmail].Trash\""
+	       "Unread lists" ?l)
+	      ("date:today..now"                  "Today's messages"     ?t)
+	      ("date:7d..now"                     "Last 7 days"          ?w)
+	      ("mime:image/*"                     "Messages with images" ?p)))
+
+      (require 'smtpmail)
+
+      (defun read-lines (filePath)
+	"Return a list of lines of a file at filePath."
+	(with-temp-buffer
+	  (insert-file-contents filePath)
+	  (split-string (buffer-string) "\n" t)))
+
+      (defun get-string-from-file (filePath)
+	"Return filePath's file content."
+	(with-temp-buffer
+	  (insert-file-contents filePath)
+	  (buffer-string)))
+
+      (setq message-send-mail-function 'smtpmail-send-it
+	    smtpmail-stream-type 'starttls
+	    smtpmail-default-smtp-server "smtp.gmail.com"
+	    smtpmail-smtp-server "smtp.gmail.com"
+	    smtpmail-smtp-service 587)
+
+      (setq message-kill-buffer-on-exit t)
+
+      (defun org-mu4e-store-link ()
+	"Store a link to a mu4e query or message."
+	(cond
+	 ;; storing links to queries
+	 ((eq major-mode 'mu4e-headers-mode)
+	  (let* ((query (mu4e-last-query))
+		 desc link)
+	    (org-store-link-props :type "mu4e" :query query)
+	    (setq
+	     desc (concat "mu4e:query:" query)
+	     link desc)
+	    (org-add-link-props :link link :description desc)
+	    link))
+	 ;; storing links to messages
+	 ((eq major-mode 'mu4e-view-mode)
+	  (let* ((msg  (mu4e-message-at-point))
+		 (msgid   (or (plist-get msg :message-id) "<none>"))
+		 (from (car (car (mu4e-message-field msg :from))))
+		 (to (car (car (mu4e-message-field msg :to))))
+		 (subject (mu4e-message-field msg :subject))
+		 link)
+	    (setq link (concat "mu4e:msgid:" msgid))
+	    (org-store-link-props :type "mu4e" :link link
+				  :message-id msgid)
+	    (setq link (concat "mu4e:msgid:" msgid))
+	    (org-store-link-props
+	     :type "mu4e" :from from :to to :subject subject
+	     :message-id msgid)
+
+	    (org-add-link-props :link link
+				:description (funcall org-mu4e-link-desc-func msg))
+	    link))))
+
+      (org-add-link-type "mu4e" 'org-mu4e-open)
+      (add-hook 'org-store-link-functions 'org-mu4e-store-link)
+
+      (add-to-list 'mu4e-view-actions '("rview related" . djr/mu4e-view-related-search) t)
+      (defun djr/mu4e-view-related-search (msg)
+	"Search for related messages to the current one"
+	(let* ((msgid (mu4e-msg-field msg :message-id)))
+	  (setq mu4e-headers-include-related t)
+	  (mu4e-headers-search (concat "msgid:" msgid))))))
+#+end_src

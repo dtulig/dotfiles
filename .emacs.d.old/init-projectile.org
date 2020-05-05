@@ -1,0 +1,32 @@
+* Packages
+#+BEGIN_SRC emacs-lisp
+  (starter-kit-install-if-needed
+    'projectile
+    'counsel-projectile
+    'org-projectile)
+#+END_SRC
+
+* Projectile Configuration and Customizations
+
+#+BEGIN_SRC emacs-lisp
+  (setq projectile-mode-line
+        '(:eval (format " Projectile[%s]"
+                        (projectile-project-name))))
+
+  (setq projectile-completion-system 'counsel)
+  (setq projectile-switch-project-action 'counsel-projectile)
+  ;(helm-projectile-on)
+
+  ;; (add-to-list 'projectile-project-root-files "Setup.hs")
+  ;; (setq projectile-test-suffix-function
+  ;;       (lambda (project-type)
+  ;;         (if (member project-type '(haskell-cabal haskell-stack))
+  ;;             "Spec"
+  ;;           ;; call the original implementation if it's not a haskell project
+  ;;           (projectile-test-suffix project-type))))
+
+  (projectile-mode +1)
+  (counsel-projectile-mode)
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+END_SRC

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: println!(value: {:?}, value);
+# key: dprintln
+# --
+println!("$1: {:?}", ${1:value});

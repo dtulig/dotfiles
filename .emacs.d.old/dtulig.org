@@ -34,9 +34,9 @@
      (dt-init-load "theme")
    #+END_SRC
 
- - Helm
+ - Ivy
    #+BEGIN_SRC emacs-lisp
-     (dt-init-load "helm")
+     (dt-init-load "ivy")
    #+END_SRC
 
  - Projectile
@@ -83,7 +83,7 @@
 * Experimental Changes
  - Highlight todos and notes
    #+BEGIN_SRC emacs-lisp
-     (setq fixme-modes '(rust-mode c++-mode c-mode emacs-lisp-mode))
+     (setq fixme-modes '(rust-mode c++-mode c-mode emacs-lisp-mode rustic-mode))
      (make-face 'font-lock-fixme-face)
      (make-face 'font-lock-study-face)
      (make-face 'font-lock-important-face)
