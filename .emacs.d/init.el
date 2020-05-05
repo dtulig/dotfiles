@@ -78,6 +78,13 @@
   :hook ((text-mode . flyspell-mode)
 	 (prog-mode . flyspell-prog-mode)))
 
+(use-package glsl-mode
+  :ensure t
+  :mode (("\\.glsl\\'" . glsl-mode)
+	 ("\\.vert\\'" . glsl-mode)
+	 ("\\.frag\\'" . glsl-mode)
+	 ("\\.geom\\'" . glsl-mode)))
+
 (use-package ivy
   :ensure t
   :bind (("C-x b" . ivy-switch-buffer)
