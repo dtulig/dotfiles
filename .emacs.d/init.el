@@ -5,6 +5,7 @@
 ;; Pinentry fixes popups in terminals for gpg
 (setq epa-pinentry-mode 'loopback)
 
+;; Setup packages
 (setq package-archives
               '(("gnu"         . "http://elpa.gnu.org/packages/")
                 ("org"         . "http://orgmode.org/elpa/")
@@ -12,6 +13,7 @@
                 ("marmalade"   . "http://marmalade-repo.org/packages/")))
 (package-initialize)
 
+;; Setup emacs path, use package, and set custom file location
 (eval-when-compile
   (defun emacs-path (path)
       (expand-file-name path user-emacs-directory)))
@@ -21,7 +23,40 @@
 
 (setq custom-file (emacs-path "custom.el"))
 
+;; Load encrypted configuration
 (org-babel-load-file (emacs-path "config.org.gpg"))
+
+;; Alphabetized use packages
+
+(use-package base16-theme
+  :ensure t
+  :demand t
+  :config
+  (setq base16-highlight-mode-line 'contrast)
+  (load-theme 'base16-solarized-dark t))
+
+(use-package company
+  :ensure t
+  :demand t
+  :bind (("C-<tab>" . counsel-company))
+  :config (global-company-mode 1))
+
+(use-package counsel
+  :after ivy
+  :ensure t
+  :bind (("C-x C-f" . counsel-find-file)
+	 ("C-c i" . counsel-imenu)
+	 ("C-c g" . counsel-git)
+	 ("C-c j" . counsel-git-grep)
+	 ("C-c k" . counsel-ag)
+	 ("C-c p" . counsel-yank-pop))
+  :config (counsel-mode 1))
+
+(use-package counsel-projectile
+  :after (counsel projectile)
+  :ensure t
+  :config
+  (counsel-projectile-mode))
 
 (use-package evil
   :ensure t
@@ -36,29 +71,12 @@
   :config
   (global-evil-surround-mode 1))
 
-(use-package paredit
-  :ensure t
-  :hook (emacs-lisp-mode . paredit-mode))
+(use-package flycheck
+  :ensure t)
 
-(use-package smart-mode-line
-  :ensure t
-  :demand t
-  :config
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/theme 'respectful)
-  (sml/setup))
-
-(use-package base16-theme
-  :ensure t
-  :demand t
-  :config
-  (setq base16-highlight-mode-line 'contrast)
-  (load-theme 'base16-solarized-dark t))
-
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status)
-	 ("C-x M-g" . magit-dispatch-popup)))
+(use-package flyspell
+  :hook ((text-mode . flyspell-mode)
+	 (prog-mode . flyspell-prog-mode)))
 
 (use-package ivy
   :ensure t
@@ -71,27 +89,23 @@
   (setq ivy-count-format "(%d/%d) ")
   (ivy-mode 1))
 
-(use-package swiper
-  :after ivy
+(use-package lsp-mode
   :ensure t
-  :bind ("C-s" . swiper))
+  :commands lsp
+  :init (setq lsp-keymap-prefix "C-;")
+  :bind (("C-; d" . xref-find-definitions))
+  :config
+  (setq rustic-lsp-server 'rust-analyzer)
+  (setq lsp-rust-rls-server-command '(rust-analyzer)))
 
-(use-package counsel
-  :after ivy
+(use-package magit
   :ensure t
-  :bind (("C-x C-f" . counsel-find-file)
-	 ("C-c i" . counsel-imenu)
-	 ("C-c g" . counsel-git)
-	 ("C-c j" . counsel-git-grep)
-	 ("C-c k" . counsel-ag)
-	 ("C-c p" . counsel-yank-pop))
-  :config (counsel-mode 1))
+  :bind (("C-x g" . magit-status)
+	 ("C-x M-g" . magit-dispatch-popup)))
 
-(use-package company
+(use-package paredit
   :ensure t
-  :demand t
-  :bind (("C-<tab>" . counsel-company))
-  :config (global-company-mode 1))
+  :hook (emacs-lisp-mode . paredit-mode))
 
 (use-package projectile
   :after counsel
@@ -105,18 +119,25 @@
   (setq projectile-switch-project-action 'counsel-projectile)
   (projectile-mode +1))
 
-(use-package counsel-projectile
-  :after (counsel projectile)
-  :ensure t
-  :config
-  (counsel-projectile-mode))
-
 ;; This installed markdown mode, projectile
 (use-package rustic
   :after projectile
   :ensure t
   :hook ((rustic-mode . electric-pair-mode)
 	 (rustic-mode . auto-revert-mode)))
+
+(use-package smart-mode-line
+  :ensure t
+  :demand t
+  :config
+  (setq sml/no-confirm-load-theme t)
+  (setq sml/theme 'respectful)
+  (sml/setup))
+
+(use-package swiper
+  :after ivy
+  :ensure t
+  :bind ("C-s" . swiper))
 
 (use-package yasnippet
   :ensure t
@@ -134,18 +155,7 @@
   (yas-load-directory (emacs-path "snippets"))
   (yas-global-mode 1))
 
-(use-package flycheck
-  :ensure t)
-
-(use-package lsp-mode
-  :ensure t
-  :commands lsp
-  :init (setq lsp-keymap-prefix "C-;")
-  :bind (("C-; d" . xref-find-definitions))
-  :config
-  (setq rustic-lsp-server 'rust-analyzer)
-  (setq lsp-rust-rls-server-command '(rust-analyzer)))
-
+;; Larger configuration files written in org mode
 (org-babel-load-file (emacs-path "bindings.org"))
 (org-babel-load-file (emacs-path "mail.org"))
 (org-babel-load-file (emacs-path "misc.org"))
