@@ -19,9 +19,19 @@
       (expand-file-name path user-emacs-directory)))
 
 (eval-when-compile
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
   (require 'use-package))
 
 (setq custom-file (emacs-path "custom.el"))
+
+;; Mac os x requires exec path from shell to be run early.
+(use-package exec-path-from-shell
+  :ensure t
+  :demand t
+  :config
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)))
 
 ;; Load encrypted configuration
 (org-babel-load-file (emacs-path "config.org.gpg"))

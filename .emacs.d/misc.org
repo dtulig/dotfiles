@@ -1,5 +1,6 @@
 * Window Systems
 #+begin_src emacs-lisp
+** All platforms
   (when window-system
     (setq frame-title-format '(buffer-file-name "%f" ("%b")))
     (blink-cursor-mode -1)
@@ -27,6 +28,15 @@
 	xterm-mouse-mode t
 	;;save-place-file (concat starter-kit-dir "places")
 	)
+#+end_src
+
+** Disable bell on mac os x
+#+begin_src emacs-lisp
+  (when (memq window-system '(mac ns))
+    (setq visible-bell nil)
+    (setq ring-bell-function (lambda ()
+			       (invert-face 'mode-line)
+			       (run-with-timer 0.1 nil 'invert-face 'mode-line))))
 #+end_src
 
 * Remove window dressings
