@@ -150,8 +150,7 @@
 #+begin_src emacs-lisp
   (setq org-agenda-span 'day)
 
-  
-
+  (require 'cl)
 
   (defun buffer-major-mode-org-mode-p (buffer)
     (string= "org-mode" (with-current-buffer buffer major-mode)))
@@ -476,9 +475,9 @@
     :bind (("C-c C-l" . org-store-link)
 	   ("C-c C-c" . org-capture)
 	   ("C-c a" . org-agenda))
-    :hook ((org-agenda-mode . (lambda ()
-			       (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
-			       (auto-save-mode)))
+    :hook (;; (org-agenda-mode . (lambda ()
+	   ;; 		     (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
+	   ;; 		     (auto-save-mode)))
 	   (org-agenda-mode . (lambda ()
 				(define-key org-agenda-mode-map "g" #'org-agenda-redo-with-close-buffers))))
     :config
