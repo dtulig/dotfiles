@@ -184,3 +184,5 @@
 (org-babel-load-file (emacs-path "mail.org"))
 (org-babel-load-file (emacs-path "misc.org"))
 (org-babel-load-file (emacs-path "org.org"))
+
+(server-start)
