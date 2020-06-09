@@ -43,6 +43,7 @@
   :demand t
   :config
   (setq base16-highlight-mode-line 'contrast)
+  (setq base16-theme-256-color-source 'base16-shell)
   (load-theme 'base16-solarized-dark t))
 
 (use-package company
