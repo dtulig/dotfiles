@@ -68,6 +68,10 @@
   :config
   (counsel-projectile-mode))
 
+(setq evil-want-C-i-jump nil)
+
+(setq evil-esc-delay 0)
+
 (use-package evil
   :ensure t
   :demand t
