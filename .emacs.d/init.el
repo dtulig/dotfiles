@@ -115,10 +115,11 @@
   :ensure t
   :commands lsp
   :init (setq lsp-keymap-prefix "C-;")
-  :bind (("C-; d" . xref-find-definitions))
+  :bind (:map lsp-command-map ("d" . xref-find-definitions))
   :config
   (setq rustic-lsp-server 'rust-analyzer)
-  (setq lsp-rust-rls-server-command '(rust-analyzer)))
+  (setq lsp-rust-rls-server-command '(rust-analyzer))
+  (setq lsp-rust-analyzer-cargo-all-targets t))
 
 (use-package magit
   :ensure t
