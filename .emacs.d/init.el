@@ -165,6 +165,9 @@
 (use-package writegood-mode
   :ensure t)
 
+(use-package yaml-mode
+  :ensure t)
+
 (use-package yasnippet
   :ensure t
   :bind (("C-c y d" . yas-load-directory)
