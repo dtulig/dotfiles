@@ -119,7 +119,8 @@
   :config
   (setq rustic-lsp-server 'rust-analyzer)
   (setq lsp-rust-rls-server-command '(rust-analyzer))
-  (setq lsp-rust-analyzer-cargo-all-targets t))
+  (setq lsp-rust-analyzer-cargo-all-targets t)
+  (setq lsp-rust-all-features t))
 
 (use-package magit
   :ensure t
