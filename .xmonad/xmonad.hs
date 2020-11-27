@@ -2,7 +2,7 @@ import XMonad
 import XMonad.Layout.Spacing
 import XMonad.Layout.NoBorders (smartBorders, noBorders)
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops (fullscreenEventHook)
+import XMonad.Hooks.EwmhDesktops (fullscreenEventHook, ewmh)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
 import XMonad.Hooks.SetWMName (setWMName)
@@ -13,7 +13,7 @@ import System.IO
 main :: IO ()
 main = do
   xmproc <- spawnPipe "xmobar"
-  xmonad $ def
+  xmonad $ ewmh def
        { modMask = mod4Mask
        , terminal = "urxvt"
        , borderWidth = 2
