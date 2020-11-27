@@ -88,6 +88,7 @@
   :ensure t
   :demand t
   :config
+  (evil-set-initial-state 'rustic-popup-mode 'emacs)
   (evil-mode 1))
 
 (use-package evil-surround
