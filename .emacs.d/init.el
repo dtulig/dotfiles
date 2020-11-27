@@ -6,12 +6,17 @@
 (setq epa-pinentry-mode 'loopback)
 
 ;; Setup packages
+(require 'package)
+
 (setq package-archives
               '(("gnu"         . "http://elpa.gnu.org/packages/")
                 ("org"         . "http://orgmode.org/elpa/")
                 ("melpa"       . "http://melpa.org/packages/")
                 ("marmalade"   . "http://marmalade-repo.org/packages/")))
+
 (package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
 
 ;; Setup emacs path, use package, and set custom file location
 (eval-when-compile
