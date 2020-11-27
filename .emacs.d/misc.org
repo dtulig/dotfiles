@@ -1,6 +1,6 @@
 * Window Systems
-#+begin_src emacs-lisp
 ** All platforms
+#+begin_src emacs-lisp
   (when window-system
     (setq frame-title-format '(buffer-file-name "%f" ("%b")))
     (blink-cursor-mode -1)
