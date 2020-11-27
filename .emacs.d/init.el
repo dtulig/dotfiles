@@ -26,7 +26,12 @@
 (eval-when-compile
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
-  (require 'use-package))
+
+  (unless (package-installed-p 'delight)
+    (package-install 'delight))
+
+  (require 'use-package)
+  (require 'delight))
 
 (setq custom-file (emacs-path "custom.el"))
 
@@ -60,6 +65,7 @@
 (use-package counsel
   :after ivy
   :ensure t
+  :delight
   :bind (("C-x C-f" . counsel-find-file)
 	 ("C-c i" . counsel-imenu)
 	 ("C-c g" . counsel-git)
@@ -107,6 +113,7 @@
 
 (use-package ivy
   :ensure t
+  :delight
   :bind (("C-x b" . ivy-switch-buffer)
 	 ("C-c v" . ivy-push-view)
 	 ("C-c V" . ivy-pop-view))
