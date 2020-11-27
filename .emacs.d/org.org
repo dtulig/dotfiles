@@ -473,7 +473,7 @@
   (use-package org
     :ensure org-plus-contrib
     :bind (("C-c C-l" . org-store-link)
-	   ("C-c C-c" . org-capture)
+	   ("C-c c" . org-capture)
 	   ("C-c a" . org-agenda))
     :hook (;; (org-agenda-mode . (lambda ()
 	   ;; 		     (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
