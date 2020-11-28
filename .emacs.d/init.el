@@ -169,7 +169,10 @@
 (use-package projectile
   :after counsel
   :ensure t
-  :bind (("C-c p" . projectile-command-map))
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/workspace")
+    (setq projectile-project-search-path '("~/workspace")))
   :config
   (setq projectile-mode-line
 	'(:eval (format " Projectile[%s]"
