@@ -54,7 +54,9 @@
   :config
   (setq base16-highlight-mode-line 'contrast)
   (setq base16-theme-256-color-source 'base16-shell)
-  (load-theme 'base16-solarized-dark t))
+  (load-theme 'base16-solarized-dark t)
+  (custom-set-faces
+   '(header-line ((t (:foreground "color-18" :inherit highlight))))))
 
 (use-package company
   :ensure t
