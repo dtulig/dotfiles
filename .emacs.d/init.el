@@ -82,16 +82,21 @@
   :config
   (counsel-projectile-mode))
 
-(setq evil-want-C-i-jump nil)
-
-(setq evil-esc-delay 0)
-
 (use-package evil
   :ensure t
   :demand t
+  :init
+  (setq evil-want-C-i-jump nil)
+  (setq evil-esc-delay 0)
+  ;; NOTE(dtulig): This is taking over C-u, consider if that needs to
+  ;; be re-bound
+  (setq evil-want-C-u-scroll t)
   :config
   (evil-set-initial-state 'rustic-popup-mode 'emacs)
   (evil-mode 1))
+
+;; NOTE(dtulig): evil-collection provides evil bindings for other
+;; modes
 
 (use-package evil-surround
   :after evil
