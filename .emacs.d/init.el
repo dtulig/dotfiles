@@ -78,13 +78,16 @@
 (use-package counsel
   :after ivy
   :ensure t
+  :demand t
   :delight
   :bind (("C-x C-f" . counsel-find-file)
 	 ("C-c i" . counsel-imenu)
 	 ("C-c g" . counsel-git)
 	 ("C-c j" . counsel-git-grep)
 	 ("C-c k" . counsel-ag)
-	 ("C-c p" . counsel-yank-pop))
+	 ("C-c o" . counsel-yank-pop)
+	 ([remap describe-function] . counsel-describe-function)
+	 ([remap describe-variable] . counsel-describe-variable))
   :config (counsel-mode 1))
 
 (use-package counsel-projectile
@@ -133,6 +136,7 @@
 (use-package ivy
   :ensure t
   :delight
+  :demand t
   :bind (("C-x b" . ivy-switch-buffer)
 	 ("C-c v" . ivy-push-view)
 	 ("C-c V" . ivy-pop-view))
