@@ -158,6 +158,10 @@
   (setq projectile-switch-project-action 'counsel-projectile)
   (projectile-mode +1))
 
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 ;; This installed markdown mode, projectile
 (use-package rustic
   :after projectile
