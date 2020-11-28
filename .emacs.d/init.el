@@ -182,6 +182,13 @@
   :ensure t
   :bind ("C-s" . swiper))
 
+(use-package which-key
+  :ensure t
+  :init (which-key-mode)
+  :delight
+  :config
+  (setq which-key-idle-delay 1.0))
+
 (use-package writegood-mode
   :ensure t)
 
