@@ -46,8 +46,19 @@
 ;; Load encrypted configuration
 (org-babel-load-file (emacs-path "config.org.gpg"))
 
-;; Alphabetized use packages
+(column-number-mode)
+(global-display-line-numbers-mode)
 
+(dolist (mode '(org-mode-hook
+		term-mode-hook
+		shell-mode-hook
+		eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;;TODO(dtulig): ivy-rich
+;;TODO(dtulig): helpful (and bind counsel)
+
+;; Alphabetized use packages
 (use-package base16-theme
   :ensure t
   :demand t
