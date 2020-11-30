@@ -156,11 +156,15 @@
     (setq ivy-count-format "(%d/%d) ")
     (ivy-mode 1))
 
+  (defun dt/lsp-mode-setup ()
+    (lsp-headerline-breadcrumb-mode))
+
   (use-package lsp-mode
     :ensure t
     :commands lsp
     :init (setq lsp-keymap-prefix "C-;")
     :bind (:map lsp-command-map ("d" . xref-find-definitions))
+    :hook (lsp-mode . dt/lsp-mode-setup)
     :config
     (setq rustic-lsp-server 'rust-analyzer)
     (setq lsp-rust-rls-server-command '(rust-analyzer))
