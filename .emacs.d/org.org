@@ -85,7 +85,10 @@
 		  (downcase (format-time-string "%Y-%B-p.org"))))
     (setq org-default-work-notes-file
 	  (concat org-directory "indeed/dates/"
-		  (downcase (format-time-string "%Y-%B-w.org")))))
+		  (downcase (format-time-string "%Y-%B-w.org"))))
+    (setq org-default-journal-file
+	  (concat org-directory "journal.org")))
+
 #+end_src
 ** Capture templates
 #+begin_src emacs-lisp
@@ -134,14 +137,14 @@
 	   "* %?
   %U
   ")
-	  ;; ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
-	  ;;                "* %^{Title}
-	  ;; %U
-	  ;; %?
-	  ;; " :clock-in t :clock-resume t)
-	  ;;         ("l" "Log Time" entry (file+datetree
-	  ;;                                (concat org-directory "/timelog.org"))
-	  ;;          "** %U - %^{Activity}  :TIME:")
+	  ("j" "Journal" entry (file+olp+datetree org-default-journal-file)
+			 "* %^{Title}
+  %U
+  %?
+  " :clock-in t :clock-resume t)
+	  ("l" "Log Time" entry (file+olp+datetree
+				 (concat org-directory "/timelog.org"))
+		   "** %U - %^{Activity}  :TIME:")
 	  ("m" "Meeting" entry (file+headline
 				org-default-work-notes-file "Meetings")
 	   "* MEETING with %^{Description} :MEETING:
