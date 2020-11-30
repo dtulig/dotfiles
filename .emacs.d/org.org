@@ -489,5 +489,7 @@
 
 
   ;;(add-hook 'midnight-hook 'dt/org-reload)
+
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
 #+END_SRC
 
