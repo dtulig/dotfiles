@@ -14,6 +14,8 @@
   (setq org-clock-out-when-done t)
   (setq org-refile-targets (quote ((nil :maxlevel . 3)
 				   (org-agenda-files :maxlevel . 3))))
+  ;; Allows text under org headlines to start at the far left
+  (setq org-adapt-indentation nil)
 #+end_src
 ** Todo Keywords and States Configuration
 #+begin_src emacs-lisp
