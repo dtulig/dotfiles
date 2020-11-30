@@ -80,6 +80,9 @@
     :ensure t
     :demand t
     :bind (("C-<tab>" . counsel-company))
+    (:map company-active-map
+	  ("<tab>" . company-complete-selection))
+
     :config (global-company-mode 1))
 
   (use-package counsel
@@ -159,11 +162,14 @@
   (defun dt/lsp-mode-setup ()
     (lsp-headerline-breadcrumb-mode))
 
+  ;;;TODO(dtulig): Consider lsp-ivy
   (use-package lsp-mode
     :ensure t
+    :after company
     :commands lsp
     :init (setq lsp-keymap-prefix "C-;")
-    :bind (:map lsp-command-map ("d" . xref-find-definitions))
+    :bind (:map lsp-mode-map
+	  ("<tab>" . company-indent-or-complete-common))
     :hook (lsp-mode . dt/lsp-mode-setup)
     :config
     (setq rustic-lsp-server 'rust-analyzer)
