@@ -491,5 +491,8 @@
   ;;(add-hook 'midnight-hook 'dt/org-reload)
 
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
 #+END_SRC
 
