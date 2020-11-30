@@ -1,15 +1,38 @@
 #+title Emacs Configuration
 
 * Basic Setup
+** Small, global changes to enable first
+After using company mode (completions) and lsp, I discovered major lag for lsp actions. Debugging indicated that emacs was doing a lot of garbage collection. Increasing this threshold resolves the issue at the cost of higher memory. I semi-arbitrarily picked 100mb.
 #+begin_src emacs-lisp
-  ;; Increase gc threshold, this makes lsp and company mode work better.
-  ;; 100mb
   (setq gc-cons-threshold 100000000)
+#+end_src
 
+The initial pinentry setup causes issues when emacs is run in a terminal. Using loopback brings it into emacs.
+
+#+begin_src emacs-lisp
   ;; Pinentry fixes popups in terminals for gpg
   (setq epa-pinentry-mode 'loopback)
+#+end_src
 
-  ;; Setup packages
+Define the current emacs configuration directory.
+
+#+begin_src emacs-lisp
+  (eval-when-compile
+    (defun emacs-path (path)
+	(expand-file-name path user-emacs-directory)))
+#+end_src
+
+Set where custom variables should be stored. This file isn't edited directly.
+
+#+begin_src emacs-lisp
+  (setq custom-file (emacs-path "custom.el"))
+#+end_src
+
+** Base for enabling emacs packages
+
+This configures the package management system and sets use-package as the primary mechanism for managing packages going forward.
+
+#+begin_src emacs-lisp
   (require 'package)
 
   (setq package-archives
@@ -22,11 +45,7 @@
   (unless package-archive-contents
     (package-refresh-contents))
 
-  ;; Setup emacs path, use package, and set custom file location
-  (eval-when-compile
-    (defun emacs-path (path)
-	(expand-file-name path user-emacs-directory)))
-
+  
   (eval-when-compile
     (unless (package-installed-p 'use-package)
       (package-install 'use-package))
@@ -38,21 +57,46 @@
     (require 'delight))
 #+end_src
 
-* The rest of the owl
+** Load encrypted information
 #+begin_src emacs-lisp
-  (setq custom-file (emacs-path "custom.el"))
-
-  ;; Mac os x requires exec path from shell to be run early.
+  (org-babel-load-file (emacs-path "config.org.gpg"))
+#+end_src
+** Mac OS X setup
+For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available for running programs from emacs.
+#+begin_src emacs-lisp
   (use-package exec-path-from-shell
     :ensure t
     :demand t
     :config
     (when (memq window-system '(mac ns))
       (exec-path-from-shell-initialize)))
+#+end_src
 
-  ;; Load encrypted configuration
-  (org-babel-load-file (emacs-path "config.org.gpg"))
+** Keep backup files in tmp
+#+begin_src emacs-lisp
+  ;; (setq backup-directory-alist `(("." . ,(expand-file-name
+  ;; 					"/tmp/backups"))))
 
+  (setq backup-directory-alist
+	`((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms
+	`((".*" ,temporary-file-directory t)))
+
+#+end_src
+
+** Save a list of recent files visited
+#+begin_src emacs-lisp
+  (recentf-mode 1)
+#+end_src
+** Shorten the yes-no prompt to just y-n
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+* Basic UI Configuration
+** Line Numbers
+I want line numbers by default. A few modes will have the line numbers gutter disabled. Additionally, this turns on column numbers in the status bar.
+
+#+begin_src emacs-lisp
   (column-number-mode)
   (global-display-line-numbers-mode)
 
@@ -61,11 +105,121 @@
 		  shell-mode-hook
 		  eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+** Window Systems
+*** All platforms
+#+begin_src emacs-lisp
+  (when window-system
+    (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+    (blink-cursor-mode -1)
+    (when (require 'mwheel nil 'no-error) (mouse-wheel-mode t)))
 
-  ;;TODO(dtulig): ivy-rich
-  ;;TODO(dtulig): helpful (and bind counsel)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
 
-  ;; Alphabetized use packages
+  (setq visible-bell t
+	echo-keystrokes 0.1
+	font-lock-maximum-decoration t
+	inhibit-startup-message t
+	transient-mark-mode t
+	color-theme-is-global t
+	delete-by-moving-to-trash t
+	shift-select-mode nil
+	truncate-partial-width-windows nil
+	uniquify-buffer-name-style 'forward
+	whitespace-style '(trailing lines space-before-tab
+				    indentation space-after-tab)
+	whitespace-line-column 100
+	ediff-window-setup-function 'ediff-setup-windows-plain
+	;;oddmuse-directory (concat starter-kit-dir "oddmuse")
+	xterm-mouse-mode t
+	;;save-place-file (concat starter-kit-dir "places")
+	)
+#+end_src
+
+*** Disable bell on mac os x
+#+begin_src emacs-lisp
+  (when (memq window-system '(mac ns))
+    (setq visible-bell nil)
+    (setq ring-bell-function (lambda ()
+			       (invert-face 'mode-line)
+			       (run-with-timer 0.1 nil 'invert-face 'mode-line))))
+#+end_src
+
+** Remove window dressings
+#+begin_src emacs-lisp
+  (when window-system
+    (tooltip-mode -1)
+    (tool-bar-mode -1))
+
+  (menu-bar-mode -1)
+
+  (scroll-bar-mode -1)
+#+end_src
+** Show matching parens when on point
+#+begin_src emacs-lisp
+  (show-paren-mode 1)
+#+end_src
+
+** Font faces for todo, etc
+In programming modes, TODO and a few other keywords are useful for making notes. This sets up faces and styles for those keywords in the specified fixme modes.
+#+begin_src emacs-lisp
+  (setq fixme-modes '(rust-mode c++-mode c-mode emacs-lisp-mode rustic-mode))
+  (make-face 'font-lock-fixme-face)
+  (make-face 'font-lock-study-face)
+  (make-face 'font-lock-important-face)
+  (make-face 'font-lock-note-face)
+  (mapc (lambda (mode)
+	  (font-lock-add-keywords
+	   mode
+	   '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
+	     ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
+	     ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
+	     ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
+	fixme-modes)
+  (modify-face 'font-lock-fixme-face "red" nil nil t nil t nil nil)
+  (modify-face 'font-lock-study-face "orange" nil nil t nil t nil nil)
+  (modify-face 'font-lock-important-face "orange" nil nil t nil t nil nil)
+  (modify-face 'font-lock-note-face "forest green" nil nil t nil t nil nil)
+#+end_src
+
+* Keybinding Configuration
+This configuration overhauls the keybindings with evil-mode. Two important notes:
+ - This configuration sets C-u for vim-like scrolling. I might need to re-bind C-u.
+ - The evil-collection package configures a variety of Emacs modes with better Vi-like bindings.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-M-h") 'backward-kill-word)
+
+  (use-package evil
+    :ensure t
+    :demand t
+    :init
+    (setq evil-want-C-i-jump nil)
+    (setq evil-esc-delay 0)
+    (setq evil-want-C-u-scroll t)
+    :config
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+    (evil-set-initial-state 'rustic-popup-mode 'emacs)
+    (evil-mode 1))
+
+  (use-package evil-surround
+    :after evil
+    :ensure t
+    :demand t
+    :config
+    (global-evil-surround-mode 1))
+
+#+end_src
+* Expanded UI Configuration
+** Base16 theming
+Base16 has themes on a variety of platforms. This works best when paired with the base16 shell functionality (urxvt, iTerm2).
+
+I'm overriding the header-line face, which is used in the list mode as a header. A good tip is to run list-faces-display, which shows all faces. Describing faces is expanded in this [[https://emacs.stackexchange.com/questions/303/describe-face-character-not-under-unreachable-by-the-cursor][stackexchange answer]].
+
+#+begin_src emacs-lisp
   (use-package base16-theme
     :ensure t
     :demand t
@@ -75,16 +229,33 @@
     (load-theme 'base16-solarized-dark t)
     (custom-set-faces
      '(header-line ((t (:foreground "color-18" :inherit highlight))))))
+#+end_src
 
-  (use-package company
+** Improving the mode line
+#+begin_src emacs-lisp
+  (use-package smart-mode-line
     :ensure t
     :demand t
-    :bind (("C-<tab>" . counsel-company))
-    (:map company-active-map
-	  ("<tab>" . company-complete-selection))
+    :config
+    (setq sml/no-confirm-load-theme t)
+    (setq sml/theme 'respectful)
+    (sml/setup))
+#+end_src
+** Which Key
+This is a great package that shows all completions as key chords are entered.
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init (which-key-mode)
+    :delight
+    :config
+    (setq which-key-idle-delay 1.0))
+#+end_src
 
-    :config (global-company-mode 1))
+** Ivy and Counsel
+A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This is nice for tools like grep or ag to take action on the full list.
 
+#+begin_src emacs-lisp
   (use-package counsel
     :after ivy
     :ensure t
@@ -106,46 +277,6 @@
     :config
     (counsel-projectile-mode))
 
-  (use-package evil
-    :ensure t
-    :demand t
-    :init
-    (setq evil-want-C-i-jump nil)
-    (setq evil-esc-delay 0)
-    ;; NOTE(dtulig): This is taking over C-u, consider if that needs to
-    ;; be re-bound
-    (setq evil-want-C-u-scroll t)
-    :config
-    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-    (evil-set-initial-state 'rustic-popup-mode 'emacs)
-    (evil-mode 1))
-
-  ;; NOTE(dtulig): evil-collection provides evil bindings for other
-  ;; modes
-
-  (use-package evil-surround
-    :after evil
-    :ensure t
-    :demand t
-    :config
-    (global-evil-surround-mode 1))
-
-  (use-package flycheck
-    :ensure t)
-
-  (use-package flyspell
-    :hook ((text-mode . flyspell-mode)
-	   (prog-mode . flyspell-prog-mode)))
-
-  (use-package glsl-mode
-    :ensure t
-    :mode (("\\.glsl\\'" . glsl-mode)
-	   ("\\.vert\\'" . glsl-mode)
-	   ("\\.frag\\'" . glsl-mode)
-	   ("\\.geom\\'" . glsl-mode)))
-
   (use-package ivy
     :ensure t
     :delight
@@ -159,17 +290,531 @@
     (setq ivy-count-format "(%d/%d) ")
     (ivy-mode 1))
 
+  (use-package swiper
+    :after ivy
+    :ensure t
+    :bind ("C-s" . swiper))
+
+  ;;TODO(dtulig): ivy-rich
+  ;;TODO(dtulig): helpful (and bind counsel)
+#+end_src
+* Org Mode
+** General Settings
+#+begin_src emacs-lisp
+  (setq org-directory (expand-file-name "~/Sync/org/"))
+  (setq org-log-done 'time)
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-refile-use-outline-path 'nil)
+  (setq org-agenda-clockreport-parameter-plist
+	(quote (:link t :fileskip0 t)))
+  (setq org-clock-in-resume t)
+  (setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
+  (setq org-clock-into-drawer t)
+  (setq org-clock-out-remove-zero-time-clocks t)
+  (setq org-clock-out-when-done t)
+  (setq org-refile-targets (quote ((nil :maxlevel . 3)
+				   (org-agenda-files :maxlevel . 3))))
+  ;; Allows text under org headlines to start at the far left
+  (setq org-adapt-indentation nil)
+#+end_src
+** Todo Keywords and States Configuration
+#+begin_src emacs-lisp
+  (setq org-todo-keywords
+	(quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+		(sequence "WAITING(w@/!)" "DELEGATED(e@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+
+  (setq org-todo-keyword-faces
+	(quote (("TODO" :foreground "red" :weight bold)
+		("NEXT" :foreground "blue" :weight bold)
+		("DONE" :foreground "forest green" :weight bold)
+		("WAITING" :foreground "orange" :weight bold)
+		("DELEGATED" :foreground "orange" :weight bold)
+		("HOLD" :foreground "magenta" :weight bold)
+		("CANCELLED" :foreground "forest green" :weight bold)
+		("MEETING" :foreground "forest green" :weight bold)
+		("PHONE" :foreground "forest green" :weight bold))))
+
+  (setq org-todo-state-tags-triggers
+	(quote (("CANCELLED" ("CANCELLED" . t))
+		("WAITING" ("WAITING" . t))
+		("DELEGATED" ("DELEGATED" . t))
+		("HOLD" ("WAITING") ("DELEGATED") ("HOLD" . t))
+		(done ("WAITING") ("DELEGATED") ("HOLD"))
+		("TODO" ("WAITING") ("DELEGATED") ("CANCELLED") ("HOLD"))
+		("NEXT" ("WAITING") ("DELEGATED") ("CANCELLED") ("HOLD"))
+		("DONE" ("WAITING") ("DELEGATED") ("CANCELLED") ("HOLD")))))
+
+#+end_src
+** Project customizations
+#+begin_src emacs-lisp
+  (defvar org-projects-dir (expand-file-name  (concat org-directory "projects/")))
+
+  (defun gf/create-org-path (path)
+    "Create a name suitable for an org file from the last part of a file
+    path."
+    (let ((last (car (last (split-string (if (equal (substring path -1) "/")
+					     (substring path 0 -1) path) "/")))))
+      (concat org-projects-dir "/"
+	      (downcase
+	       (replace-regexp-in-string
+		"\\." "-" (if (equal (substring last 0 1) ".")
+			      (substring last 1) last)))
+	      ".org")))
+
+  (defun gf/project-org-file ()
+    "Get the path of the org file for the current project."
+    (gf/create-org-path (projectile-project-root)))
+
+  (defun gf/switch-to-project-org-file ()
+    "Switch to the org file for the current project."
+    (interactive)
+    (find-file (gf/project-org-file)))
+#+end_src
+
+** Reload function
+#+begin_src emacs-lisp
+  (defun dt/org-reload ()
+    (interactive)
+    (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "dates/*.org"))
+				   (file-expand-wildcards (concat org-directory "*.org"))
+				   (file-expand-wildcards (concat org-directory "projects/*.org"))
+				   (file-expand-wildcards (concat org-directory "indeed/dates/*.org"))
+				   (file-expand-wildcards (concat org-directory "indeed/*.org"))))
+    (setq org-default-personal-notes-file
+	  (concat org-directory "dates/"
+		  (downcase (format-time-string "%Y-%B-p.org"))))
+    (setq org-default-work-notes-file
+	  (concat org-directory "indeed/dates/"
+		  (downcase (format-time-string "%Y-%B-w.org"))))
+    (setq org-default-journal-file
+	  (concat org-directory "journal.org")))
+
+#+end_src
+** Capture templates
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+	'(("t" "Todo (Work)" entry (file+headline
+				    org-default-work-notes-file "Tasks")
+	   "* TODO %^{Description}
+  %U
+  %?
+  " :clock-in t :clock-resume t)
+
+	  ("r" "Respond (Work)" entry (file+headline
+				       org-default-work-notes-file "Tasks")
+
+	   "* NEXT Respond to %:from on %:subject
+  SCHEDULED: %t
+  %U
+  %a
+  " :clock-in t :clock-resume t :immediate-finish t)
+	  ("p" "Todo (Personal)" entry (file+headline
+					org-default-personal-notes-file "Tasks")
+	   "* TODO %^{Description}
+  %U
+  %?
+  " :clock-in t :clock-resume t)
+	  ("e" "Respond (Personal)" entry (file+headline
+					   org-default-personal-notes-file "Tasks")
+	   "* NEXT Respond to %:from on %:subject
+  SCHEDULED: %t
+  %U
+  %a
+  " :clock-in t :clock-resume t :immediate-finish t)
+	  ("n" "Note" entry (file+headline
+			     org-default-personal-notes-file "Notes")
+	   "* %? :NOTE:
+  %U
+  " :clock-in t :clock-resume t)
+	  ("P" "Todo (Project)" entry (file+headline
+				       gf/project-org-file "Tasks")
+	   "* TODO %^{Description}
+  %U
+  %?
+  " :clock-in t :clock-resume t)
+	  ("N" "Project Note" entry (file+headline
+				     gf/project-org-file "Notes")
+	   "* %?
+  %U
+  ")
+	  ("j" "Journal" entry (file+olp+datetree org-default-journal-file)
+			 "* %^{Title}
+  %U
+  %?
+  " :clock-in t :clock-resume t)
+	  ("l" "Log Time" entry (file+olp+datetree
+				 (concat org-directory "/timelog.org"))
+		   "** %U - %^{Activity}  :TIME:")
+	  ("m" "Meeting" entry (file+headline
+				org-default-work-notes-file "Meetings")
+	   "* MEETING with %^{Description} :MEETING:
+  %U
+  %?" :clock-in t :clock-resume t)))
+#+end_src
+** Agenda
+#+begin_src emacs-lisp
+  (setq org-agenda-span 'day)
+
+  (require 'cl)
+
+  (defun buffer-major-mode-org-mode-p (buffer)
+    (string= "org-mode" (with-current-buffer buffer major-mode)))
+
+  ;; When refreshing the org mode window, occasionally a file will have
+  ;; shifted underneath the current instance of emacs. This function
+  ;; will close all org-mode buffers.
+  (defun org-close-all-org-buffers ()
+    (interactive)
+    (mapcar #'kill-buffer
+	    (remove-if-not #'buffer-major-mode-org-mode-p (buffer-list))))
+
+  ;; This is a global key to close all org mode buffers.
+					  ;(global-set-key "\C-c\C-g" 'org-close-all-org-buffers)
+
+  (defun org-agenda-redo-with-close-buffers ()
+    (interactive)
+    (org-close-all-org-buffers)
+    (org-agenda-redo t))
+
+  ;; I liked http://doc.norang.ca/org-mode.html#WhatDoIWorkOnNext,
+  ;; taking some of that.
+  (setq org-agenda-custom-commands
+	(quote (("A" "Agenda"
+		 ((agenda "" nil)
+		  (tags-todo "-SOMEDAY-CANCELLED/!"
+			     ((org-agenda-overriding-header "Stuck Projects")
+			      (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+			      (org-agenda-sorting-strategy
+			       '(category-keep))))
+		  (tags-todo "-SOMEDAY-HOLD-CANCELLED/!"
+			     ((org-agenda-overriding-header "Projects")
+			      (org-agenda-skip-function 'bh/skip-non-projects)
+			      (org-tags-match-list-sublevels 'indented)
+			      (org-agenda-sorting-strategy
+			       '(category-keep))))
+		  (tags-todo "-SOMEDAY-HOLD-CANCELLED/!NEXT"
+			     ((org-agenda-overriding-header (concat "Project Next Tasks"
+								    (if bh/hide-scheduled-and-waiting-next-tasks
+									""
+								      " (including WAITING and SCHEDULED tasks)")))
+			      (org-agenda-skip-function 'bh/skip-projects-and-habits-and-single-tasks)
+			      (org-tags-match-list-sublevels t)
+			      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-sorting-strategy
+			       '(todo-state-down effort-up category-keep))))
+		  (tags-todo "-SOMEDAY-REFILE-CANCELLED-WAITING-HOLD/!"
+			     ((org-agenda-overriding-header (concat "Project Subtasks"
+								    (if bh/hide-scheduled-and-waiting-next-tasks
+									""
+								      " (including WAITING and SCHEDULED tasks)")))
+			      (org-agenda-skip-function 'bh/skip-non-project-tasks)
+			      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-sorting-strategy
+			       '(category-keep)))))
+		 nil))))
+
+#+end_src
+** Norang Customizations
+#+begin_src emacs-lisp
+  (defun bh/is-project-p ()
+    "Any task with a todo keyword subtask"
+    (save-restriction
+      (widen)
+      (let ((has-subtask)
+	    (subtree-end (save-excursion (org-end-of-subtree t)))
+	    (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+	(save-excursion
+	  (forward-line 1)
+	  (while (and (not has-subtask)
+		      (< (point) subtree-end)
+		      (re-search-forward "^\*+ " subtree-end t))
+	    (when (member (org-get-todo-state) org-todo-keywords-1)
+	      (setq has-subtask t))))
+	(and is-a-task has-subtask))))
+
+  (defun bh/find-project-task ()
+    "Move point to the parent (project) task if any"
+    (save-restriction
+      (widen)
+      (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
+	(while (org-up-heading-safe)
+	  (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+	    (setq parent-task (point))))
+	(goto-char parent-task)
+	parent-task)))
+
+  (defun bh/is-project-subtree-p ()
+    "Any task with a todo keyword that is in a project subtree.
+  Callers of this function already widen the buffer view."
+    (let ((task (save-excursion (org-back-to-heading 'invisible-ok)
+				(point))))
+      (save-excursion
+	(bh/find-project-task)
+	(if (equal (point) task)
+	    nil
+	  t))))
+
+  (defun bh/is-task-p ()
+    "Any task with a todo keyword and no subtask"
+    (save-restriction
+      (widen)
+      (let ((has-subtask)
+	    (subtree-end (save-excursion (org-end-of-subtree t)))
+	    (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+	(save-excursion
+	  (forward-line 1)
+	  (while (and (not has-subtask)
+		      (< (point) subtree-end)
+		      (re-search-forward "^\*+ " subtree-end t))
+	    (when (member (org-get-todo-state) org-todo-keywords-1)
+	      (setq has-subtask t))))
+	(and is-a-task (not has-subtask)))))
+
+  (defun bh/is-subproject-p ()
+    "Any task which is a subtask of another project"
+    (let ((is-subproject)
+	  (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+      (save-excursion
+	(while (and (not is-subproject) (org-up-heading-safe))
+	  (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+	    (setq is-subproject t))))
+      (and is-a-task is-subproject)))
+
+  (defun bh/list-sublevels-for-projects-indented ()
+    "Set org-tags-match-list-sublevels so when restricted to a subtree we list all subtasks.
+    This is normally used by skipping functions where this variable is already local to the agenda."
+    (if (marker-buffer org-agenda-restrict-begin)
+	(setq org-tags-match-list-sublevels 'indented)
+      (setq org-tags-match-list-sublevels nil))
+    nil)
+
+  (defun bh/list-sublevels-for-projects ()
+    "Set org-tags-match-list-sublevels so when restricted to a subtree we list all subtasks.
+    This is normally used by skipping functions where this variable is already local to the agenda."
+    (if (marker-buffer org-agenda-restrict-begin)
+	(setq org-tags-match-list-sublevels t)
+      (setq org-tags-match-list-sublevels nil))
+    nil)
+
+  (defvar bh/hide-scheduled-and-waiting-next-tasks t)
+
+  (defun bh/toggle-next-task-display ()
+    (interactive)
+    (setq bh/hide-scheduled-and-waiting-next-tasks (not bh/hide-scheduled-and-waiting-next-tasks))
+    (when  (equal major-mode 'org-agenda-mode)
+      (org-agenda-redo))
+    (message "%s WAITING and SCHEDULED NEXT Tasks" (if bh/hide-scheduled-and-waiting-next-tasks "Hide" "Show")))
+
+  (defun bh/skip-stuck-projects ()
+    "Skip trees that are not stuck projects"
+    (save-restriction
+      (widen)
+      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+	(if (bh/is-project-p)
+	    (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+		   (has-next ))
+	      (save-excursion
+		(forward-line 1)
+		(while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
+		  (unless (member "WAITING" (org-get-tags-at))
+		    (setq has-next t))))
+	      (if has-next
+		  nil
+		next-headline)) ; a stuck project, has subtasks but no next task
+	  nil))))
+
+  (defun bh/skip-non-stuck-projects ()
+    "Skip trees that are not stuck projects"
+    ;; (bh/list-sublevels-for-projects-indented)
+    (save-restriction
+      (widen)
+      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+	(if (bh/is-project-p)
+	    (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+		   (has-next ))
+	      (save-excursion
+		(forward-line 1)
+		(while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
+		  (unless (member "WAITING" (org-get-tags-at))
+		    (setq has-next t))))
+	      (if has-next
+		  next-headline
+		nil)) ; a stuck project, has subtasks but no next task
+	  next-headline))))
+
+  (defun bh/skip-non-projects ()
+    "Skip trees that are not projects"
+    ;; (bh/list-sublevels-for-projects-indented)
+    (if (save-excursion (bh/skip-non-stuck-projects))
+	(save-restriction
+	  (widen)
+	  (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+	    (cond
+	     ((bh/is-project-p)
+	      nil)
+	     ((and (bh/is-project-subtree-p) (not (bh/is-task-p)))
+	      nil)
+	     (t
+	      subtree-end))))
+      (save-excursion (org-end-of-subtree t))))
+
+  (defun bh/skip-project-trees-and-habits ()
+    "Skip trees that are projects"
+    (save-restriction
+      (widen)
+      (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+	(cond
+	 ((bh/is-project-p)
+	  subtree-end)
+	 ;; ((org-is-habit-p)
+	 ;;  subtree-end)
+	 (t
+	  nil)))))
+
+  (defun bh/skip-projects-and-habits-and-single-tasks ()
+    "Skip trees that are projects, tasks that are habits, single non-project tasks"
+    (save-restriction
+      (widen)
+      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+	(cond
+	 ;; ((org-is-habit-p)
+	 ;;  next-headline)
+	 ((and bh/hide-scheduled-and-waiting-next-tasks
+	       (member "WAITING" (org-get-tags-at)))
+	  next-headline)
+	 ((bh/is-project-p)
+	  next-headline)
+	 ((and (bh/is-task-p) (not (bh/is-project-subtree-p)))
+	  next-headline)
+	 (t
+	  nil)))))
+
+  (defun bh/skip-project-tasks-maybe ()
+    "Show tasks related to the current restriction.
+  When restricted to a project, skip project and sub project tasks, habits, NEXT tasks, and loose tasks.
+  When not restricted, skip project and sub-project tasks, habits, and project related tasks."
+    (save-restriction
+      (widen)
+      (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+	     (next-headline (save-excursion (or (outline-next-heading) (point-max))))
+	     (limit-to-project (marker-buffer org-agenda-restrict-begin)))
+	(cond
+	 ((bh/is-project-p)
+	  next-headline)
+	 ((org-is-habit-p)
+	  subtree-end)
+	 ((and (not limit-to-project)
+	       (bh/is-project-subtree-p))
+	  subtree-end)
+	 ((and limit-to-project
+	       (bh/is-project-subtree-p)
+	       (member (org-get-todo-state) (list "NEXT")))
+	  subtree-end)
+	 (t
+	  nil)))))
+
+  (defun bh/skip-project-tasks ()
+    "Show non-project tasks.
+  Skip project and sub-project tasks, habits, and project related tasks."
+    (save-restriction
+      (widen)
+      (let* ((subtree-end (save-excursion (org-end-of-subtree t))))
+	(cond
+	 ((bh/is-project-p)
+	  subtree-end)
+	 ;; ((org-is-habit-p)
+	 ;;  subtree-end)
+	 ((bh/is-project-subtree-p)
+	  subtree-end)
+	 (t
+	  nil)))))
+
+  (defun bh/skip-non-project-tasks ()
+    "Show project tasks.
+  Skip project and sub-project tasks, habits, and loose non-project tasks."
+    (save-restriction
+      (widen)
+      (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+	     (next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+	(cond
+	 ((bh/is-project-p)
+	  next-headline)
+	 ;; ((org-is-habit-p)
+	 ;;  subtree-end)
+	 ((and (bh/is-project-subtree-p)
+	       (member (org-get-todo-state) (list "NEXT")))
+	  subtree-end)
+	 ((not (bh/is-project-subtree-p))
+	  subtree-end)
+	 (t
+	  nil)))))
+
+  (defun bh/skip-projects-and-habits ()
+    "Skip trees that are projects and tasks that are habits"
+    (save-restriction
+      (widen)
+      (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+	(cond
+	 ((bh/is-project-p)
+	  subtree-end)
+	 ;; ((org-is-habit-p)
+	 ;;  subtree-end)
+	 (t
+	  nil)))))
+
+  (defun bh/skip-non-subprojects ()
+    "Skip trees that are not projects"
+    (let ((next-headline (save-excursion (outline-next-heading))))
+      (if (bh/is-subproject-p)
+	  nil
+	next-headline)))
+#+end_src
+** Use package declaration
+#+begin_src emacs-lisp
+  (use-package org
+    :ensure org-plus-contrib
+    :bind (("C-c C-l" . org-store-link)
+	   ("C-c c" . org-capture)
+	   ("C-c a" . org-agenda))
+    :hook (;; (org-agenda-mode . (lambda ()
+	   ;; 		     (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
+	   ;; 		     (auto-save-mode)))
+	   (org-agenda-mode . (lambda ()
+				(define-key org-agenda-mode-map "g" #'org-agenda-redo-with-close-buffers))))
+    :config
+    (require 'org-checklist)
+    (dt/org-reload))
+
+  ;; Find ivy equivalent
+  ;;(global-set-key "\C-cb" 'org-iswitchb)
+
+
+  ;;(add-hook 'midnight-hook 'dt/org-reload)
+
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
+#+END_SRC
+** TODO Org habits
+* Development
+** IDE Features with lsp-mode
+#+begin_src emacs-lisp
   (defun dt/lsp-mode-setup ()
     (lsp-headerline-breadcrumb-mode))
 
-  ;;;TODO(dtulig): Consider lsp-ivy
+  ;;TODO(dtulig): Consider lsp-ivy
   (use-package lsp-mode
     :ensure t
     :after company
     :commands lsp
     :init (setq lsp-keymap-prefix "C-;")
     :bind (:map lsp-mode-map
-	  ("<tab>" . company-indent-or-complete-common))
+		("<tab>" . company-indent-or-complete-common))
     :hook (lsp-mode . dt/lsp-mode-setup)
     :config
     (setq rustic-lsp-server 'rust-analyzer)
@@ -177,15 +822,29 @@
     (setq lsp-rust-analyzer-cargo-all-targets t)
     (setq lsp-rust-all-features t))
 
+#+end_src
+** Company Mode for completions
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :demand t
+    :bind (("C-<tab>" . counsel-company))
+    (:map company-active-map
+	  ("<tab>" . company-complete-selection))
+
+    :config (global-company-mode 1))
+
+#+end_src
+** Magit
+#+begin_src emacs-lisp
   (use-package magit
     :ensure t
     :bind (("C-x g" . magit-status)
 	   ("C-x M-g" . magit-dispatch)))
 
-  (use-package paredit
-    :ensure t
-    :hook (emacs-lisp-mode . paredit-mode))
-
+#+end_src
+** Project Management via Projectile
+#+begin_src emacs-lisp
   (use-package projectile
     :after counsel
     :ensure t
@@ -200,11 +859,24 @@
     (setq projectile-completion-system 'counsel)
     (setq projectile-switch-project-action 'counsel-projectile)
     (projectile-mode +1))
+#+end_src
+** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t)
+#+end_src
+** Language Support
+#+begin_src emacs-lisp
+  (use-package paredit
+    :ensure t
+    :hook (emacs-lisp-mode . paredit-mode))
 
   (use-package rainbow-delimiters
     :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
-
+#+end_src
+*** Rust
+#+begin_src emacs-lisp
   ;; This installed markdown mode, projectile
   (use-package rustic
     :after projectile
@@ -212,32 +884,33 @@
     :hook ((rustic-mode . electric-pair-mode)
 	   (rustic-mode . auto-revert-mode)))
 
-  (use-package smart-mode-line
+#+end_src
+*** GLSL (graphic shading language)
+#+begin_src emacs-lisp
+  (use-package glsl-mode
     :ensure t
-    :demand t
-    :config
-    (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'respectful)
-    (sml/setup))
+    :mode (("\\.glsl\\'" . glsl-mode)
+	   ("\\.vert\\'" . glsl-mode)
+	   ("\\.frag\\'" . glsl-mode)
+	   ("\\.geom\\'" . glsl-mode)))
 
-  (use-package swiper
-    :after ivy
-    :ensure t
-    :bind ("C-s" . swiper))
-
-  (use-package which-key
-    :ensure t
-    :init (which-key-mode)
-    :delight
-    :config
-    (setq which-key-idle-delay 1.0))
+#+end_src
+*** Yaml
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :ensure t)
+#+end_src
+* Writing
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :hook ((text-mode . flyspell-mode)
+	   (prog-mode . flyspell-prog-mode)))
 
   (use-package writegood-mode
     :ensure t)
-
-  (use-package yaml-mode
-    :ensure t)
-
+#+end_src
+* Yasnippet
+#+begin_src emacs-lisp
   (use-package yasnippet
     :ensure t
     :bind (("C-c y d" . yas-load-directory)
@@ -254,11 +927,136 @@
     (yas-load-directory (emacs-path "snippets"))
     (yas-global-mode 1))
 
-  ;; Larger configuration files written in org mode
-  (org-babel-load-file (emacs-path "bindings.org"))
-  (org-babel-load-file (emacs-path "mail.org"))
-  (org-babel-load-file (emacs-path "misc.org"))
-  (org-babel-load-file (emacs-path "org.org"))
+#+end_src
+* Email and Mu4e
+** Check if this machine is setup for mu4e
+#+begin_src emacs-lisp
+  (setq dt-mu4e-path (let ((possible-paths '("/var/run/current-system/sw/share/emacs/site-lisp/mu4e"
+					     "/usr/local/share/emacs/site-lisp/mu4e"
+					     "/usr/local/share/emacs/site-lisp/mu/mu4e"
+					     "/usr/share/emacs/site-lisp/mu")))
+		       (seq-find #'file-exists-p possible-paths)))
 
+#+end_src
+** Configure mu4e
+#+begin_src emacs-lisp
+  (when dt-mu4e-path
+    (use-package mu4e
+      :after org
+      :load-path dt-mu4e-path
+      :config
+      (require 'org-mu4e)
+
+      (setq mu4e-maildir "~/.mail/gmail")
+      (setq mu4e-drafts-folder "/[Gmail].Drafts")
+      (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
+      (setq mu4e-trash-folder  "/[Gmail].Trash")
+      (setq mu4e-refile-folder "/ImapArchive")
+
+      (setq mu4e-headers-sort-direction 'ascending)
+
+      (require 'mu4e-contrib)
+      (setq mu4e-html2text-command 'mu4e-shr2text)
+      (setq mu4e-change-filenames-when-moving t)
+      (setq mu4e-sent-messages-behavior 'delete)
+
+      (add-hook 'mu4e-compose-mode-hook 'turn-off-auto-fill)
+
+      (setq mu4e-maildir-shortcuts
+	    '( ("/INBOX"               . ?i)
+	       ("/[Gmail].Sent Mail"   . ?s)
+	       ("/[Gmail].Trash"       . ?t)
+	       ("/[Gmail].All Mail"    . ?a)))
+
+      (fset 'my-move-to-trash "mt")
+      (define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
+      (define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
+
+      (fset 'my-archive "D")
+      (define-key mu4e-headers-mode-map (kbd "e") 'my-archive)
+      (define-key mu4e-view-mode-map (kbd "e") 'my-archive)
+
+      (setq mu4e-get-mail-command "mbsync -a")
+      (setq mu4e-bookmarks
+	    '(
+	      ("(flag:unread AND NOT (flag:trashed OR maildir:\"/[Gmail].Trash\") AND NOT ((maildir:\"/[Gmail].Spam\") OR (maildir:\"/[Gmail].All Mail\") OR (maildir:\"/[Gmail].Important\")) OR maildir:\"/[Gmail].Inbox\""
+	       "Daily Review" ?d)
+	      ("flag:unread AND NOT (flag:trashed OR maildir:\"/[Gmail].Trash\") AND NOT list:* AND NOT maildir:\"/[Gmail].Spam\""
+	       "Unread messages, no lists" ?U)
+	      ("flag:unread AND NOT (flag:trashed OR maildir:\"/[Gmail].Trash\") AND NOT maildir:\"/[Gmail].Spam\""
+	       "All unread messages" ?u)
+	      ("flag:unread AND list:* AND NOT maildir:\"/[Gmail].Spam\" AND NOT maildir:\"/[Gmail].Trash\""
+	       "Unread lists" ?l)
+	      ("date:today..now"                  "Today's messages"     ?t)
+	      ("date:7d..now"                     "Last 7 days"          ?w)
+	      ("mime:image/*"                     "Messages with images" ?p)))
+
+      (require 'smtpmail)
+
+      (defun read-lines (filePath)
+	"Return a list of lines of a file at filePath."
+	(with-temp-buffer
+	  (insert-file-contents filePath)
+	  (split-string (buffer-string) "\n" t)))
+
+      (defun get-string-from-file (filePath)
+	"Return filePath's file content."
+	(with-temp-buffer
+	  (insert-file-contents filePath)
+	  (buffer-string)))
+
+      (setq message-send-mail-function 'smtpmail-send-it
+	    smtpmail-stream-type 'starttls
+	    smtpmail-default-smtp-server "smtp.gmail.com"
+	    smtpmail-smtp-server "smtp.gmail.com"
+	    smtpmail-smtp-service 587)
+
+      (setq message-kill-buffer-on-exit t)
+
+      (defun org-mu4e-store-link ()
+	"Store a link to a mu4e query or message."
+	(cond
+	 ;; storing links to queries
+	 ((eq major-mode 'mu4e-headers-mode)
+	  (let* ((query (mu4e-last-query))
+		 desc link)
+	    (org-store-link-props :type "mu4e" :query query)
+	    (setq
+	     desc (concat "mu4e:query:" query)
+	     link desc)
+	    (org-add-link-props :link link :description desc)
+	    link))
+	 ;; storing links to messages
+	 ((eq major-mode 'mu4e-view-mode)
+	  (let* ((msg  (mu4e-message-at-point))
+		 (msgid   (or (plist-get msg :message-id) "<none>"))
+		 (from (car (car (mu4e-message-field msg :from))))
+		 (to (car (car (mu4e-message-field msg :to))))
+		 (subject (mu4e-message-field msg :subject))
+		 link)
+	    (setq link (concat "mu4e:msgid:" msgid))
+	    (org-store-link-props :type "mu4e" :link link
+				  :message-id msgid)
+	    (setq link (concat "mu4e:msgid:" msgid))
+	    (org-store-link-props
+	     :type "mu4e" :from from :to to :subject subject
+	     :message-id msgid)
+
+	    (org-add-link-props :link link
+				:description (funcall org-mu4e-link-desc-func msg))
+	    link))))
+
+      (org-add-link-type "mu4e" 'org-mu4e-open)
+      (add-hook 'org-store-link-functions 'org-mu4e-store-link)
+
+      (add-to-list 'mu4e-view-actions '("rview related" . djr/mu4e-view-related-search) t)
+      (defun djr/mu4e-view-related-search (msg)
+	"Search for related messages to the current one"
+	(let* ((msgid (mu4e-msg-field msg :message-id)))
+	  (setq mu4e-headers-include-related t)
+	  (mu4e-headers-search (concat "msgid:" msgid))))))
+#+end_src
+* Emacs Server
+#+begin_src emacs-lisp
   (server-start)
 #+end_src
