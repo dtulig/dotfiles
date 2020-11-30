@@ -113,6 +113,9 @@
     ;; be re-bound
     (setq evil-want-C-u-scroll t)
     :config
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
     (evil-set-initial-state 'rustic-popup-mode 'emacs)
     (evil-mode 1))
 
