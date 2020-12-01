@@ -775,6 +775,9 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+end_src
 ** Use package declaration
 #+begin_src emacs-lisp
+  (defun dt/org-mode-setup ()
+    (visual-line-mode 1))
+
   (use-package org
     :ensure org-plus-contrib
     :bind (("C-c C-l" . org-store-link)
@@ -784,7 +787,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 	   ;; 		     (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
 	   ;; 		     (auto-save-mode)))
 	   (org-agenda-mode . (lambda ()
-				(define-key org-agenda-mode-map "g" #'org-agenda-redo-with-close-buffers))))
+				(define-key org-agenda-mode-map "g" #'org-agenda-redo-with-close-buffers)))
+	   (org-mode . dt/org-mode-setup))
     :config
     (require 'org-checklist)
     (dt/org-reload))
@@ -908,6 +912,18 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 
   (use-package writegood-mode
     :ensure t)
+#+end_src
+
+** Visual Fill Mode
+#+begin_src emacs-lisp
+  (defun dt/org-mode-visual-fill ()
+    (setq visual-fill-column-width 100
+	  visual-fill-column-center-text nil)
+    (visual-fill-column-mode 1))
+
+  (use-package visual-fill-column
+    :ensure t
+    :hook (org-mode . dt/org-mode-visual-fill))
 #+end_src
 * Yasnippet
 #+begin_src emacs-lisp
