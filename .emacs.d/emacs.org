@@ -889,6 +889,20 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 	   (rustic-mode . auto-revert-mode)))
 
 #+end_src
+*** Python
+#+begin_src emacs-lisp
+  (defun dt/python-lsp-mode-setup ()
+    (require 'lsp-python-ms)
+    (lsp))
+
+  (use-package lsp-python-ms
+    :ensure t
+    :init (setq lsp-python-ms-auto-install-server t)
+    :hook (python-mode . dt/python-lsp-mode-setup))
+
+  (use-package poetry
+    :ensure t)
+#+end_src
 *** GLSL (graphic shading language)
 #+begin_src emacs-lisp
   (use-package glsl-mode
