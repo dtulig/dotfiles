@@ -926,6 +926,19 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :hook (org-mode . dt/org-mode-visual-fill))
 #+end_src
 * Yasnippet
+
+Some snippets from the yasnippet-snippets package depend on hooks. I want to install the snippets manually but leverage that shared package. A few methods are necessary to make this work well.
+
+#+begin_src emacs-lisp
+  (defun yasnippet-snippets--fixed-indent ()
+    "Set `yas-indent-line' to `fixed'."
+    (set (make-local-variable 'yas-indent-line) 'fixed))
+
+  (defun yasnippet-snippets--no-indent ()
+    "Set `yas-indent-line' to nil."
+    (set (make-local-variable 'yas-indent-line) nil))
+#+end_src
+
 #+begin_src emacs-lisp
   (use-package yasnippet
     :ensure t
