@@ -817,8 +817,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :after company
     :commands lsp
     :init (setq lsp-keymap-prefix "C-;")
-    :bind (:map lsp-mode-map
-		("<tab>" . company-indent-or-complete-common))
+    ;; :bind (:map lsp-mode-map
+    ;; 	      ("<tab>" . company-indent-or-complete-common))
     :hook (lsp-mode . dt/lsp-mode-setup)
     :config
     (setq rustic-lsp-server 'rust-analyzer)
@@ -833,8 +833,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :ensure t
     :demand t
     :bind (("C-<tab>" . counsel-company))
-    (:map company-active-map
-	  ("<tab>" . company-complete-selection))
+    ;; (:map company-active-map
+    ;; 	("<tab>" . company-complete-selection))
 
     :config (global-company-mode 1))
 
