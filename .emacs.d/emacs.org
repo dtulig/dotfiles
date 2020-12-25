@@ -57,12 +57,9 @@ This configures the package management system and sets use-package as the primar
     (require 'delight))
 #+end_src
 
-** Load encrypted information
-#+begin_src emacs-lisp
-  (org-babel-load-file (emacs-path "config.org.gpg"))
-#+end_src
-** Mac OS X setup
-For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available for running programs from emacs.
+** Mac OS X path setup
+For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available for running programs from emacs. This needs to come early and before gpg so that the executable is found on the path.
+
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
     :ensure t
@@ -72,6 +69,10 @@ For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available 
       (exec-path-from-shell-initialize)))
 #+end_src
 
+** Load encrypted information
+#+begin_src emacs-lisp
+  (org-babel-load-file (emacs-path "config.org.gpg"))
+#+end_src
 ** Keep backup files in tmp
 #+begin_src emacs-lisp
   ;; (setq backup-directory-alist `(("." . ,(expand-file-name
