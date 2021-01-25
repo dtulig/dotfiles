@@ -379,6 +379,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "dates/*.org"))
 				   (file-expand-wildcards (concat org-directory "*.org"))
 				   (file-expand-wildcards (concat org-directory "projects/*.org"))
+				   (file-expand-wildcards (concat org-directory "steadily/dates/*.org"))
+				   (file-expand-wildcards (concat org-directory "steadily/*.org"))
 				   (file-expand-wildcards (concat org-directory "indeed/dates/*.org"))
 				   (file-expand-wildcards (concat org-directory "indeed/*.org"))))
     (setq org-default-personal-notes-file
@@ -387,6 +389,9 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (setq org-default-work-notes-file
 	  (concat org-directory "indeed/dates/"
 		  (downcase (format-time-string "%Y-%B-w.org"))))
+    (setq org-default-steadily-notes-file
+	  (concat org-directory "steadily/dates/"
+		  (downcase (format-time-string "%Y-%B-w.org"))))
     (setq org-default-journal-file
 	  (concat org-directory "journal.org")))
 
@@ -394,13 +399,19 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 ** Capture templates
 #+begin_src emacs-lisp
   (setq org-capture-templates
-	'(("t" "Todo (Work)" entry (file+headline
+	'(("t" "Tasks")
+	  ("ti" "Todo (Work)" entry (file+headline
 				    org-default-work-notes-file "Tasks")
 	   "* TODO %^{Description}
   %U
   %?
   " :clock-in t :clock-resume t)
-
+	  ("ts" "Todo (Steadily)" entry (file+headline
+				    org-default-steadily-notes-file "Tasks")
+	   "* TODO %^{Description}
+  %U
+  %?
+  " :clock-in t :clock-resume t :empty-lines 1)
 	  ("r" "Respond (Work)" entry (file+headline
 				       org-default-work-notes-file "Tasks")
 
