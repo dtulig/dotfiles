@@ -93,6 +93,11 @@ For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available 
 #+begin_src emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
+** Spaces only
+#+begin_src emacs-lisp
+  (setq indent-tabs-mode nil)
+#+end_src
+
 * Basic UI Configuration
 ** Line Numbers
 I want line numbers by default. A few modes will have the line numbers gutter disabled. Additionally, this turns on column numbers in the status bar.
