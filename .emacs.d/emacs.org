@@ -1130,6 +1130,43 @@ Some snippets from the yasnippet-snippets package depend on hooks. I want to ins
 	  (setq mu4e-headers-include-related t)
 	  (mu4e-headers-search (concat "msgid:" msgid))))))
 #+end_src
+* W3m
+#+begin_src emacs-lisp
+  (use-package w3m
+    :ensure t
+    :bind (("C-c w s" . w3m-search)
+	   ("C-c w S" . w3m-search-new-session)
+	   ("C-c w o" . w3m-browse-url)
+	   ("C-c w m" . dt/w3m-mpv)
+	   ("C-c w f" . dt/w3m-open-current-page-in-firefox)
+	   ("C-c w F" . dt/w3m-open-link-or-image-in-firefox))
+    :config
+    (setq w3m-search-default-engine "duckduckgo")
+    (setq w3m-use-title-buffer-name t))
+
+  (defun dt/w3m-mpv ()
+    (interactive)
+    (let ((link (w3m-anchor)))
+      (if (not link)
+	  (message "The point is not a link.")
+	(cond ((string-match "/\\(www\\|m\\)\\.youtube\\.com\\/watch\/?" link)
+	       (message (concat "Loading from youtube: " link))
+	       (start-process "mpv" nil "mpv" link))
+	      ((string-match "/youtu\\.be\\//?" link)
+	       (message (concat "Loading from youtube: " link))
+	       (start-process "mpv" nil "mpv" link))))))
+
+  (defun dt/w3m-open-current-page-in-firefox ()
+    "Open the current URL in Mozilla Firefox."
+    (interactive)
+    (browse-url-firefox w3m-current-url))
+
+  (defun dt/w3m-open-link-or-image-in-firefox ()
+    "Open the current link or image in Firefox."
+    (interactive)
+    (browse-url-firefox (or (w3m-anchor)
+			    (w3m-image))))
+#+end_src
 * Emacs Server
 #+begin_src emacs-lisp
   (server-start)
