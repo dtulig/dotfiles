@@ -341,7 +341,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 
   (setq org-todo-keyword-faces
 	(quote (("TODO" :foreground "red" :weight bold)
-		("NEXT" :foreground "#268bd2" :weight bold)
+		("NEXT" :foreground "base0D" :weight bold)
 		("DONE" :foreground "forest green" :weight bold)
 		("WAITING" :foreground "orange" :weight bold)
 		("DELEGATED" :foreground "orange" :weight bold)
