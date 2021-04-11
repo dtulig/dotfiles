@@ -818,7 +818,12 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 	   (org-mode . dt/org-mode-setup))
     :config
     (require 'org-checklist)
-    (dt/org-reload))
+    (dt/org-reload)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (python . t)
+       (shell . t))))
 
   ;; Find ivy equivalent
   ;;(global-set-key "\C-cb" 'org-iswitchb)
