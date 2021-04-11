@@ -415,41 +415,55 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+begin_src emacs-lisp
   (setq org-capture-templates
 	'(("t" "Tasks")
-	  ("ti" "Todo (Work)" entry (file+headline
-				    org-default-work-notes-file "Tasks")
-	   "* TODO %^{Description}
-  %U
-  %?
-  " :clock-in t :clock-resume t)
-	  ("ts" "Todo (Steadily)" entry (file+headline
+	  ("ts" "Steadily" entry (file+headline
 				    org-default-steadily-notes-file "Tasks")
 	   "* TODO %^{Description}
   %U
   %?
   " :clock-in t :clock-resume t :empty-lines 1)
-	  ("r" "Respond (Work)" entry (file+headline
-				       org-default-work-notes-file "Tasks")
+	  ("tp" "Personal" entry (file+headline
+				    org-default-personal-notes-file "Tasks")
+	   "* TODO %^{Description}
+  %U
+  %?
+  " :clock-in t :clock-resume t)
+	  ;; Create a meeting entry
+	  ("m" "Meeting")
+	  ("ms" "Steadily" entry (file+headline
+				org-default-steadily-notes-file "Meetings")
+	   "* MEETING with %^{Description} :MEETING:
+  %U
+  %?" :clock-in t :clock-resume t)
+	  ("mp" "Personal" entry (file+headline
+				org-default-personal-notes-file "Meetings")
+	   "* MEETING with %^{Description} :MEETING:
+  %U
+  %?" :clock-in t :clock-resume t)
+	  ;; Create a todo with mu4e link
+	  ("r" "Respond")
+	  ("rs" "Steadily" entry (file+headline
+				       org-default-steadily-notes-file "Tasks")
 
 	   "* NEXT Respond to %:from on %:subject
   SCHEDULED: %t
   %U
   %a
   " :clock-in t :clock-resume t :immediate-finish t)
-	  ("p" "Todo (Personal)" entry (file+headline
-					org-default-personal-notes-file "Tasks")
-	   "* TODO %^{Description}
-  %U
-  %?
-  " :clock-in t :clock-resume t)
-	  ("e" "Respond (Personal)" entry (file+headline
+	  ("rp" "Personal" entry (file+headline
 					   org-default-personal-notes-file "Tasks")
 	   "* NEXT Respond to %:from on %:subject
   SCHEDULED: %t
   %U
   %a
   " :clock-in t :clock-resume t :immediate-finish t)
-	  ("n" "Note" entry (file+headline
-			     org-default-personal-notes-file "Notes")
+	  ("n" "Note")
+	  ("ns" "Steadily" entry (file+headline
+			     org-default-steadily-notes-file "Notes")
+	   "* %? :NOTE:
+  %U
+  " :clock-in t :clock-resume t)
+	  ("np" "Personal" entry (file+headline
+				  org-default-personal-notes-file "Notes")
 	   "* %? :NOTE:
   %U
   " :clock-in t :clock-resume t)
@@ -465,18 +479,13 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   %U
   ")
 	  ("j" "Journal" entry (file+olp+datetree org-default-journal-file)
-			 "* %^{Title}
+	   "* %^{Title}
   %U
   %?
   " :clock-in t :clock-resume t)
 	  ("l" "Log Time" entry (file+olp+datetree
 				 (concat org-directory "/timelog.org"))
-		   "** %U - %^{Activity}  :TIME:")
-	  ("m" "Meeting" entry (file+headline
-				org-default-work-notes-file "Meetings")
-	   "* MEETING with %^{Description} :MEETING:
-  %U
-  %?" :clock-in t :clock-resume t)))
+	   "** %U - %^{Activity}  :TIME:")))
 #+end_src
 ** Agenda
 #+begin_src emacs-lisp
