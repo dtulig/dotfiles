@@ -38,8 +38,7 @@ This configures the package management system and sets use-package as the primar
   (setq package-archives
 		'(("gnu"         . "http://elpa.gnu.org/packages/")
 		  ("org"         . "http://orgmode.org/elpa/")
-		  ("melpa"       . "http://melpa.org/packages/")
-		  ("marmalade"   . "http://marmalade-repo.org/packages/")))
+		  ("melpa"       . "http://melpa.org/packages/")))
 
   (package-initialize)
   (unless package-archive-contents
