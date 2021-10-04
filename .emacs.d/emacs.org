@@ -979,7 +979,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+begin_src emacs-lisp
   (use-package web-mode
     :ensure t
-    :mode ("\\.liquid\\'")
+    :mode ("\\.liquid\\'" "\\.jinja2\\'" "\\.j2\\'")
     :custom
     (web-mode-markup-indent-offset 2)
     (web-mode-script-padding 2)
