@@ -208,6 +208,7 @@ This configuration overhauls the keybindings with evil-mode. Two important notes
     (setq evil-want-C-i-jump nil)
     (setq evil-esc-delay 0)
     (setq evil-want-C-u-scroll t)
+    (setq evil-want-keybinding nil)
     :config
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
@@ -489,8 +490,6 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 ** Agenda
 #+begin_src emacs-lisp
   (setq org-agenda-span 'day)
-
-  (require 'cl)
 
   (defun buffer-major-mode-org-mode-p (buffer)
     (string= "org-mode" (with-current-buffer buffer major-mode)))
