@@ -37,7 +37,7 @@ This configures the package management system and sets use-package as the primar
 
   (setq package-archives
 		'(("gnu"         . "http://elpa.gnu.org/packages/")
-		  ("org"         . "http://orgmode.org/elpa/")
+		  ("nongnu"      . "https://elpa.nongnu.org/nongnu/")
 		  ("melpa"       . "http://melpa.org/packages/")))
 
   (package-initialize)
@@ -813,7 +813,14 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (visual-line-mode 1))
 
   (use-package org
-    :ensure org-plus-contrib
+    :ensure t
+    :pin gnu)
+
+  (use-package org-contrib
+    :ensure t
+    :after org
+    :pin nongnu
+    :demand t
     :bind (("C-c C-l" . org-store-link)
 	   ("C-c c" . org-capture)
 	   ("C-c a" . org-agenda))
@@ -846,7 +853,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 ** Org habits
 #+begin_src emacs-lisp
   (use-package org-habit
-    :after org
+    :after org-contrib
     :ensure nil
     :config
     (add-to-list 'org-modules 'org-habit t)
@@ -1062,7 +1069,7 @@ Some snippets from the yasnippet-snippets package depend on hooks. I want to ins
 #+begin_src emacs-lisp
   (when dt-mu4e-path
     (use-package mu4e
-      :after org
+      :after org-contrib
       :load-path dt-mu4e-path
       :config
       (require 'org-mu4e)
