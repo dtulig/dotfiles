@@ -492,6 +492,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+begin_src emacs-lisp
   (setq org-agenda-span 'day)
 
+  (require 'cl)
+
   (defun buffer-major-mode-org-mode-p (buffer)
     (string= "org-mode" (with-current-buffer buffer major-mode)))
 
