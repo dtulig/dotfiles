@@ -62,3 +62,26 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+if [ -z "$TMUX" ]; then
+    # we're not in a tmux session
+
+    if [ ! -z "$SSH_TTY" ]; then
+        # We logged in via SSH
+
+        # if ssh auth variable is missing
+        if [ -z "$SSH_AUTH_SOCK" ]; then
+            export SSH_AUTH_SOCK="$HOME/.ssh/.auth_socket"
+        fi
+
+        # if socket is available create the new auth session
+        if [ ! -S "$SSH_AUTH_SOCK" ]; then
+            `ssh-agent -t 86400 -a $SSH_AUTH_SOCK` > /dev/null 2>&1
+            echo $SSH_AGENT_PID > $HOME/.ssh/.auth_pid
+        fi
+
+        # if agent isn't defined, recreate it from pid file
+        if [ -z $SSH_AGENT_PID ]; then
+            export SSH_AGENT_PID=`cat $HOME/.ssh/.auth_pid`
+        fi
+    fi
+fi
