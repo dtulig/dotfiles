@@ -1,7 +1,14 @@
 #!/bin/sh
 
-if [[ -x "$(command -v xcompmgr)" && -x "$(command -v xautolock)" ]];
+if [[ -x "$(command -v xautolock)" ]];
 then
-    xcompmgr -c &
     xautolock -time 15 -locker "$HOME/bin/lock_screen.sh" -notify 30 -notifier "notify-send -u critical -- 'LOCKING screen in 30 seconds'" &
 fi
+
+eval $(ssh-agent -t 86400)
+export SSH_AUTH_SOCK
+
+/usr/bin/gentoo-pipewire-launcher &
+
+$HOME/bin/firefox-sync a4k03mde.default-release &
+$HOME/bin/firefox-sync 4qqpdywf.steadily &
