@@ -5,10 +5,10 @@ Config { font = "xft:Fira Mono:size=11:style=Medium:antialias=true,FontAwesome5B
      , position = TopSize C 100 30
      , commands = [
                Run Cpu [ "-t", "\xf0ae <total>%", "-L","3","-H","50","--normal","green","--high","red"] 10
-             , Run DynNetwork ["-t", "\xf0e7 <rx> KB <tx> KB", "-L","0","-H","70","--normal","green","--high","red"] 10
+             , Run DynNetwork ["-t", "\xf0e7 <rx> KB <tx> KB", "-L","1000","-H","20000","--normal","green","--high","red"] 10
              , Run Memory ["-t", "\xf2db <used> MB (<usedratio>%)"] 10
-             , Run CoreTemp ["-t", "\xf2c7 <core0>C <core1>C <core2>C <core3>C",
-                             "-L", "40", "-H", "60",
+             , Run MultiCoreTemp ["-t", "\xf2c7 <avg>C <avgpc>C",
+                             "-L", "40", "-H", "80",
                              "-h", "red"] 50
              , Run Date "<fc=#cb4b16>\xf017 %a %b %d %Y %H:%M:%S</fc>" "date" 10
              , Run StdinReader
@@ -16,5 +16,5 @@ Config { font = "xft:Fira Mono:size=11:style=Medium:antialias=true,FontAwesome5B
              ]
      , sepChar = "%"
      , alignSep = "}{"
-     , template = " %StdinReader%}{ %cpu%    %memory%    %dynnetwork%    %coretemp%    %KAUS%    %date%  "
+     , template = " %StdinReader%}{ %cpu%    %memory%    %dynnetwork%    %multicoretemp%    %KAUS%    %date%  "
      }
