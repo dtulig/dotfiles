@@ -247,6 +247,13 @@ I'm overriding the header-line face, which is used in the list mode as a header.
      '(header-line ((t (:foreground "color-18" :inherit highlight))))))
 #+end_src
 
+** imenu Improvements
+#+begin_src emacs-lisp
+  (use-package imenu-list
+    :ensure t
+    :demand t
+    :bind ("C-c l" . imenu-list-smart-toggle))
+#+end_src
 ** Improving the mode line
 #+begin_src emacs-lisp
   (use-package smart-mode-line
