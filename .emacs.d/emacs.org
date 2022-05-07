@@ -42,6 +42,8 @@ This configures the package management system and sets use-package as the primar
 
   (package-initialize)
 
+  ;; Need to have emacs, or package, forget about built in org:
+  ;; https://github.com/jwiegley/use-package/issues/319#issuecomment-845214233
   (assq-delete-all 'org package--builtins)
   (assq-delete-all 'org package--builtin-versions)
 
