@@ -226,7 +226,9 @@ This configuration overhauls the keybindings with evil-mode. Two important notes
     :ensure t
     :config
     (evil-collection-init 'dired)
-    (evil-collection-init 'w3m))
+    (evil-collection-init 'w3m)
+    (evil-collection-init 'imenu)
+    (evil-collection-init 'imenu-list))
 
 #+end_src
 * Expanded UI Configuration
