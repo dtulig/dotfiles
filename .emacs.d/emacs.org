@@ -41,6 +41,10 @@ This configures the package management system and sets use-package as the primar
 		  ("melpa"       . "http://melpa.org/packages/")))
 
   (package-initialize)
+
+  (assq-delete-all 'org package--builtins)
+  (assq-delete-all 'org package--builtin-versions)
+
   (unless package-archive-contents
     (package-refresh-contents))
 
