@@ -1003,19 +1003,33 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   (use-package yaml-mode
     :ensure t)
 #+end_src
-*** JavaScript
+*** JavaScript/Typescript
 #+begin_src emacs-lisp
-    ;; (use-package js2-minor-mode
-    ;;   :ensure t)
-    (setq js-indent-level 2)
+  ;; (use-package js2-minor-mode
+  ;;   :ensure t)
+  (setq js-indent-level 2)
+
+  (use-package typescript-mode
+    :ensure t
+    :hook (typescript-mode . lsp)
+    :custom (typescript-indent-level 2))
 #+end_src
 *** Web
 #+begin_src emacs-lisp
   (use-package web-mode
     :ensure t
-    :mode ("\\.liquid\\'" "\\.jinja2\\'" "\\.j2\\'")
+    :mode (("\\.liquid\\'" . web-mode)
+	   ("\\.jinja2\\'". web-mode)
+	   ("\\.j2\\'". web-mode)
+	   ("\\.tsx\\'" . typescript-tsx-mode))
+    :hook
+    ((typescript-tsx-mode . lsp))
+    :init
+    (define-derived-mode typescript-tsx-mode web-mode "TypeScript-tsx")
     :custom
     (web-mode-markup-indent-offset 2)
+    (web-mode-css-indent-offset 2)
+    (web-mode-code-indent-offset 2)
     (web-mode-script-padding 2)
     (web-mode-style-padding 2))
 #+end_src
