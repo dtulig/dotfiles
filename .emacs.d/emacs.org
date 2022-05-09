@@ -969,21 +969,12 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   (defun dt/python-lsp-mode-setup ()
     (when (stringp (poetry-find-project-root))
       (poetry-venv-workon))
-    (require 'lsp-python-ms)
+    (require 'lsp-pyright)
     (lsp-deferred))
 
-  (use-package lsp-python-ms
+  (use-package lsp-pyright
     :ensure t
-    :after poetry
-    :init (setq lsp-python-ms-auto-install-server t)
-    :hook (python-mode . dt/python-lsp-mode-setup)
-    :config
-    (setq lsp-python-ms-guess-env nil)
-    (put 'lsp-python-ms-python-executable 'safe-local-variable 'stringp))
-
-  ;; (use-package python
-  ;;   :ensure nil
-  ;;   :hook (python-mode . (lambda() (lsp-deferred))))
+    :hook (python-mode . dt/python-lsp-mode-setup))
 
   (use-package poetry
     :ensure t)
