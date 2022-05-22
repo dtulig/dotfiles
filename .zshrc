@@ -90,3 +90,5 @@ if [ -z "$TMUX" ]; then
         fi
     fi
 fi
+
+alias mpv-ns='mpv --no-osc --osd-on-seek=no'
