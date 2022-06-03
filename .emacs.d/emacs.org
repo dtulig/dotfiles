@@ -1247,5 +1247,7 @@ Some snippets from the yasnippet-snippets package depend on hooks. I want to ins
 #+end_src
 * Emacs Server
 #+begin_src emacs-lisp
-  (server-start)
+  (require 'server)
+  (unless (server-running-p)
+    (server-start))
 #+end_src
