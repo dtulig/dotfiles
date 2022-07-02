@@ -876,7 +876,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (add-to-list 'org-modules 'org-habit t)
     (setq
      ;; Position the habit graph to the right.
-     org-habit-graph-column 50)
+     org-habit-graph-column 60)
     (setq org-habit-show-all-today t))
 #+end_src
 * Development
