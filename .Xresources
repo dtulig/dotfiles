@@ -28,6 +28,7 @@ URxvt.matcher.button: 1
 URxvt.background: rgba:0000/2b00/3600/cccc
 !URxvt.background: [95]#002b3
 URxvt*iso14755: false
+URxvt.keysym.C-semicolon: \033[59;5u
 
 ! Base16 Solarized Dark
 ! Scheme: Ethan Schoonover (http://ethanschoonover.com/solarized)
