@@ -921,6 +921,10 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 	   ("C-x M-g" . magit-dispatch))
     :config
     (add-hook 'git-commit-setup-hook 'turn-off-auto-fill t))
+
+  (use-package diff-hl
+    :ensure t
+    :init (global-diff-hl-mode))
 #+end_src
 ** Project Management via Projectile
 #+begin_src emacs-lisp
