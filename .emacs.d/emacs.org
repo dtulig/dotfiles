@@ -900,6 +900,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     ;; 	      ("<tab>" . company-indent-or-complete-common))
     :hook (lsp-mode . dt/lsp-mode-setup)
     :config
+    (setq lsp-keep-workspace-alive 'nil)
     (setq rustic-lsp-server 'rust-analyzer)
     (setq lsp-rust-rls-server-command '(rust-analyzer))
     (setq lsp-rust-analyzer-cargo-all-targets t)
