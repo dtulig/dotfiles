@@ -866,9 +866,6 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   ;; Find ivy equivalent
   ;;(global-set-key "\C-cb" 'org-iswitchb)
 
-
-  ;;(add-hook 'midnight-hook 'dt/org-reload)
-
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
