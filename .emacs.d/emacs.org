@@ -107,6 +107,12 @@ For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available 
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
+** Midnight configuration
+#+begin_src emacs-lisp
+  (use-package midnight
+    :init
+    (midnight-delay-set 'midnight-delay "2:30am"))
+#+end_src
 * Basic UI Configuration
 ** Line Numbers
 I want line numbers by default. A few modes will have the line numbers gutter disabled. Additionally, this turns on column numbers in the status bar.
@@ -835,7 +841,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 
   (use-package org-contrib
     :ensure t
-    :after org
+    :after org midnight
     :pin nongnu
     :demand t
     :bind (("C-c C-l" . org-store-link)
@@ -846,7 +852,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 	   ;; 		     (auto-save-mode)))
 	   (org-agenda-mode . (lambda ()
 				(define-key org-agenda-mode-map "g" #'org-agenda-redo-with-close-buffers)))
-	   (org-mode . dt/org-mode-setup))
+	   (org-mode . dt/org-mode-setup)
+	   (midnight-mode . dt/org-reload))
     :config
     (require 'org-checklist)
     (dt/org-reload)
