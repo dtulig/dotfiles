@@ -266,7 +266,8 @@ I'm overriding the header-line face, which is used in the list mode as a header.
   (use-package imenu-list
     :ensure t
     :demand t
-    :bind ("C-c l" . imenu-list-smart-toggle))
+    ;:bind ("C-c l" . imenu-list-smart-toggle)
+    )
 #+end_src
 ** Improving the mode line
 #+begin_src emacs-lisp
@@ -844,7 +845,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :after org midnight
     :pin nongnu
     :demand t
-    :bind (("C-c C-l" . org-store-link)
+    :bind (("C-c l" . org-store-link)
 	   ("C-c c" . org-capture)
 	   ("C-c a" . org-agenda))
     :hook (;; (org-agenda-mode . (lambda ()
