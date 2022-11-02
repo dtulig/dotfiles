@@ -354,6 +354,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 				   (org-agenda-files :maxlevel . 3))))
   ;; Allows text under org headlines to start at the far left
   (setq org-adapt-indentation nil)
+  (setq org-default-priority ?C)
 #+end_src
 ** Todo Keywords and States Configuration
 #+begin_src emacs-lisp
@@ -538,7 +539,10 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   ;; taking some of that.
   (setq org-agenda-custom-commands
 	(quote (("A" "Agenda"
-		 ((agenda "" nil)
+		 ((tags-todo "+PRIORITY={A\\|B}"
+		    ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+		     (org-agenda-overriding-header "High-priority unfinished tasks:")))
+		  (agenda "" nil)
 		  (tags-todo "-SOMEDAY-CANCELLED/!"
 			     ((org-agenda-overriding-header "Stuck Projects")
 			      (org-agenda-skip-function 'bh/skip-non-stuck-projects)
