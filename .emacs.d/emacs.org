@@ -548,6 +548,10 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 			      (org-agenda-skip-function 'bh/skip-non-stuck-projects)
 			      (org-agenda-sorting-strategy
 			       '(category-keep))))
+		  (tags-todo "+DELEGATED+WAITING"
+			     ((org-agenda-overriding-header "Delegated / Waiting")
+			      (org-agenda-sorting-strategy
+			       '(category-keep))))
 		  (tags-todo "-SOMEDAY-HOLD-CANCELLED/!"
 			     ((org-agenda-overriding-header "Projects")
 			      (org-agenda-skip-function 'bh/skip-non-projects)
