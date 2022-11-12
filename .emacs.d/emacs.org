@@ -580,6 +580,14 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 			      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
 			      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
 			      (org-agenda-sorting-strategy
+			       '(category-keep))))
+		  (tags-todo "-SOMEDAY-HOLD-CANCELLED/!NEXT"
+			     ((org-agenda-overriding-header "Single Tasks")
+			      (org-agenda-skip-function 'dt/skip-non-single-tasks)
+			      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+			      (org-agenda-sorting-strategy
 			       '(category-keep)))))
 		 nil))))
 
@@ -755,6 +763,24 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 	 ((bh/is-project-p)
 	  next-headline)
 	 ((and (bh/is-task-p) (not (bh/is-project-subtree-p)))
+	  next-headline)
+	 (t
+	  nil)))))
+
+  (defun dt/skip-non-single-tasks ()
+    "Skip trees that are projects, tasks that are habits, project tasks"
+    (save-restriction
+      (widen)
+      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+	(cond
+	 ;; ((org-is-habit-p)
+	 ;;  next-headline)
+	 ((and bh/hide-scheduled-and-waiting-next-tasks
+	       (member "WAITING" (org-get-tags-at)))
+	  next-headline)
+	 ((bh/is-project-p)
+	  next-headline)
+	 ((and (bh/is-task-p) (bh/is-project-subtree-p))
 	  next-headline)
 	 (t
 	  nil)))))
