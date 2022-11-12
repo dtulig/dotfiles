@@ -898,6 +898,14 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
        (python . t)
        (shell . t))))
 
+  (use-package evil-org
+    :ensure t
+    :after org
+    :hook (org-mode . (lambda () evil-org-mode))
+    :config
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+
   ;; Find ivy equivalent
   ;;(global-set-key "\C-cb" 'org-iswitchb)
 
