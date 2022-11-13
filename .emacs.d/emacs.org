@@ -1073,7 +1073,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 	   ("\\.tsx\\'" . typescript-tsx-mode))
     :hook
     ((typescript-tsx-mode . lsp)
-     (add-to-list web-mode-engine-alist '("django" . "\\.html\\'")))
+     ;(add-to-list web-mode-engine-alist '("django" . "\\.html\\'"))
+     )
     :init
     (define-derived-mode typescript-tsx-mode web-mode "TypeScript-tsx")
     :custom
