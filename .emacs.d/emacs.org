@@ -1009,7 +1009,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :hook (prog-mode . rainbow-delimiters-mode))
 
   (use-package just-mode
-    :ensure t)
+    :ensure t
+    :hook (just-mode . (lambda () (setq tab-width 2))))
 #+end_src
 *** Rust
 #+begin_src emacs-lisp
