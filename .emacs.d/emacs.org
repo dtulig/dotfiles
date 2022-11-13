@@ -905,8 +905,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (evil-org-agenda-set-keys)
     (evil-define-key 'motion org-agenda-mode-map
       "so" 'org-save-all-org-buffers
-      "gl" (lambda ()
-	     (define-key org-agenda-mode-map "g" #'org-agenda-redo-with-close-buffers))))
+      "gl" 'org-agenda-redo-with-close-buffers))
 
   ;; Find ivy equivalent
   ;;(global-set-key "\C-cb" 'org-iswitchb)
