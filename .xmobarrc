@@ -4,7 +4,7 @@ Config { font = "xft:Fira Mono:size=11:style=Medium:antialias=true,FontAwesome5B
      , alpha = 125
      , position = TopSize C 100 30
      , commands = [
-               Run Cpu [ "-t", "\xf0ae <total>%", "-L","3","-H","50","--normal","green","--high","red"] 10
+               Run Cpu [ "-t", "\xf0ae <total>%", "-L","3","-H","50","--normal","#a3be8c","--high","#bf616a"] 10
              , Run DynNetwork ["-t", "\xf0e7 <rx> KB <tx> KB", "-L","1000","-H","1000000","--normal","#a3be8c","--high","#bf616a"] 10
              , Run Memory ["-t", "\xf2db <used> MB (<usedratio>%)"] 10
              , Run MultiCoreTemp ["-t", "\xf2c7 <avg>C <avgpc>C",
