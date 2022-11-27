@@ -880,13 +880,13 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :pin nongnu
     :demand t
     :bind (("C-c l" . org-store-link)
-	   ("C-c c" . org-capture)
-	   ("C-c a" . org-agenda))
+           ("C-c c" . org-capture)
+           ("C-c a" . org-agenda))
     :hook (;; (org-agenda-mode . (lambda ()
-	   ;; 		     (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
-	   ;; 		     (auto-save-mode)))
-	   (org-mode . dt/org-mode-setup)
-	   (midnight-mode . dt/org-reload))
+           ;; 		     (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
+           ;; 		     (auto-save-mode)))
+           (org-mode . dt/org-mode-setup)
+           (midnight-mode . dt/org-reload))
     :config
     (require 'org-checklist)
     (dt/org-reload)
