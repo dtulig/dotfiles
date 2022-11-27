@@ -947,7 +947,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (setq rustic-lsp-server 'rust-analyzer)
     (setq lsp-rust-rls-server-command '(rust-analyzer))
     (setq lsp-rust-analyzer-cargo-all-targets t)
-    (setq lsp-rust-all-features t))
+    (setq lsp-rust-all-features t)
+    (setq lsp-completion-provider :none))
 
 #+end_src
 ** Company Mode for completions
@@ -958,7 +959,19 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :bind (("C-<tab>" . counsel-company))
     ;; (:map company-active-map
     ;; 	("<tab>" . company-complete-selection))
-
+    :custom
+    (company-tooltip-align-annotations t)
+    (company-tooltip-flip-when-above t)
+    (company-require-match nil)
+    (company-minimum-prefix-length 1)
+    (company-show-numbers t)
+    ;(company-idle-delay nil)
+    ;(company-format-margin-function #'company-vscode-dark-icons-margin)
+    (company-occurrence-weight-function #'company-occurrence-prefer-any-closest)
+    (company-dabbrev-minimum-length 2)
+    (company-dabbrev-code-modes t)
+    (company-dabbrev-code-everywhere t)
+    (company-backends '((company-capf company-yasnippet company-dabbrev-code)))
     :config (global-company-mode 1))
 
 #+end_src
