@@ -9,7 +9,7 @@ Config { font = "xft:Fira Mono:size=11:style=Medium:antialias=true,FontAwesome5B
              , Run Memory ["-t", "\xf2db <used> MB (<usedratio>%)"] 10
              , Run MultiCoreTemp ["-t", "\xf2c7 <avg>C <avgpc>C",
                              "-L", "40", "-H", "80",
-                             "-h", "red"] 50
+                             "-h", "#bf616a"] 50
              , Run Date "<fc=#bf616a>\xf017 %a %b %d %Y %H:%M:%S</fc>" "date" 10
              , Run StdinReader
              , Run Weather "KAUS" ["-t", "\xf185 <skyCondition>, <tempF> \x00b0\x0046"] 3600
