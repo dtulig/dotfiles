@@ -92,3 +92,6 @@ if [ -z "$TMUX" ]; then
 fi
 
 alias mpv-ns='mpv --no-osc --osd-on-seek=no'
+
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
