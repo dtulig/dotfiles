@@ -1034,7 +1034,10 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :after projectile
     :ensure t
     :hook ((rustic-mode . electric-pair-mode)
-	   (rustic-mode . auto-revert-mode)))
+	   (rustic-mode . auto-revert-mode))
+    :config
+    (require 'dap-gdb-lldb)
+    (dap-gdb-lldb-setup))
 
 #+end_src
 *** Python
@@ -1073,10 +1076,16 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   ;;   :ensure t)
   (setq js-indent-level 2)
 
+  (use-package dap-mode
+    :ensure t)
+
   (use-package typescript-mode
     :ensure t
     :hook (typescript-mode . lsp)
-    :custom (typescript-indent-level 2))
+    :custom (typescript-indent-level 2)
+    :config
+    (require 'dap-node)
+    (dap-node-setup))
 #+end_src
 *** Web
 #+begin_src emacs-lisp
