@@ -57,7 +57,7 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 # mspyls on linux can't find the icu lib
-export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 
+export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
 export PATH="$HOME/.poetry/bin:$PATH"
 
