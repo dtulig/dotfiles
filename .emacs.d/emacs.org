@@ -258,7 +258,8 @@ I'm overriding the header-line face, which is used in the list mode as a header.
     (setq base16-theme-256-color-source 'base16-shell)
     (load-theme 'base16-nord t)
     (custom-set-faces
-     '(header-line ((t (:foreground "color-18" :inherit highlight))))))
+     '(header-line ((t (:foreground "color-18" :inherit highlight)))))
+    (set-variable 'frame-background-mode 'dark))
 #+end_src
 
 ** imenu Improvements
