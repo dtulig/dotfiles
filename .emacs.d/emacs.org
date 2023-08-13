@@ -110,6 +110,8 @@ For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available 
 ** Midnight configuration
 #+begin_src emacs-lisp
   (use-package midnight
+    :ensure t
+    :demand t
     :init
     (midnight-delay-set 'midnight-delay "2:30am"))
 #+end_src
