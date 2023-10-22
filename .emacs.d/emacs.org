@@ -242,6 +242,7 @@ This configuration overhauls the keybindings with evil-mode. Two important notes
     (evil-collection-init 'dired)
     (evil-collection-init 'w3m)
     (evil-collection-init 'imenu)
+    (evil-collection-init 'sly)
     (evil-collection-init 'imenu-list))
 
 #+end_src
@@ -974,7 +975,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (company-dabbrev-minimum-length 2)
     (company-dabbrev-code-modes t)
     (company-dabbrev-code-everywhere t)
-    (company-backends '((company-capf company-yasnippet company-dabbrev-code)))
+    ;; (company-backends '((company-capf company-yasnippet company-dabbrev-code)))
     :config (global-company-mode 1))
 
 #+end_src
@@ -1015,9 +1016,10 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+end_src
 ** Language Support
 #+begin_src emacs-lisp
-  (use-package paredit
-    :ensure t
-    :hook (emacs-lisp-mode . paredit-mode))
+  ;; (use-package paredit
+  ;;   :ensure t
+  ;;   :hook ((emacs-lisp-mode . paredit-mode)
+  ;;          (lisp-mode . paredit-mode)))
 
   (use-package rainbow-delimiters
     :ensure t
@@ -1108,6 +1110,26 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (web-mode-code-indent-offset 2)
     (web-mode-script-padding 2)
     (web-mode-style-padding 2))
+#+end_src
+*** Common Lisp
+#+begin_src emacs-lisp
+  (use-package sly
+    :ensure t)
+
+  (use-package lispy
+    :hook ((emacs-lisp-mode . lispy-mode)
+           (lisp-mode . lispy-mode))
+    :ensure t)
+
+  (use-package lispyville
+    :ensure t
+    :hook ((emacs-lisp-mode . lispyville-mode)
+           (lisp-mode . lispyville-mode))
+    :config
+    (lispyville-set-key-theme '(operators c-w
+                                          (escape insert)
+                                          (additional-movement normal visual motion)
+                                          (slurp/barf-cp normal))))
 #+end_src
 * Writing
 #+begin_src emacs-lisp
