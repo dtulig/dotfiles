@@ -1117,8 +1117,6 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :ensure t)
 
   (use-package lispy
-    :hook ((emacs-lisp-mode . lispy-mode)
-           (lisp-mode . lispy-mode))
     :ensure t)
 
   (use-package lispyville
