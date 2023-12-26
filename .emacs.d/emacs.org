@@ -14,6 +14,12 @@ The initial pinentry setup causes issues when emacs is run in a terminal. Using 
   (setq epa-pinentry-mode 'loopback)
 #+end_src
 
+Native comp should be silent, but still log.
+
+#+begin_src emacs-lisp
+  (setq native-comp-async-report-warnings-errors 'silent)
+#+end_src
+
 Define the current emacs configuration directory.
 
 #+begin_src emacs-lisp
