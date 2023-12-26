@@ -96,4 +96,8 @@ alias mpv-ns='mpv --no-osc --osd-on-seek=no'
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+alias ddg='w3m lite.duckduckgo.com'
+alias rmr='rm -r'
+alias cpr='cp -r'
+
 return 0
