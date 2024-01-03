@@ -1139,8 +1139,9 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+begin_src emacs-lisp
   (use-package flyspell
     :hook ((text-mode . flyspell-mode)
-	   (prog-mode . flyspell-prog-mode))
-    :custom (flyspell-auto-correct-binding "C-x C-j"))
+           (prog-mode . flyspell-prog-mode))
+    ;; :custom (flyspell-auto-correct-binding "C-x C-j")
+    )
 
   (use-package writegood-mode
     :ensure t)
