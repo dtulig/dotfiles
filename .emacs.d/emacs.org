@@ -219,6 +219,8 @@ This configuration overhauls the keybindings with evil-mode. Two important notes
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-M-h") 'backward-kill-word)
+  ; use ibuffer instead of list-buffers
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
 
   (use-package evil
     :ensure t
@@ -249,7 +251,8 @@ This configuration overhauls the keybindings with evil-mode. Two important notes
     (evil-collection-init 'w3m)
     (evil-collection-init 'imenu)
     (evil-collection-init 'sly)
-    (evil-collection-init 'imenu-list))
+    (evil-collection-init 'imenu-list)
+    (evil-collection-init 'ibuffer))
 
 #+end_src
 * Expanded UI Configuration
