@@ -9,7 +9,7 @@ else
     exit 1
 fi
 
-EXCLUDE=".cache .local .cargo .mozilla .npm .nvm .poetry .pyenv .rustup .sdkman .thunderbird .var qemu"
+EXCLUDE=".cache .local .cabal .cargo .gradle .m2 .mozilla .npm .nvm .poetry .pyenv .rustup .sdkman .stack .thunderbird .var qemu go"
 EXCLUDE_ARR=(${EXCLUDE})
 
 EXCLUDE_P=$(printf -- " --exclude ${BACKUP_DIR}/%s" "${EXCLUDE_ARR[@]}")
