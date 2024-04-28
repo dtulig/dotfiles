@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export RESTIC_COMPRESSION=max
+
 if [ -f /home/dtulig/.env-restic ]; then
     source /home/dtulig/.env-restic
 else
@@ -7,7 +9,7 @@ else
     exit 1
 fi
 
-EXCLUDE=".cache .local .cargo .mozilla .npm .nvm .poetry .pyenv .rustup .sdkman .thunderbird"
+EXCLUDE=".cache .local .cargo .mozilla .npm .nvm .poetry .pyenv .rustup .sdkman .thunderbird .var qemu"
 EXCLUDE_ARR=(${EXCLUDE})
 
 EXCLUDE_P=$(printf -- " --exclude ${BACKUP_DIR}/%s" "${EXCLUDE_ARR[@]}")
