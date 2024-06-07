@@ -121,6 +121,15 @@ For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available 
     :init
     (midnight-delay-set 'midnight-delay "2:30am"))
 #+end_src
+
+** Electric Pair
+#+begin_src emacs-lisp
+  (use-package elec-pair
+    :ensure t
+    :demand t
+    :config
+    (electric-pair-mode 1))
+#+end_src
 * Basic UI Configuration
 ** Line Numbers
 I want line numbers by default. A few modes will have the line numbers gutter disabled. Additionally, this turns on column numbers in the status bar.
