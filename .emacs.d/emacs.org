@@ -955,13 +955,29 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+begin_src emacs-lisp
   (use-package eglot
     :ensure t
-    :hook ((rustic-mode . eglot-ensure))
-    :init
-    ;(setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
+    :hook ((rustic-mode . eglot-ensure)
+           (python-mode . dt/python-eglot-mode-setup))
+    :bind (:map eglot-mode-map
+                ("C-c l a a" . eglot-code-actions)
+                ("C-c l r" . eglot-rename)
+                ("C-c l f" . eglot-format-buffer))
+    ;; :init
+    ;; (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
     :config
     (setq eglot-workspace-configuration
           '((:rust-analyzer . (:cargo (:allTargets t)
-                                      :check (:allFeatures t))))))
+                                      :check (:allFeatures t)))
+            ;; (:pylsp . (:configurationSources ["flake8" "black"]
+            ;;            :plugins (:pycodestyle (:enabled :json-false)
+            ;;                                   :mccabe (:enabled :json-false)
+            ;;                                   :pyflakes (:enabled :json-false)
+            ;;                                   :flake8 (:enabled t)
+            ;;                                   :pydocstyle (:enabled :json-false) ; reconsider
+            ;;                                   :yapf (:enabled :json-false)
+            ;;                                   :autopep8 (:enabled :json-false)
+            ;;                                   :black (:enabled t)
+            ;;                                   :rope (:enabled t)))))
+          )))
 #+end_src
 ** Company Mode for completions
 #+begin_src emacs-lisp
@@ -1052,6 +1068,9 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 
 #+end_src
 *** Python
+
+Install python-lsp-server.
+
 #+begin_src emacs-lisp
   ;; (defun dt/python-lsp-mode-setup ()
   ;;   (when (stringp (poetry-find-project-root))
@@ -1062,6 +1081,12 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   ;; (use-package lsp-pyright
   ;;   :ensure t
   ;;   :hook (python-mode . dt/python-lsp-mode-setup))
+
+  (defun dt/python-eglot-mode-setup ()
+    (when (stringp (poetry-find-project-root))
+      (poetry-venv-workon))
+    (require 'eglot)
+    (eglot-ensure))
 
   (use-package poetry
     :ensure t)
