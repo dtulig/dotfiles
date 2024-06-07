@@ -1135,6 +1135,11 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
                                           (additional-movement normal visual motion)
                                           (slurp/barf-cp normal))))
 #+end_src
+*** C / C++
+#+begin_src emacs-lisp
+  (setq-default c-basic-offset 4)
+  (setq-default c-default-style "k&r")
+#+end_src
 * Writing
 #+begin_src emacs-lisp
   (use-package flyspell
