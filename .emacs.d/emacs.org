@@ -1117,7 +1117,10 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 *** Common Lisp
 #+begin_src emacs-lisp
   (use-package sly
-    :ensure t)
+    :ensure t
+    :config
+    (setq sly-lisp-implementations
+          '((sbcl ("/usr/bin/sbcl" "--dynamic-space-size" "8192")))))
 
   (use-package lispy
     :ensure t)
