@@ -261,6 +261,7 @@ This configuration overhauls the keybindings with evil-mode. Two important notes
     (evil-collection-init 'imenu)
     (evil-collection-init 'sly)
     (evil-collection-init 'imenu-list)
+    (evil-collection-init 'xref)
     (evil-collection-init 'ibuffer))
 
 #+end_src
@@ -952,26 +953,15 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 * Development
 ** IDE Features with lsp-mode
 #+begin_src emacs-lisp
-  (defun dt/lsp-mode-setup ()
-    (lsp-headerline-breadcrumb-mode))
-
-  ;;TODO(dtulig): Consider lsp-ivy
-  (use-package lsp-mode
+  (use-package eglot
     :ensure t
-    :after company
-    :commands lsp
-    :init (setq lsp-keymap-prefix "C-c l")
-    ;; :bind (:map lsp-mode-map
-    ;; 	      ("<tab>" . company-indent-or-complete-common))
-    :hook (lsp-mode . dt/lsp-mode-setup)
+    :hook ((rustic-mode . eglot-ensure))
+    :init
+    ;(setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
     :config
-    (setq lsp-keep-workspace-alive 'nil)
-    (setq rustic-lsp-server 'rust-analyzer)
-    (setq lsp-rust-rls-server-command '(rust-analyzer))
-    (setq lsp-rust-analyzer-cargo-all-targets t)
-    (setq lsp-rust-all-features t)
-    (setq lsp-completion-provider :none))
-
+    (setq eglot-workspace-configuration
+          '((:rust-analyzer . (:cargo (:allTargets t)
+                                      :check (:allFeatures t))))))
 #+end_src
 ** Company Mode for completions
 #+begin_src emacs-lisp
@@ -1029,8 +1019,11 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+end_src
 ** Flycheck
 #+begin_src emacs-lisp
-  (use-package flycheck
-    :ensure t)
+  (use-package flymake
+    :ensure t
+    :bind (:map flymake-mode-map
+                ("M-n" . flymake-goto-next-error)
+                ("M-p" . flymake-goto-prev-error)))
 #+end_src
 ** Language Support
 #+begin_src emacs-lisp
@@ -1054,23 +1047,21 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :after projectile
     :ensure t
     :hook ((rustic-mode . electric-pair-mode)
-	   (rustic-mode . auto-revert-mode))
-    :config
-    (require 'dap-gdb-lldb)
-    (dap-gdb-lldb-setup))
+           (rustic-mode . auto-revert-mode))
+    :custom (rustic-lsp-client 'eglot))
 
 #+end_src
 *** Python
 #+begin_src emacs-lisp
-  (defun dt/python-lsp-mode-setup ()
-    (when (stringp (poetry-find-project-root))
-      (poetry-venv-workon))
-    (require 'lsp-pyright)
-    (lsp-deferred))
+  ;; (defun dt/python-lsp-mode-setup ()
+  ;;   (when (stringp (poetry-find-project-root))
+  ;;     (poetry-venv-workon))
+  ;;   (require 'lsp-pyright)
+  ;;   (lsp-deferred))
 
-  (use-package lsp-pyright
-    :ensure t
-    :hook (python-mode . dt/python-lsp-mode-setup))
+  ;; (use-package lsp-pyright
+  ;;   :ensure t
+  ;;   :hook (python-mode . dt/python-lsp-mode-setup))
 
   (use-package poetry
     :ensure t)
@@ -1096,29 +1087,23 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   ;;   :ensure t)
   (setq js-indent-level 2)
 
-  (use-package dap-mode
-    :ensure t)
-
   (use-package typescript-mode
     :ensure t
-    :hook (typescript-mode . lsp)
-    :custom (typescript-indent-level 2)
-    :config
-    (require 'dap-node)
-    (dap-node-setup))
+    :hook (typescript-mode . eglot-ensure)
+    :custom (typescript-indent-level 2))
 #+end_src
 *** Web
 #+begin_src emacs-lisp
   (use-package web-mode
     :ensure t
     :mode (("\\.liquid\\'" . web-mode)
-	   ("\\.jinja2\\'". web-mode)
-	   ("\\.j2\\'". web-mode)
-	   ("\\.html\\'". web-mode)
-	   ("\\.tsx\\'" . typescript-tsx-mode))
+           ("\\.jinja2\\'". web-mode)
+           ("\\.j2\\'". web-mode)
+           ("\\.html\\'". web-mode)
+           ("\\.tsx\\'" . typescript-tsx-mode))
     :hook
-    ((typescript-tsx-mode . lsp)
-     ;(add-to-list web-mode-engine-alist '("django" . "\\.html\\'"))
+    ((typescript-tsx-mode . eglot-ensure)
+     ;; (add-to-list web-mode-engine-alist '("django" . "\\.html\\'"))
      )
     :init
     (define-derived-mode typescript-tsx-mode web-mode "TypeScript-tsx")
