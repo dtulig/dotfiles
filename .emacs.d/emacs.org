@@ -923,8 +923,12 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :ensure t
     :after org evil
     :hook (org-mode . (lambda () evil-org-mode))
+    :config)
+
+  (use-package evil-org-agenda
+    :ensure nil
+    :after evil-org
     :config
-    (require 'evil-org-agenda)
     (evil-org-agenda-set-keys)
     (evil-define-key 'motion org-agenda-mode-map
       "so" 'org-save-all-org-buffers
