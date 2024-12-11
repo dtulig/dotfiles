@@ -36,5 +36,11 @@ trap 'cleanup; exit 1' INT TERM
 # restic
 restic -r ${BACKUP_REPO} backup ${BACKUP_DIR} ${EXCLUDE_P} --verbose
 
+restic cache --cleanup
+
+if [ "${BACKUP_PRUNE}" = "1" ]; then
+    restic -r ${BACKUP_REPO} forget --keep-within 1y --prune
+fi
+
 # remove lock file
 cleanup
