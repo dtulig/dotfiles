@@ -367,17 +367,18 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-refile-use-outline-path 'nil)
   (setq org-agenda-clockreport-parameter-plist
-	(quote (:link t :fileskip0 t)))
+        (quote (:link t :fileskip0 t)))
   (setq org-clock-in-resume t)
   (setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
   (setq org-clock-into-drawer t)
   (setq org-clock-out-remove-zero-time-clocks t)
   (setq org-clock-out-when-done t)
   (setq org-refile-targets (quote ((nil :maxlevel . 3)
-				   (org-agenda-files :maxlevel . 3))))
+        			   (org-agenda-files :maxlevel . 3))))
   ;; Allows text under org headlines to start at the far left
   (setq org-adapt-indentation nil)
   (setq org-default-priority ?C)
+  (setq org-id-link-to-org-use-id t)
 #+end_src
 ** Todo Keywords and States Configuration
 #+begin_src emacs-lisp
