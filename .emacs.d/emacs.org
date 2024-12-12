@@ -359,6 +359,18 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   ;;TODO(dtulig): ivy-rich
   ;;TODO(dtulig): helpful (and bind counsel)
 #+end_src
+* LLM
+#+begin_src emacs-lisp
+  (use-package gptel
+    :ensure t
+    :config
+    (setq
+     gptel-model 'mistral-nemo
+     gptel-backend (gptel-make-ollama "Ollama"
+                     :host "localhost:11434"
+                     :stream t
+                     :models '("qwen2.5-coder:7b" "mistral-nemo"))))
+#+end_src
 * Org Mode
 ** General Settings
 #+begin_src emacs-lisp
