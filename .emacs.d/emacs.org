@@ -202,7 +202,7 @@ I want line numbers by default. A few modes will have the line numbers gutter di
 ** Font faces for todo, etc
 In programming modes, TODO and a few other keywords are useful for making notes. This sets up faces and styles for those keywords in the specified fixme modes.
 #+begin_src emacs-lisp
-  (setq fixme-modes '(rust-mode c++-mode c-mode emacs-lisp-mode rustic-mode python-mode))
+  (setq fixme-modes '(rust-mode c++-mode c-mode emacs-lisp-mode rustic-mode python-mode terraform-mode))
   (make-face 'font-lock-fixme-face)
   (make-face 'font-lock-study-face)
   (make-face 'font-lock-important-face)
@@ -1181,6 +1181,16 @@ Install python-lsp-server.
 #+begin_src emacs-lisp
   (setq-default c-basic-offset 4)
   (setq-default c-default-style "k&r")
+#+end_src
+*** Terraform
+#+begin_src emacs-lisp
+  (use-package terraform-mode
+    :ensure t
+    :custom (terraform-format-on-save-mode t)
+    :hook (terraform-mode-hook . dt/terraform-mode-init)
+    :config
+    (defun dt/terraform-mode-init ()
+      (outline-minor-mode 1)))
 #+end_src
 * Writing
 #+begin_src emacs-lisp
