@@ -1207,6 +1207,12 @@ Install python-lsp-server.
   ;;                                             (:stan (:globalOn :json-false)
   ;;                                                    :ghcide-code-actions-fill-holes (:enabled t))))))))
 #+end_src
+
+*** Zig
+
+#+begin_src emacs-lisp
+  (use-package zig-mode
+    :ensure t)
 #+end_src
 * Writing
 #+begin_src emacs-lisp
