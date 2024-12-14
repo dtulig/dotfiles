@@ -100,4 +100,7 @@ alias ddg='w3m lite.duckduckgo.com'
 alias rmr='rm -r'
 alias cpr='cp -r'
 
+[ -f "/home/dtulig/.ghcup/env" ] && . "/home/dtulig/.ghcup/env" # ghcup-env
+
 return 0
+
