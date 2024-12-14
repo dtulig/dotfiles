@@ -1182,6 +1182,7 @@ Install python-lsp-server.
   (setq-default c-basic-offset 4)
   (setq-default c-default-style "k&r")
 #+end_src
+
 *** Terraform
 #+begin_src emacs-lisp
   (use-package terraform-mode
@@ -1191,6 +1192,7 @@ Install python-lsp-server.
     :config
     (defun dt/terraform-mode-init ()
       (outline-minor-mode 1)))
+#+end_src
 
 *** Haskell
 
@@ -1214,6 +1216,7 @@ Install python-lsp-server.
   (use-package zig-mode
     :ensure t)
 #+end_src
+
 * Writing
 #+begin_src emacs-lisp
   (use-package flyspell
