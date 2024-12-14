@@ -1145,7 +1145,7 @@ Install python-lsp-server.
            ("\\.tsx\\'" . typescript-tsx-mode))
     :hook
     ((typescript-tsx-mode . eglot-ensure)
-     ;; (add-to-list web-mode-engine-alist '("django" . "\\.html\\'"))
+     (setq web-mode-engines-alist '(("django" . "\\.html\\'")))
      )
     :init
     (define-derived-mode typescript-tsx-mode web-mode "TypeScript-tsx")
