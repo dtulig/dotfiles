@@ -120,4 +120,4 @@ delete_symlink_if_exists $HOME/bin/emc
 symlink $DOTFILES_DIR/bin/emc $HOME/bin/emc
 
 delete_symlink_if_exists $HOME/bin/backup_restic.sh
-symlink $DOTFILES_DIR/bin/emc $HOME/bin/backup_restic.sh
+symlink $DOTFILES_DIR/bin/backup_restic.sh $HOME/bin/backup_restic.sh
