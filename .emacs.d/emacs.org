@@ -571,61 +571,76 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     (org-close-all-org-buffers)
     (org-agenda-redo t))
 
+  (defun dt/org-ql-project-todo-excludes ()
+    '(and (todo)
+          (not (todo "SOMEDAY"))
+          (not (todo "CANCELLED"))
+          (not (todo "DELEGATED"))
+          (not (todo "DONE"))
+          (not (tags "SOMEDAY"))
+          (not (tags "HOLD"))))
+
   ;; I liked http://doc.norang.ca/org-mode.html#WhatDoIWorkOnNext,
   ;; taking some of that.
   (setq org-agenda-custom-commands
         (quote (("A" "Agenda"
                  ((agenda "" nil)
-                  (tags-todo "+PRIORITY={A\\|B}"
-                    ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                     (org-agenda-overriding-header "High-priority unfinished tasks:")))
-                  (tags-todo "-SOMEDAY-CANCELLED-DELEGATED/!"
-                             ((org-agenda-overriding-header "Stuck Projects")
-                              (org-agenda-skip-function 'bh/skip-non-stuck-projects)
-                              (org-agenda-sorting-strategy
-                               '(category-keep))))
+                  (org-ql-block '(and (or (priority "A") (priority "B"))
+                                      (not (or (todo "DONE") (todo "CANCELLED"))))
+                                ((org-ql-block-header "High-priority unfinished tasks")))
+                  (org-ql-block (append (dt/org-ql-project-todo-excludes)
+                                        '((and (descendants
+                                                (or (todo)
+                                                    (todo "CANCELLED")
+                                                    (todo "DONE")))
+                                               (not (descendants
+                                                     (todo "NEXT"))))))
+                                ((org-ql-block-header "Stuck Projects")))
                   (todo "DELEGATED|WAITING"
                              ((org-agenda-overriding-header "Delegated / Waiting")
                               (org-agenda-sorting-strategy
                                '(priority-down category-keep))))
-                  (tags-todo "-SOMEDAY-HOLD-CANCELLED/!"
-                             ((org-agenda-overriding-header "Projects")
-                              (org-agenda-skip-function 'bh/skip-non-projects)
-                              (org-tags-match-list-sublevels 'indented)
-                              (org-agenda-sorting-strategy
-                               '(category-keep))))
-                  (tags-todo "-SOMEDAY-HOLD-CANCELLED/!NEXT"
-                             ((org-agenda-overriding-header (concat "Project Next Tasks"
-                                                                    (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                        ""
-                                                                      " (including WAITING and SCHEDULED tasks)")))
-                              (org-agenda-skip-function 'bh/skip-projects-and-habits-and-single-tasks)
-                              (org-tags-match-list-sublevels t)
-                              (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-sorting-strategy
-                               '(todo-state-down effort-up category-keep))))
-                  (tags-todo "-SOMEDAY-REFILE-CANCELLED-WAITING-HOLD/!"
-                             ((org-agenda-overriding-header (concat "Project Subtasks"
-                                                                    (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                        ""
-                                                                      " (including WAITING and SCHEDULED tasks)")))
-                              (org-agenda-skip-function 'bh/skip-non-project-tasks)
-                              (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-sorting-strategy
-                               '(category-keep))))
-                  (tags-todo "-SOMEDAY-HOLD-CANCELLED/!NEXT"
-                             ((org-agenda-overriding-header "Single Tasks")
-                              (org-agenda-skip-function 'dt/skip-non-single-tasks)
-                              (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                              (org-agenda-sorting-strategy
-                               '(category-keep)))))
+                  (org-ql-block (append (dt/org-ql-project-todo-excludes)
+                                        '((and (descendants
+                                                (todo "NEXT")))))
+                                ((org-ql-block-header "Projects")))
+                  (org-ql-block '(and (todo "NEXT")
+                                      (ancestors (and (todo "TODO")
+                                                      (not (tags "SOMEDAY")))))
+                                ((org-ql-block-header "Project Next Tasks")))
+                  (org-ql-block '(and (or (todo "TODO")
+                                          (todo "DELEGATED"))
+                                      (ancestors (and (todo "TODO")
+                                                      (not (tags "SOMEDAY")))))
+                                ((org-ql-block-header "Project Subtasks")))
+                  (org-ql-block '(and (todo "NEXT")
+                                      (not (tags "SOMEDAY"))
+                                      (not (children))
+                                      (not (ancestors (todo))))
+                                ((org-ql-block-header "Single Tasks"))))
                  nil))))
+
+  (defun dt/org-ql-view--format-element (orig-fun &rest args)
+    "This function will intercept the original function and
+  add the category to the result.
+
+  ARGS is `element' in `org-ql-view--format-element'"
+    (if (not args)
+        ""
+      (let* ((element args)
+             (properties (cadar element))
+             (result (apply orig-fun element))
+             (smt "")
+             (category (org-entry-get (plist-get properties :org-marker) "CATEGORY")))
+        (if (> (length category) 15)
+            (setq category (substring category 0 14)))
+        (if (< (length category) 15)
+            (setq smt (make-string (- 15 (length category)) ?\s)))
+        (org-add-props
+         (format "  %-8s %s" (concat category ":" smt) result)
+            (text-properties-at 0 result)))))
+
+  (advice-add 'org-ql-view--format-element :around #'dt/org-ql-view--format-element)
 
 #+end_src
 ** Norang Customizations
@@ -909,6 +924,10 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   (use-package org
     :ensure t
     :pin gnu)
+
+  (use-package org-ql
+    :ensure t
+    :after org)
 
   (use-package org-contrib
     :ensure t
