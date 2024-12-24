@@ -929,9 +929,12 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
     :ensure t
     :after org)
 
+  (use-package ob-http
+    :ensure t)
+
   (use-package org-contrib
     :ensure t
-    :after org midnight
+    :after org midnight ob-http
     :pin nongnu
     :demand t
     :bind (("C-c s" . org-store-link)
@@ -949,7 +952,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
      'org-babel-load-languages
      '((emacs-lisp . t)
        (python . t)
-       (shell . t))))
+       (shell . t)
+       (http . t))))
 
   (use-package evil-org
     :ensure t
