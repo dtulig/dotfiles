@@ -11,3 +11,9 @@
 /.xmonad/xmonad.errors
 /.xmonad/xmonad.hi
 /.xmonad/xmonad.o
+/.emacs.d/.cache/
+/.emacs.d/.dap-breakpoints
+/.emacs.d/.extension/
+/.emacs.d/eln-cache/
+/.emacs.d/projectile.cache
+/.emacs.d/projects
