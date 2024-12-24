@@ -59,8 +59,6 @@ fi
 # mspyls on linux can't find the icu lib
 export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
-export PATH="$HOME/.poetry/bin:$PATH"
-
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR" ]; then
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
