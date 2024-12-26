@@ -17,3 +17,4 @@
 /.emacs.d/eln-cache/
 /.emacs.d/projectile.cache
 /.emacs.d/projects
+/.emacs.d/tree-sitter/

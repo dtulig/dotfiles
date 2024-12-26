@@ -202,19 +202,25 @@ I want line numbers by default. A few modes will have the line numbers gutter di
 ** Font faces for todo, etc
 In programming modes, TODO and a few other keywords are useful for making notes. This sets up faces and styles for those keywords in the specified fixme modes.
 #+begin_src emacs-lisp
-  (setq fixme-modes '(rust-mode c++-mode c-mode emacs-lisp-mode rustic-mode python-mode terraform-mode))
+  (setq fixme-modes '(rust-mode
+                      c++-mode
+                      c-mode
+                      emacs-lisp-mode
+                      rustic-mode
+                      python-mode python-ts-mode
+                      terraform-mode))
   (make-face 'font-lock-fixme-face)
   (make-face 'font-lock-study-face)
   (make-face 'font-lock-important-face)
   (make-face 'font-lock-note-face)
   (mapc (lambda (mode)
-	  (font-lock-add-keywords
-	   mode
-	   '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
-	     ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
-	     ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
-	     ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
-	fixme-modes)
+          (font-lock-add-keywords
+           mode
+           '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
+             ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
+             ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
+             ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
+        fixme-modes)
   (modify-face 'font-lock-fixme-face "red" nil nil t nil t nil nil)
   (modify-face 'font-lock-study-face "orange" nil nil t nil t nil nil)
   (modify-face 'font-lock-important-face "orange" nil nil t nil t nil nil)
@@ -723,7 +729,8 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
   (use-package eglot
     :ensure t
     :hook ((rustic-mode . eglot-ensure)
-           (python-mode . dt/python-eglot-mode-setup))
+           (python-mode . dt/python-eglot-mode-setup)
+           (python-ts-mode . dt/python-eglot-mode-setup))
     :bind (:map eglot-mode-map
                 ("C-c l a a" . eglot-code-actions)
                 ("C-c l r" . eglot-rename)
@@ -858,6 +865,8 @@ Install python-lsp-server.
       (poetry-venv-workon))
     (require 'eglot)
     (eglot-ensure))
+
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 
   (use-package poetry
     :ensure t)
