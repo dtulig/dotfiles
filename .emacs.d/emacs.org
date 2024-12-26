@@ -688,6 +688,7 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
        (shell . t)
        (http . t))))
 
+  ;; https://github.com/Somelauw/evil-org-mode
   (use-package evil-org
     :ensure t
     :after org evil
