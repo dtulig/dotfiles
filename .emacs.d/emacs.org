@@ -794,7 +794,9 @@ A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This
 #+begin_src emacs-lisp
   (use-package project
     :ensure t
-    :bind-keymap ("C-c p" . project-prefix-map))
+    :bind-keymap ("C-c p" . project-prefix-map)
+    :config
+    (setq project-vc-extra-root-markers' (".project")))
 
   (use-package projectile
     :after counsel
