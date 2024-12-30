@@ -320,50 +320,69 @@ This is a great package that shows all completions as key chords are entered.
 #+end_src
 
 ** Ivy and Counsel
-A good tip for ivy is using C-c C-o which pulls an ivy frame into a buffer. This is nice for tools like grep or ag to take action on the full list.
-
 #+begin_src emacs-lisp
-  (use-package counsel
-    :after ivy
-    :ensure t
-    :demand t
-    :delight
-    :bind (("C-x C-f" . counsel-find-file)
-	   ("C-c i" . counsel-imenu)
-	   ("C-c g" . counsel-git)
-	   ("C-c j" . counsel-git-grep)
-	   ("C-c k" . counsel-ag)
-	   ("C-c o" . counsel-yank-pop)
-	   ([remap describe-function] . counsel-describe-function)
-	   ([remap describe-variable] . counsel-describe-variable))
-    :config (counsel-mode 1))
-
-  (use-package counsel-projectile
-    :after (counsel projectile)
+  (use-package marginalia
     :ensure t
     :config
-    (counsel-projectile-mode))
+    (marginalia-mode))
 
-  (use-package ivy
+  (use-package vertico
     :ensure t
     :delight
     :demand t
-    :bind (("C-x b" . ivy-switch-buffer)
-	   ("C-c v" . ivy-push-view)
-	   ("C-c V" . ivy-pop-view))
-    :config
-    (setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t)
-    (setq ivy-count-format "(%d/%d) ")
-    (ivy-mode 1))
+    :init
+    (vertico-mode))
 
-  (use-package swiper
-    :after ivy
+  (use-package consult
     :ensure t
-    :bind ("C-s" . swiper))
+    :demand t
+    :delight
+    :bind (("C-c i" . consult-imenu)
+           ("C-s" . consult-line)
+           ("C-c j" . consult-git-grep)
+           ("C-c k" . consult-ripgrep)
+           ("C-c o" . consult-yank-pop)))
 
-  ;;TODO(dtulig): ivy-rich
-  ;;TODO(dtulig): helpful (and bind counsel)
+
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+
+  (use-package embark
+    :ensure t
+
+    :bind
+    (("C-." . embark-act)
+     ("C-c C-o" . embark-dwim)
+     ("C-h B" . embark-bindings))
+
+    :init
+
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    ;; Show the Embark target at point via Eldoc. You may adjust the
+    ;; Eldoc strategy, if you want to see the documentation from
+    ;; multiple providers. Beware that using this can be a little
+    ;; jarring since the message shown in the minibuffer can be more
+    ;; than one line, causing the modeline to move up and down:
+
+    ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+    ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+    :config
+
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  (use-package embark-consult
+    :ensure t
+    :demand t
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 * LLM
 #+begin_src emacs-lisp
