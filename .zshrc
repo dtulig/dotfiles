@@ -98,7 +98,10 @@ alias ddg='w3m lite.duckduckgo.com'
 alias rmr='rm -r'
 alias cpr='cp -r'
 
+alias adl='ansible-doc --list'
+alias adls='ansible-doc --list | less -S'
+alias ad='ansible-doc'
+
 [ -f "/home/dtulig/.ghcup/env" ] && . "/home/dtulig/.ghcup/env" # ghcup-env
 
 return 0
-
