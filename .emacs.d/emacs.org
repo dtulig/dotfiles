@@ -675,7 +675,8 @@ This is a great package that shows all completions as key chords are entered.
 
   (use-package org
     :ensure t
-    :pin gnu)
+    :pin gnu
+    :bind (("C-c z" . org-toggle-link-display)))
 
   (use-package org-ql
     :ensure t
