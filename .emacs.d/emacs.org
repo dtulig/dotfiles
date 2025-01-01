@@ -917,8 +917,11 @@ Install python-lsp-server.
 
   (use-package typescript-mode
     :ensure t
-    :hook (typescript-mode . eglot-ensure)
-    :custom (typescript-indent-level 2))
+    :hook ((typescript-mode . eglot-ensure)
+           (typescript-ts-mode . eglot-ensure))
+    :custom (typescript-indent-level 2)
+    :init
+    (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode)))
 #+end_src
 *** Web
 #+begin_src emacs-lisp
