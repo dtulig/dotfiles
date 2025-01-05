@@ -39,7 +39,7 @@ restic -r ${BACKUP_REPO} backup ${BACKUP_DIR} ${EXCLUDE_P} --verbose
 restic cache --cleanup
 
 if [ "${BACKUP_PRUNE}" = "1" ]; then
-    restic -r ${BACKUP_REPO} forget --keep-within 1y --prune
+    restic -r ${BACKUP_REPO} forget  --keep-daily 30 --keep-weekly 12 --keep-monthly 24 --prune
 fi
 
 # remove lock file
