@@ -15,7 +15,7 @@ main = do
   xmproc <- spawnPipe "xmobar"
   xmonad $ ewmh def
        { modMask = mod4Mask
-       , terminal = "urxvt"
+       , terminal = "ghostty"
        , borderWidth = 2
        , normalBorderColor = "#5e81ac"
        , focusedBorderColor = "#88c0d0"

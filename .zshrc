@@ -104,4 +104,8 @@ alias ad='ansible-doc'
 
 [ -f "/home/dtulig/.ghcup/env" ] && . "/home/dtulig/.ghcup/env" # ghcup-env
 
+if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
+    export TERM=xterm-256color
+fi
+
 return 0
