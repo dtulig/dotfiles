@@ -394,7 +394,7 @@ This is a great package that shows all completions as key chords are entered.
      gptel-backend (gptel-make-ollama "Ollama"
                      :host "localhost:11434"
                      :stream t
-                     :models '("qwen2.5-coder:7b" "mistral-nemo"))))
+                     :models '("qwen2.5-coder:14b" "mistral-nemo"))))
 #+end_src
 * Org Mode
 ** General Settings
