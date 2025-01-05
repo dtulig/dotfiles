@@ -453,17 +453,17 @@ This is a great package that shows all completions as key chords are entered.
     "Create a name suitable for an org file from the last part of a file
     path."
     (let ((last (car (last (split-string (if (equal (substring path -1) "/")
-					     (substring path 0 -1) path) "/")))))
+        				     (substring path 0 -1) path) "/")))))
       (concat org-projects-dir "/"
-	      (downcase
-	       (replace-regexp-in-string
-		"\\." "-" (if (equal (substring last 0 1) ".")
-			      (substring last 1) last)))
-	      ".org")))
+              (downcase
+               (replace-regexp-in-string
+        	"\\." "-" (if (equal (substring last 0 1) ".")
+        		      (substring last 1) last)))
+              ".org")))
 
   (defun gf/project-org-file ()
     "Get the path of the org file for the current project."
-    (gf/create-org-path (projectile-project-root)))
+    (gf/create-org-path (cdr (project-current))))
 
   (defun gf/switch-to-project-org-file ()
     "Switch to the org file for the current project."
@@ -818,21 +818,6 @@ This is a great package that shows all completions as key chords are entered.
     :bind-keymap ("C-c p" . project-prefix-map)
     :config
     (setq project-vc-extra-root-markers' (".project")))
-
-  (use-package projectile
-    :after counsel
-    :ensure t
-    :bind-keymap ("C-c r" . projectile-command-map)
-    :init
-    (when (file-directory-p "~/workspace")
-      (setq projectile-project-search-path '("~/workspace")))
-    :config
-    (setq projectile-mode-line
-          '(:eval (format " Projectile[%s]"
-        		  (projectile-project-name))))
-    (setq projectile-completion-system 'counsel)
-    (setq projectile-switch-project-action 'counsel-projectile)
-    (projectile-mode +1))
 #+end_src
 ** Flycheck
 #+begin_src emacs-lisp
@@ -861,7 +846,6 @@ This is a great package that shows all completions as key chords are entered.
 #+begin_src emacs-lisp
   ;; This installed markdown mode, projectile
   (use-package rustic
-    :after projectile
     :ensure t
     :hook ((rustic-mode . electric-pair-mode)
            (rustic-mode . auto-revert-mode))
