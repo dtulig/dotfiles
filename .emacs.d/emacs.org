@@ -774,29 +774,40 @@ This is a great package that shows all completions as key chords are entered.
             ;;                                   :rope (:enabled t)))))
           )))
 #+end_src
-** Company Mode for completions
+** Corfu Mode for completions
 #+begin_src emacs-lisp
-  (use-package company
+  (use-package corfu
     :ensure t
     :demand t
-    :bind (("C-<tab>" . counsel-company))
-    ;; (:map company-active-map
-    ;; 	("<tab>" . company-complete-selection))
+    :bind (("C-<tab>" . corfu-next))
     :custom
-    (company-tooltip-align-annotations t)
-    (company-tooltip-flip-when-above t)
-    (company-require-match nil)
-    (company-minimum-prefix-length 1)
-    (company-show-numbers t)
-    ;(company-idle-delay nil)
-    ;(company-format-margin-function #'company-vscode-dark-icons-margin)
-    (company-occurrence-weight-function #'company-occurrence-prefer-any-closest)
-    (company-dabbrev-minimum-length 2)
-    (company-dabbrev-code-modes t)
-    (company-dabbrev-code-everywhere t)
-    ;; (company-backends '((company-capf company-yasnippet company-dabbrev-code)))
-    :config (global-company-mode 1))
+    (corfu-auto t)
+    (corfu-auto-delay 0.2)
+    (corfu-auto-prefix 1)
+    (corfu-cycle t)
+    (corfu-preselect-first t)
+    (corfu-popupinfo-mode t)
+    (completion-styles '(orderless))
+    :config
+    (global-corfu-mode 1))
 
+  (use-package cape
+    :ensure t
+    ;; :bind ("C-c p" . cape-prefix-map)
+    ;; :bind (("C-c p d" . cape-dabbrev)
+    ;;        ("C-c p h" . cape-history)
+    ;;        ("C-c p f" . cape-file)
+    ;;        ...)
+    :init
+    (add-hook 'completion-at-point-functions #'cape-dabbrev)
+    (add-hook 'completion-at-point-functions #'cape-file)
+    (add-hook 'completion-at-point-functions #'cape-elisp-block))
+
+  (use-package yasnippet-capf
+    :ensure t
+    :after cape
+    :init
+    (add-hook 'completion-at-point-functions #'yasnippet-capf))
 #+end_src
 ** Magit
 #+begin_src emacs-lisp
