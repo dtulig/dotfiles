@@ -819,7 +819,7 @@ This is a great package that shows all completions as key chords are entered.
     :config
     (setq project-vc-extra-root-markers' (".project")))
 #+end_src
-** Flycheck
+** Flymake
 #+begin_src emacs-lisp
   (use-package flymake
     :ensure t
