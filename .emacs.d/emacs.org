@@ -130,6 +130,10 @@ For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available 
     :config
     (electric-pair-mode 1))
 #+end_src
+** Dired
+#+begin_src emacs-lisp
+  (setq dired-dwim-target t)
+#+end_src
 * Basic UI Configuration
 ** Line Numbers
 I want line numbers by default. A few modes will have the line numbers gutter disabled. Additionally, this turns on column numbers in the status bar.
