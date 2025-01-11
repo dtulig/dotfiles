@@ -106,6 +106,8 @@ alias ad='ansible-doc'
 
 if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
     export TERM=xterm-256color
+    # all my themes are setup for 256
+    unset COLORTERM
 fi
 
 return 0
