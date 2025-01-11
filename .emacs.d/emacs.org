@@ -1051,7 +1051,7 @@ Some snippets from the yasnippet-snippets package depend on hooks. I want to ins
            ("C-c y r" . yas-reload-all)
            ("C-c y x" . yas-expand))
     :config
-    (when dt/config-yas-snippets-dir
+    (when (boundp 'dt/config-yas-snippets-dir)
       (add-to-list 'yas-snippet-dirs dt/config-yas-snippets-dir t))
     (yas-global-mode 1))
 
