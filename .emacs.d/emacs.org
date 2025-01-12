@@ -133,6 +133,7 @@ For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available 
 ** Dired
 #+begin_src emacs-lisp
   (setq dired-dwim-target t)
+  (setq dired-listing-switches "-alh")
 #+end_src
 * Basic UI Configuration
 ** Line Numbers
