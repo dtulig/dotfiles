@@ -96,6 +96,10 @@ For Mac OS X, exec-path-from-shell is needed. This makes sure PATH is available 
 
 #+end_src
 
+** Auto save visited files
+#+begin_src emacs-lisp
+  (auto-save-visited-mode 1)
+#+end_src
 ** Save a list of recent files visited
 #+begin_src emacs-lisp
   (recentf-mode 1)
