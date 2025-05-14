@@ -399,6 +399,7 @@ This is a great package that shows all completions as key chords are entered.
     (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 * LLM
+
 #+begin_src emacs-lisp
   (use-package gptel
     :ensure t
@@ -409,8 +410,19 @@ This is a great package that shows all completions as key chords are entered.
                      :host dt/gptel-host
                      :stream t
                      :protocol "http"
-                     :models '(qwen3 gemma))))
+                     :models '(qwen3 gemma qwencoder))))
 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package aider
+    :ensure t
+    :config
+    (setq aider-args '("--model" "openai/qwen3" "--editor-model" "openai/qwencoder" "--no-auto-accept-architect"))
+    (setenv "OPENAI_API_BASE" (concat "http://" dt/gptel-host "/v1"))
+    (setenv "OPENAI_API_KEY" "local")
+    (global-set-key (kbd "C-c g") 'aider-transient-menu))
+#+end_src
+
 * Org Mode
 ** General Settings
 #+begin_src emacs-lisp
