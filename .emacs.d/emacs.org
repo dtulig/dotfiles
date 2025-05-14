@@ -404,11 +404,12 @@ This is a great package that shows all completions as key chords are entered.
     :ensure t
     :config
     (setq
-     gptel-model 'mistral-nemo
-     gptel-backend (gptel-make-ollama "Ollama"
-                     :host "localhost:11434"
+     gptel-model 'qwen3
+     gptel-backend (gptel-make-openai "llama-cpp"
+                     :host dt/gptel-host
                      :stream t
-                     :models '("qwen2.5-coder:14b" "mistral-nemo" "phi4"))))
+                     :protocol "http"
+                     :models '(qwen3 gemma))))
 #+end_src
 * Org Mode
 ** General Settings
