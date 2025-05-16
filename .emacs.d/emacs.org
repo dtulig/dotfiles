@@ -417,7 +417,7 @@ This is a great package that shows all completions as key chords are entered.
   (use-package aider
     :ensure t
     :config
-    (setq aider-args '("--model" "openai/qwen3" "--editor-model" "openai/qwencoder" "--no-auto-accept-architect"))
+    (setq aider-args '("--model" "openai/qwen3" "--editor-model" "openai/qwencoder" "--no-auto-accept-architect" "--timeout" "1800" "--map-tokens" "2048"))
     (setenv "OPENAI_API_BASE" (concat "http://" dt/gptel-host "/v1"))
     (setenv "OPENAI_API_KEY" "local")
     (global-set-key (kbd "C-c g") 'aider-transient-menu))
