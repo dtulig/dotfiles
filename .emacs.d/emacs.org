@@ -222,7 +222,8 @@ In programming modes, TODO and a few other keywords are useful for making notes.
                       emacs-lisp-mode
                       rustic-mode
                       python-mode python-ts-mode
-                      terraform-mode))
+                      terraform-mode
+                      zig-mode))
   (make-face 'font-lock-fixme-face)
   (make-face 'font-lock-study-face)
   (make-face 'font-lock-important-face)
@@ -778,7 +779,8 @@ This is a great package that shows all completions as key chords are entered.
     :ensure t
     :hook ((rustic-mode . eglot-ensure)
            (python-mode . dt/python-eglot-mode-setup)
-           (python-ts-mode . dt/python-eglot-mode-setup))
+           (python-ts-mode . dt/python-eglot-mode-setup)
+           (go-mode . eglot-ensure))
     :bind (:map eglot-mode-map
                 ("C-c l a a" . eglot-code-actions)
                 ("C-c l r" . eglot-rename)
@@ -955,11 +957,11 @@ Install python-lsp-server.
            ("\\.jinja2\\'". web-mode)
            ("\\.j2\\'". web-mode)
            ("\\.html\\'". web-mode)
-           ("\\.tsx\\'" . typescript-tsx-mode))
+           ("\\.tsx\\'" . tsx-ts-mode))
     :hook
-    ((typescript-tsx-mode . eglot-ensure))
+    ((tsx-ts-mode . eglot-ensure))
     :init
-    (define-derived-mode typescript-tsx-mode web-mode "TypeScript-tsx")
+    (define-derived-mode tsx-ts-mode web-mode "TypeScript-tsx")
     :custom
     (setq web-mode-engines-alist '(("django" . "\\.html\\'")))
     (web-mode-markup-indent-offset 2)
@@ -1028,6 +1030,14 @@ Install python-lsp-server.
   (use-package zig-mode
     :ensure t)
 #+end_src
+*** Go
+#+begin_src emacs-lisp
+  (use-package go-mode
+    :ensure t
+    :config
+    (setq-local tab-width 4))
+#+end_src
+
 
 * Writing
 #+begin_src emacs-lisp
