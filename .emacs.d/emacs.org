@@ -780,7 +780,9 @@ This is a great package that shows all completions as key chords are entered.
     :hook ((rustic-mode . eglot-ensure)
            (python-mode . dt/python-eglot-mode-setup)
            (python-ts-mode . dt/python-eglot-mode-setup)
-           (go-mode . eglot-ensure))
+           (go-mode . eglot-ensure)
+           (kotlin-mode . eglot-ensure)
+           (kotlin-ts-mode . eglot-ensure))
     :bind (:map eglot-mode-map
                 ("C-c l a a" . eglot-code-actions)
                 ("C-c l r" . eglot-rename)
@@ -788,6 +790,8 @@ This is a great package that shows all completions as key chords are entered.
     ;; :init
     ;; (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
     :config
+    (add-to-list 'eglot-server-programs
+                 '((kotlin-ts-mode kotlin-mode) . ("bash" "~/workspace/kotlin-lsp/kotlin-lsp.sh" "--stdio")))
     (setq eglot-workspace-configuration
           '((:rust-analyzer . (:cargo (:allTargets t)
                                       :check (:allFeatures t)))
@@ -1038,6 +1042,14 @@ Install python-lsp-server.
     (setq-local tab-width 4))
 #+end_src
 
+
+*** Kotlin
+#+begin_src emacs-lisp
+  (use-package kotlin-mode
+    :ensure t
+    :hook ((kotlin-mode . eglot-ensure)
+           (kotlin-ts-mode . eglot-ensure)))
+#+end_src
 
 * Writing
 #+begin_src emacs-lisp
