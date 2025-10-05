@@ -405,20 +405,26 @@ This is a great package that shows all completions as key chords are entered.
   (use-package gptel
     :ensure t
     :config
+    (require 'gptel-org)
     (setq
-     gptel-model 'qwen3
+     gptel-org-branching-context t
+     gptel-model 'qwen3-30b-instruct
      gptel-backend (gptel-make-openai "llama-cpp"
                      :host dt/gptel-host
                      :stream t
                      :protocol "http"
-                     :models '(qwen3 gemma qwencoder))))
+                     :models '(gemma-27b qwen3-30b-instruct qwen3-30b-thinking qwen3-30b-coder qwen3-4b-instruct qwen3-4b-thinking glm45-air gpt-oss-120b gpt-oss-20b))))
 #+end_src
 
 #+begin_src emacs-lisp
   (use-package aider
     :ensure t
     :config
-    (setq aider-args '("--model" "openai/qwen3" "--editor-model" "openai/qwencoder" "--no-auto-accept-architect" "--timeout" "1800" "--map-tokens" "2048"))
+    (setq aider-args '("--model" "openai/gpt-oss-120b" "--no-auto-accept-architect" "--timeout" "3600" "--map-tokens" "4096" "--editor-model" "openai/qwen3-30b-coder"
+  "--no-auto-commit" "--edit-format" "diff" "--editor-edit-format" "diff"))
+    ;; (setq aider-args '("--model" "openai/qwen3-30b-instruct" "--editor-model"
+  ;; "openai/qwen3-30b-coder" "--no-auto-accept-architect" "--timeout" "3600" "--map-tokens" "2048"
+  ;; "--no-auto-commit" "--edit-format" "diff" "--editor-edit-format" "diff"))
     (setenv "OPENAI_API_BASE" (concat "http://" dt/gptel-host "/v1"))
     (setenv "OPENAI_API_KEY" "local")
     (global-set-key (kbd "C-c g") 'aider-transient-menu))
