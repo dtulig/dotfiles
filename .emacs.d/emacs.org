@@ -867,7 +867,7 @@ This is a great package that shows all completions as key chords are entered.
     :ensure t
     :bind-keymap ("C-c p" . project-prefix-map)
     :config
-    (setq project-vc-extra-root-markers' (".project"))
+    (setq project-vc-extra-root-markers '(".project"))
     (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
     (keymap-set project-prefix-map "m" #'magit-project-status))
 #+end_src
