@@ -797,7 +797,7 @@ This is a great package that shows all completions as key chords are entered.
     ;; (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
     :config
     (add-to-list 'eglot-server-programs
-                 '((kotlin-ts-mode kotlin-mode) . ("bash" "~/workspace/kotlin-lsp/kotlin-lsp.sh" "--stdio")))
+                 '((kotlin-ts-mode kotlin-mode) . ("kotlin-lsp.sh" "--stdio")))
     (setq eglot-workspace-configuration
           '((:rust-analyzer . (:cargo (:allTargets t)
                                       :check (:allFeatures t)))
