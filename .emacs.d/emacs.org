@@ -555,54 +555,54 @@ This is a great package that shows all completions as key chords are entered.
           `(("t" "Tasks")
             ("ts" "Steadily" entry
              (file+headline ,org-default-steadily-notes-file "Tasks")
-             "* TODO %^{Description}\n  %U\n  %?"
+             "* TODO %^{Description}\n%U\n%?"
              :clock-in t :clock-resume t :empty-lines 1)
             ("tp" "Personal" entry
              (file+headline ,org-default-personal-notes-file "Tasks")
-             "* TODO %^{Description}\n  %U\n  %?"
+             "* TODO %^{Description}\n%U\n%?"
              :clock-in t :clock-resume t)
 
             ("m" "Meeting")
             ("ms" "Steadily" entry
              (file+headline ,org-default-steadily-notes-file "Meetings")
-             "* MEETING with %^{Description} :MEETING:\n  %U\n  %?"
+             "* MEETING with %^{Description} :MEETING:\n%U\n%?"
              :clock-in t :clock-resume t)
             ("mp" "Personal" entry
              (file+headline ,org-default-personal-notes-file "Meetings")
-             "* MEETING with %^{Description} :MEETING:\n  %U\n  %?"
+             "* MEETING with %^{Description} :MEETING:\n%U\n%?"
              :clock-in t :clock-resume t)
 
             ("r" "Respond")
             ("rs" "Steadily" entry
              (file+headline ,org-default-steadily-notes-file "Tasks")
-             "* NEXT Respond to %:from on %:subject\n  SCHEDULED: %t\n  %U\n  %a"
+             "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a"
              :clock-in t :clock-resume t :immediate-finish t)
             ("rp" "Personal" entry
              (file+headline ,org-default-personal-notes-file "Tasks")
-             "* NEXT Respond to %:from on %:subject\n  SCHEDULED: %t\n  %U\n  %a"
+             "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a"
              :clock-in t :clock-resume t :immediate-finish t)
 
             ("n" "Note")
             ("ns" "Steadily" entry
              (file+headline ,org-default-steadily-notes-file "Notes")
-             "* %? :NOTE:\n  %U"
+             "* %? :NOTE:\n%U"
              :clock-in t :clock-resume t)
             ("np" "Personal" entry
              (file+headline ,org-default-personal-notes-file "Notes")
-             "* %? :NOTE:\n  %U"
+             "* %? :NOTE:\n%U"
              :clock-in t :clock-resume t)
 
             ("P" "Todo (Project)" entry
              (file+headline dt/project-org-file "Tasks")
-             "* TODO %^{Description}\n  %U\n  %?"
+             "* TODO %^{Description}\n%U\n%?"
              :clock-in t :clock-resume t)
             ("N" "Project Note" entry
              (file+headline dt/project-org-file "Notes")
-             "* %?\n  %U")
+             "* %?\n%U")
 
             ("j" "Journal" entry
              (file+olp+datetree ,org-default-journal-file)
-             "* %^{Title}\n  %U\n  %?"
+             "* %^{Title}\n%U\n%?"
              :clock-in t :clock-resume t)
             ("l" "Log Time" entry
              (file+olp+datetree ,(dt/org--expand "timelog.org"))
@@ -741,6 +741,7 @@ This is a great package that shows all completions as key chords are entered.
     :after (org evil)
     :hook (org-mode . evil-org-mode)
     :config
+    (require 'evil-org-agenda)
     (evil-org-agenda-set-keys)
     (evil-define-key 'motion org-agenda-mode-map
       "so" #'org-save-all-org-buffers
