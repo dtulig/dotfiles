@@ -487,7 +487,8 @@ This is a great package that shows all completions as key chords are entered.
           (concat dt/org-directory "steadily/dates/"
                   (downcase (format-time-string "%Y-%B-w.org"))))
     (setq org-default-journal-file
-          (concat dt/org-directory "journal.org")))
+          (concat dt/org-directory "journal.org"))
+    (dt/org-setup-capture-templates))
 #+end_src
 
 ** Core Setup
