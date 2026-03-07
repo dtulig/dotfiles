@@ -408,12 +408,12 @@ This is a great package that shows all completions as key chords are entered.
     (require 'gptel-org)
     (setq
      gptel-org-branching-context t
-     gptel-model 'qwen3-30b-instruct
+     gptel-model 'qwen35-27b
      gptel-backend (gptel-make-openai "llama-cpp"
                      :host dt/gptel-host
                      :stream t
                      :protocol "http"
-                     :models '(gemma-27b qwen3-30b-instruct qwen3-30b-thinking qwen3-30b-coder qwen3-4b-instruct qwen3-4b-thinking glm45-air gpt-oss-120b gpt-oss-20b))))
+                     :models '(gemma-27b qwen35-27b qwen35-35b-a3b qwen-coder-next qwen3-4b-instruct qwen3-4b-thinking glm45-air gpt-oss-120b gpt-oss-20b))))
 #+end_src
 
 #+begin_src emacs-lisp
