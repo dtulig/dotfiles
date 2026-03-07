@@ -1,17 +1,33 @@
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+# export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
 
-plugins=(git)
+# plugins=(git)
 
 # User configuration
 
 #export PATH="$HOME/bin:/run/wrappers/bin:/var/setuid-wrappers:$HOME/.nix-profile/bin:$HOME/.nix-profile/sbin:$HOME/.nix-profile/lib/kde4/libexec:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/nix/var/nix/profiles/default/lib/kde4/libexec:/run/current-system/sw/bin:/run/current-system/sw/sbin:/run/current-system/sw/lib/kde4/libexec:$HOME/.npm-packages/bin"
-#
+
+HISTSIZE=100000
+SAVEHIST=100000
+HISTFILE=~/.zsh_history
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+
+export FZF_DEFAULT_OPTS="
+  --color=bg+:0,bg:-1,border:8
+  --color=spinner:4,hl:4
+  --color=fg:-1,header:4
+  --color=info:4,pointer:4
+  --color=marker:3,fg+:7
+  --color=prompt:4,hl+:6
+"
+
 export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
-source $ZSH/oh-my-zsh.sh
+# source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -102,6 +118,13 @@ alias adl='ansible-doc --list'
 alias adls='ansible-doc --list | less -S'
 alias ad='ansible-doc'
 
+alias ls='ls --color=auto'
+alias ll='ls -lh'
+alias la='ls -lha'
+alias l='ls -l'
+
+export CLICOLOR=1
+
 [ -f "/home/dtulig/.ghcup/env" ] && . "/home/dtulig/.ghcup/env" # ghcup-env
 
 if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
@@ -109,5 +132,9 @@ if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
     # all my themes are setup for 256
     unset COLORTERM
 fi
+
+eval "$(starship init zsh)"
+
+eval "$(fzf --zsh)"
 
 return 0
