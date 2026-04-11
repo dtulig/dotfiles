@@ -1,24 +1,62 @@
 ! ====================
-! Rofi
+! Catppuccin Mocha Color Scheme
 ! ====================
+#define mocha_rosewater #f5e0dc
+#define mocha_flamingo  #f2cdcd
+#define mocha_pink      #f5c2e7
+#define mocha_mauve     #cba6f7
+#define mocha_red       #f38ba8
+#define mocha_maroon    #eba0ac
+#define mocha_peach     #fab387
+#define mocha_yellow    #f9e2af
+#define mocha_green     #a6e3a1
+#define mocha_teal      #94e2d5
+#define mocha_sky       #89dceb
+#define mocha_sapphire  #74c7ec
+#define mocha_blue      #89b4fa
+#define mocha_lavender  #b4befe
+#define mocha_text      #cdd6f4
+#define mocha_subtext1  #bac2de
+#define mocha_subtext0  #a6adc8
+#define mocha_overlay2  #9399b2
+#define mocha_overlay1  #7f849c
+#define mocha_overlay0  #6c7086
+#define mocha_surface2  #585b70
+#define mocha_surface1  #45475a
+#define mocha_surface0  #313244
+#define mocha_base      #1e1e2e
+#define mocha_mantle    #181825
+#define mocha_crust     #11111b
 
-rofi.color-enabled: true
-rofi.color-window: #2E3440, #2E3440, #A3BE8C
-rofi.color-normal: #2E3440, #ECEFF4, #2E3440, #A3BE8C, #2E3440
-rofi.color-active: #2E3440, #ECEFF4, #2E3440, #A3BE8C, #2E3440
-rofi.color-urgent: #2E3440, #BF616A, #2E3440, #BF616A, #ECEFF4
-rofi.font: Fira Mono 14
-rofi.hide-scrollbar: true
-rofi.padding: 50
-rofi.bw: 2
+*.foreground:   mocha_text
+*.background:   mocha_base
+*.cursorColor:  mocha_rosewater
+*fading:        35
+*fadeColor:     mocha_surface2
+
+*.color0:  mocha_surface1
+*.color1:  mocha_red
+*.color2:  mocha_green
+*.color3:  mocha_yellow
+*.color4:  mocha_blue
+*.color5:  mocha_pink
+*.color6:  mocha_teal
+*.color7:  mocha_subtext1
+*.color8:  mocha_surface2
+*.color9:  mocha_red
+*.color10: mocha_green
+*.color11: mocha_yellow
+*.color12: mocha_blue
+*.color13: mocha_pink
+*.color14: mocha_teal
+*.color15: mocha_subtext0
 
 ! ====================
 ! URxvt
 ! ====================
-
 URxvt*buffered: true
 URxvt*cursorBlink: true
-URxvt*underlineColor: yellow
+URxvt*underlineColor: mocha_yellow
 URxvt*font: xft:monospace:style=Medium:pixelsize=14:antialias=true,FontAwesome:pixelsize=14:antialias=true
 URxvt*depth: 32
 URxvt*borderless: 1
@@ -32,56 +70,11 @@ URxvt.url-launcher: /usr/bin/firefox
 URxvt.underlineURLs: true
 URxvt.matcher.button: 1
 URxvt.keysym.C-semicolon: \033[59;5u
+URxvt*background:  [100]mocha_base
+URxvt*borderColor: [100]mocha_base
 
 ! ====================
-! Nord Color Scheme
-! https://github.com/arcticicestudio/nord-xresources
-! ====================
-
-#define nord0 #2E3440
-#define nord1 #3B4252
-#define nord2 #434C5E
-#define nord3 #4C566A
-#define nord4 #D8DEE9
-#define nord5 #E5E9F0
-#define nord6 #ECEFF4
-#define nord7 #8FBCBB
-#define nord8 #88C0D0
-#define nord9 #81A1C1
-#define nord10 #5E81AC
-#define nord11 #BF616A
-#define nord12 #D08770
-#define nord13 #EBCB8B
-#define nord14 #A3BE8C
-#define nord15 #B48EAD
-
-*.foreground:   nord4
-*.background:   nord0
-*.cursorColor:  nord4
-*fading: 35
-*fadeColor: nord3
-
-*.color0:  nord1
-*.color1:  nord11
-*.color2:  nord14
-*.color3:  nord13
-*.color4:  nord9
-*.color5:  nord15
-*.color6:  nord8
-*.color7:  nord5
-*.color8:  nord3
-*.color9:  nord11
-*.color10: nord14
-*.color11: nord13
-*.color12: nord9
-*.color13: nord15
-*.color14: nord7
-*.color15: nord6
-
-! URxvt-specific overrides (alpha transparency support)
-URxvt*background:  [100]nord0
-URxvt*borderColor: [100]nord0
-
 ! Emacs terminal colors
-emacs*foreground: nord4
-emacs*background: nord0
+! ====================
+emacs*foreground: mocha_text
+emacs*background: mocha_base
