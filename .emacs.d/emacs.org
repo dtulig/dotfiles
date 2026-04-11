@@ -302,24 +302,32 @@ Base16 has themes on a variety of platforms. This works best when paired with th
 I'm overriding the header-line face, which is used in the list mode as a header. A good tip is to run list-faces-display, which shows all faces. Describing faces is expanded in this [[https://emacs.stackexchange.com/questions/303/describe-face-character-not-under-unreachable-by-the-cursor][stackexchange answer]].
 
 #+begin_src emacs-lisp
-  (use-package nord-theme
+  (use-package catppuccin-theme
     :ensure t
     :demand t
     :config
-    (load-theme 'nord t)
-    (defun my/apply-nord-to-frame (frame)
+    (setq catppuccin-flavor 'mocha)
+    (load-theme 'catppuccin t)
+
+    (defun my/set-theme-faces (&optional _frame)
+      "Set faces that need resolved theme colors."
+      (set-face-attribute 'corfu-default nil
+                          :background (face-background 'tooltip)
+                          :foreground (face-foreground 'default))
+      (set-face-attribute 'corfu-current nil
+                          :background (face-background 'highlight)
+                          :foreground (face-foreground 'highlight)))
+
+    (defun my/apply-catppuccin-to-frame (frame)
+      "Reapply Catppuccin on new terminal frames (emacsclient daemon fix)."
       (with-selected-frame frame
         (unless (display-graphic-p frame)
-          (set-terminal-parameter nil 'background-mode 'dark))
-        (when (display-graphic-p frame)
-          (set-frame-parameter frame 'background-mode 'dark))
-          (enable-theme 'nord)))
-    (add-hook 'after-make-frame-functions #'my/apply-nord-to-frame))
+          (set-terminal-parameter nil 'background-mode 'dark)
+          (catppuccin-reload))
+        (my/set-theme-faces)))
 
-  (custom-set-faces
-   '(corfu-default ((t :background "#3b4252" :foreground "#d8dee9")))
-   '(corfu-current ((t :background "#434c5e" :foreground "#eceff4"))))
-
+    (with-eval-after-load 'corfu (my/set-theme-faces))
+    (add-hook 'after-make-frame-functions #'my/apply-catppuccin-to-frame))
 #+end_src
 
 ** imenu Improvements
@@ -1084,12 +1092,15 @@ Install python-lsp-server.
     :config
     (when (eq system-type 'gnu/linux)
       (setq ispell-program-name "hunspell"))
-    :custom-face
-    (flyspell-incorrect ((t :underline (:style wave :color "#bf616a"))))
-    (flyspell-duplicate ((t :underline (:style wave :color "#d08770")))))
 
-  (use-package writegood-mode
-    :ensure t)
+    (defun my/flyspell-set-faces (&optional _frame)
+      (set-face-attribute 'flyspell-incorrect nil
+                          :underline `(:style wave :color ,(face-foreground 'error)))
+      (set-face-attribute 'flyspell-duplicate nil
+                          :underline `(:style wave :color ,(face-foreground 'warning))))
+
+    (my/flyspell-set-faces)
+    (add-hook 'after-make-frame-functions #'my/flyspell-set-faces))
 #+end_src
 
 ** Visual Fill Mode
