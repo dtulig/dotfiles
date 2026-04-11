@@ -2,7 +2,7 @@ filetype off
 
 call plug#begin('~/.vim/plugged')
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'arcticicestudio/nord-vim'
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'rust-lang/rust.vim'
 Plug 'LnL7/vim-nix'
 call plug#end()
@@ -115,11 +115,11 @@ autocmd Filetype html setlocal ts=2 sw=2 expandtab
 autocmd Filetype ruby setlocal ts=2 sw=2 expandtab
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0 expandtab
 
-if has('termguicolors') && $COLORTERM ==# 'truecolor'
+if has('termguicolors')
     set termguicolors
 endif
 
 set background=dark
-colorscheme nord
 
-highlight Visual guibg=#4c566a guifg=NONE ctermbg=8 ctermfg=NONE
+colorscheme catppuccin_mocha
+highlight Visual guibg=#313244 guifg=NONE ctermbg=8 ctermfg=NONE
