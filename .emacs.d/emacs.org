@@ -755,6 +755,38 @@ This is a great package that shows all completions as key chords are entered.
     :ensure nil
     :config
     (add-to-list 'org-modules 'org-habit t)
+
+    (defun my/org-habit-set-faces (&optional _frame)
+      (let ((bg (face-background 'default))
+            (surface (catppuccin-get-color 'surface1)))
+        (set-face-attribute 'org-habit-overdue-face nil
+                            :background (face-foreground 'error)
+                            :foreground bg)
+        (set-face-attribute 'org-habit-alert-face nil
+                            :background (catppuccin-get-color 'peach)
+                            :foreground bg)
+        (set-face-attribute 'org-habit-ready-face nil
+                            :background (face-foreground 'success)
+                            :foreground bg)
+        (set-face-attribute 'org-habit-overdue-future-face nil
+                            :background surface
+                            :foreground (face-foreground 'error))
+        (set-face-attribute 'org-habit-alert-future-face nil
+                            :background (catppuccin-get-color 'peach)
+                            :foreground bg)
+        (set-face-attribute 'org-habit-ready-future-face nil
+                            :background surface
+                            :foreground (face-foreground 'success))
+        (set-face-attribute 'org-habit-clear-face nil
+                            :background (face-foreground 'font-lock-keyword-face)
+                            :foreground bg)
+        (set-face-attribute 'org-habit-clear-future-face nil
+                            :background surface
+                            :foreground (face-foreground 'font-lock-keyword-face))))
+
+    (my/org-habit-set-faces)
+    (add-hook 'after-make-frame-functions #'my/org-habit-set-faces)
+
     :custom
     (org-habit-graph-column 60)
     (org-habit-show-all-today t))
