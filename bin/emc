@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-
+export TERM="${TERM:-xterm-256color}"
+export COLORTERM=truecolor
 emacsclient -a "" -t "$@"
