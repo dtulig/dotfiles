@@ -843,6 +843,12 @@ This is a great package that shows all completions as key chords are entered.
     :config
     (global-corfu-mode 1))
 
+  (use-package corfu-terminal
+    :ensure t
+    :unless (display-graphic-p)
+    :config
+    (corfu-terminal-mode 1))
+
   (use-package cape
     :ensure t
     ;; :bind ("C-c p" . cape-prefix-map)
