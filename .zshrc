@@ -45,10 +45,6 @@ function lg() {
   sudo tail -f "/var/log/$1"
 }
 
-# Base16
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[[ -n $PS1 && -s "$BASE16_SHELL/profile_helper.sh" ]] && source "$BASE16_SHELL/profile_helper.sh"
-
 # Local config
 [[ -f $HOME/.zshrc_local ]] && source $HOME/.zshrc_local
 
