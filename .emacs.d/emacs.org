@@ -302,17 +302,6 @@ Base16 has themes on a variety of platforms. This works best when paired with th
 I'm overriding the header-line face, which is used in the list mode as a header. A good tip is to run list-faces-display, which shows all faces. Describing faces is expanded in this [[https://emacs.stackexchange.com/questions/303/describe-face-character-not-under-unreachable-by-the-cursor][stackexchange answer]].
 
 #+begin_src emacs-lisp
-  ;; (use-package base16-theme
-  ;;   :ensure t
-  ;;   :demand t
-  ;;   :config
-  ;;   (setq base16-highlight-mode-line 'contrast)
-  ;;   (setq base16-theme-256-color-source 'base16-shell)
-  ;;   (load-theme 'base16-nord t)
-  ;;   (custom-set-faces
-  ;;    '(header-line ((t (:foreground "color-18" :inherit highlight)))))
-  ;;   (set-variable 'frame-background-mode 'dark))
-
   (use-package nord-theme
     :ensure t
     :demand t
@@ -321,9 +310,16 @@ I'm overriding the header-line face, which is used in the list mode as a header.
     (defun my/apply-nord-to-frame (frame)
       (with-selected-frame frame
         (unless (display-graphic-p frame)
-          (set-terminal-parameter nil 'background-mode 'dark)
-          (enable-theme 'nord))))
+          (set-terminal-parameter nil 'background-mode 'dark))
+        (when (display-graphic-p frame)
+          (set-frame-parameter frame 'background-mode 'dark))
+          (enable-theme 'nord)))
     (add-hook 'after-make-frame-functions #'my/apply-nord-to-frame))
+
+  (custom-set-faces
+   '(corfu-default ((t :background "#3b4252" :foreground "#d8dee9")))
+   '(corfu-current ((t :background "#434c5e" :foreground "#eceff4"))))
+
 #+end_src
 
 ** imenu Improvements
@@ -1079,8 +1075,12 @@ Install python-lsp-server.
   (use-package flyspell
     :hook ((text-mode . flyspell-mode)
            (prog-mode . flyspell-prog-mode))
-    ;; :custom (flyspell-auto-correct-binding "C-x C-j")
-    )
+    :config
+    (when (eq system-type 'gnu/linux)
+      (setq ispell-program-name "hunspell"))
+    :custom-face
+    (flyspell-incorrect ((t :underline (:style wave :color "#bf616a"))))
+    (flyspell-duplicate ((t :underline (:style wave :color "#d08770")))))
 
   (use-package writegood-mode
     :ensure t)
