@@ -1,14 +1,8 @@
-"Forget compatibility with Vi. Who cares.
-set nocompatible
 filetype off
 
 call plug#begin('~/.vim/plugged')
 Plug 'ctrlpvim/ctrlp.vim'
-"Plug 'altercation/vim-colors-solarized'
-Plug 'chriskempson/base16-vim'
-Plug 'mxw/vim-jsx'
-Plug 'pangloss/vim-javascript'
-Plug 'flowtype/vim-flow'
+Plug 'arcticicestudio/nord-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'LnL7/vim-nix'
 call plug#end()
@@ -39,12 +33,8 @@ set scrolloff=3
 set wildmenu
 set wildmode=list:longest
 set cursorline
-set ttyfast
 set backspace=indent,eol,start
 set undofile
-
-"Set font type and size. Depends on the resolution. Larger screens, prefer h20
-set guifont=Menlo:h20
 
 "Tab stuff
 set tabstop=4
@@ -62,19 +52,15 @@ set number
 set relativenumber"
 
 "Indent stuff
-set smartindent
 set autoindent
 
 "Always show the status line
 set laststatus=2
 
-"Prefer a slightly higher line height
-set linespace=3
-
 "Better line wrapping
 set wrap
-set textwidth=119
-set formatoptions=qrn1
+"set textwidth=119
+"set formatoptions=qrn1
 set colorcolumn=120
 
 "Set incremental searching"
@@ -88,6 +74,14 @@ nnoremap <leader><space> :noh<cr>
 " case insensitive search
 set ignorecase
 set smartcase
+
+set clipboard=unnamedplus
+
+set updatetime=300
+set signcolumn=yes
+set noshowmode
+
+nnoremap <leader>w :w<cr>
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -121,11 +115,11 @@ autocmd Filetype html setlocal ts=2 sw=2 expandtab
 autocmd Filetype ruby setlocal ts=2 sw=2 expandtab
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0 expandtab
 
-"set background=dark
-"colorscheme solarized
-
-if filereadable(expand("~/.vimrc_background"))
-    let base16colorspace=256
-    source ~/.vimrc_background
+if has('termguicolors') && $COLORTERM ==# 'truecolor'
+    set termguicolors
 endif
 
+set background=dark
+colorscheme nord
+
+highlight Visual guibg=#4c566a guifg=NONE ctermbg=8 ctermfg=NONE
