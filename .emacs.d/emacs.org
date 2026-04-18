@@ -34,6 +34,16 @@ Set where custom variables should be stored. This file isn't edited directly.
   (setq custom-file (emacs-path "custom.el"))
 #+end_src
 
+Keybind for loading the emacs.org file.
+
+#+begin_src emacs-lisp
+  (defun dt/open-emacs-org ()
+    (interactive)
+    (find-file "~/.emacs.d/emacs.org"))
+
+  (global-set-key (kbd "C-c e") #'dt/open-emacs-org)
+#+end_src
+
 ** Base for enabling emacs packages
 
 This configures the package management system and sets use-package as the primary mechanism for managing packages going forward.
