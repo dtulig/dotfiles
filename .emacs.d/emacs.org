@@ -449,6 +449,15 @@ This is a great package that shows all completions as key chords are entered.
 #+end_src
 
 #+begin_src emacs-lisp
+  (use-package dt-commit
+    :demand t
+    :load-path "lisp/"
+    ;:hook (git-commit-setup . dt-commit-generate-message)
+    :bind (:map git-commit-mode-map
+                ("M-g" . dt-commit-generate-message)))
+#+end_src
+
+#+begin_src emacs-lisp
   (use-package aider
     :ensure t
     :config
