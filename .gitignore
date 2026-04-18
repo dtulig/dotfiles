@@ -7,10 +7,12 @@
 /.emacs.d.old/custom.el~
 /.emacs.d.old/network-security.data
 /.emacs.d.old/.lsp-session-v1
+/.xmonad/build-x86_64-linux/
 /.xmonad/xmonad-x86_64-linux
 /.xmonad/xmonad.errors
 /.xmonad/xmonad.hi
 /.xmonad/xmonad.o
+/.emacs.d/%backup%~
 /.emacs.d/.cache/
 /.emacs.d/.dap-breakpoints
 /.emacs.d/.extension/

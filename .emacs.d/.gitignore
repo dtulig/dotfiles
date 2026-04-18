@@ -29,12 +29,12 @@ non-elpa/*
 url/*
 
 ## exported and encrypted files
-*el
-*elc
-*html
-*tex
-*pdf
-*txt
+*.el
+*.elc
+*.html
+*.tex
+*.pdf
+*.txt
 
 ## org stuff
 .org-id-locations
@@ -55,3 +55,7 @@ secret.org
 .emacs.desktop*
 .*~
 agent/*
+
+## allow
+!lisp/
+!lisp/**/*.el
