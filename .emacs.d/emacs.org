@@ -793,10 +793,13 @@ This is a great package that shows all completions as key chords are entered.
 #+begin_src emacs-lisp
   (use-package evil-org
     :ensure t
-    :after (org evil)
-    :hook (org-mode . evil-org-mode)
+    :after org
+    :hook (org-mode . evil-org-mode))
+
+  (use-package evil-org-agenda
+    :ensure nil
+    :after org-agenda
     :config
-    (require 'evil-org-agenda)
     (evil-org-agenda-set-keys)
     (evil-define-key 'motion org-agenda-mode-map
       "so" #'org-save-all-org-buffers
