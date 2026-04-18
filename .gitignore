@@ -20,3 +20,4 @@
 /.emacs.d/projectile.cache
 /.emacs.d/projects
 /.emacs.d/tree-sitter/
+/.dir-locals.el

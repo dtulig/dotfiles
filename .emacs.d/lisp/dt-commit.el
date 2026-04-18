@@ -22,33 +22,41 @@
   :prefix "dt-commit-")
 
 (defcustom dt-commit-prompt
-  "Write a Conventional Commits message for the staged diff.
+  "Write a commit message for the staged diff.
 
-Format: <type>(<scope>)?: <description>
-
-Types (use exactly one): build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
+Structure:
+- Subject line: short summary of the change
+- Optional body: blank line, then paragraphs explaining why
 
 Subject rules:
-- Imperative mood: `add logging` not `added logging` or `adds logging`
-- Lowercase description, no trailing period
+- Imperative mood, as if completing 'If applied, this commit will ___'
+  Good: `Add logging to connection pool`
+  Bad:  `Added logging` / `Adds logging`
+- Capitalize the first letter, no trailing period
 - Aim for 50 characters, never exceed 72
+- Summarize the *what*, not the *how*
 
-Body (optional): blank line, then paragraphs explaining *why*. Do not hard-wrap lines - write flowing prose, one line per paragraph.
+Body rules (when warranted):
+- Separate from subject with ONE blank line
+- Explain *why* the change is being made and what problem it solves
+- Do not hard-wrap; write flowing prose, one line per paragraph
+- Use multiple paragraphs separated by blank lines if needed
+- Skip the body for small, self-evident changes (typo fixes, renames, dep bumps)
 
-Examples of good subjects:
-  feat(parser): support nested quoted strings
-  fix: prevent race in connection pool shutdown
-  refactor(api): extract request validation into middleware
+Examples of BAD subjects:
+  added new parser feature.          (past tense, lowercase, period)
+  Update code                        (vague)
+  refactor: extract validation       (no type prefixes)
 
-Examples of BAD subjects (do not produce these):
-  Added new parser feature.          (past tense, capitalized, period)
-  Update code                        (vague, no type)
-  feat: Added support for...         (capitalized after colon)
+Example of a good full message:
 
-Output only the commit message. No ``` fences. No `Here is` preamble.
-No explanation after the message."
+  Prevent race in connection pool shutdown
+
+  The pool's shutdown path closed idle connections before marking the pool as closed, so a concurrent checkout could grab a connection that was about to be torn down. Flip the order: mark closed first, then drain. Checkout now sees the closed flag and returns an error instead of a doomed connection.
+
+Output only the commit message. No ``` fences. No preamble or explanation."
   "System prompt for commit message generation.
-Tuned for local models; see Conventional Commits spec."
+Tuned for local models."
   :type 'string
   :group 'dt-commit)
 
