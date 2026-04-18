@@ -296,10 +296,7 @@ This configuration overhauls the keybindings with evil-mode. Two important notes
 
 #+end_src
 * Expanded UI Configuration
-** Base16 theming
-Base16 has themes on a variety of platforms. This works best when paired with the base16 shell functionality (urxvt, iTerm2).
-
-I'm overriding the header-line face, which is used in the list mode as a header. A good tip is to run list-faces-display, which shows all faces. Describing faces is expanded in this [[https://emacs.stackexchange.com/questions/303/describe-face-character-not-under-unreachable-by-the-cursor][stackexchange answer]].
+** Theming
 
 #+begin_src emacs-lisp
   (use-package catppuccin-theme

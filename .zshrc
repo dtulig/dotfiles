@@ -83,7 +83,7 @@ fi
 # Terminal settings
 if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
   export TERM=xterm-256color
-  unset COLORTERM
+  export COLORTERM=truecolor
 fi
 
 # Tools
